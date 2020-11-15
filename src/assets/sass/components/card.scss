@@ -1,0 +1,22 @@
+.card {
+  position: relative;
+  overflow: hidden;
+  .radial {
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background-color: $white;
+    opacity: 0.2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: 0.2s;
+    mix-blend-mode: overlay;
+  }
+
+  .header,
+  .body,
+  .footer {
+    z-index: 1;
+  }
+}

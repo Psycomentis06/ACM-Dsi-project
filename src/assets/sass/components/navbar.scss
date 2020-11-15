@@ -1,0 +1,71 @@
+.gradient-full {
+  @include GradientButton("nav");
+  @include DropShadow(2);
+  .nav {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .nav-item {
+      .nav-link {
+        color: $white;
+        text-shadow: 1px 3px 10px $black;
+      }
+    }
+  }
+
+  .navbar-slider {
+    width: 100%;
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (max-width: 768px) {
+  .gradient-full {
+    .navbar-toggler {
+      z-index: 1;
+      margin-left: auto;
+      background-color: $white;
+      color: $black;
+    }
+    .nav {
+      margin-top: 50px;
+      display: flex;
+      flex-direction: column;
+      height: 70%;
+    }
+    .navbar-slider-background {
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.8);
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .navbar-slider {
+      width: 300px;
+      height: 100vh;
+      position: absolute;
+      top: 0;
+      left: -500px;
+      background-color: $white;
+      transition: 0.5s ease-in-out;
+    }
+  }
+
+  .gradient-full {
+    .navbar-slider {
+      &.show {
+        left: 0;
+
+        .nav-item {
+          color: $black;
+          .nav-link {
+            color: $black;
+          }
+        }
+      }
+    }
+  }
+}

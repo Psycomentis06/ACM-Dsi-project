@@ -1,0 +1,39 @@
+// Colors
+
+$gradient-colors: (
+  "primary": (
+    "first": $primary,
+    "second": $secondary,
+  ),
+  "peach": (
+    "first": #fd1d1d,
+    "second": #fcb045,
+  ),
+  "aqua": (
+    "first": #52ff83,
+    "second": #2d77fd,
+  ),
+  "purple": (
+    "first": #ed4bfe,
+    "second": #6e58ff,
+  ),
+  "vice": (
+    "first": #ff52aa,
+    "second": #fdb82d,
+  ),
+);
+
+$width-height-sizes: (
+  "10px": 10px,
+  "20px": 20px,
+  "30px": 30px,
+  "40px": 40px,
+  "50px": 50px,
+  "60px": 60px,
+  "70px": 70px,
+  "80px": 80px,
+  "90px": 90px,
+  "100px": 100px,
+  "150px": 150px,
+  "200px": 200px,
+);

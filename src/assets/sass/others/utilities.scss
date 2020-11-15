@@ -1,0 +1,127 @@
+/*
+  Gradient utilities
+*/
+
+.bg-gradient {
+  @include GradientButton("background");
+}
+
+// gradient colors
+
+// by deafult angle is 0 deg
+@each $key, $value in $gradient-colors {
+  .bg-gradient-#{$key} {
+    background: map-get($map: $value, $key: "first");
+    background: linear-gradient(
+      0deg,
+      map-get($map: $value, $key: "first") 0%,
+      map-get($map: $value, $key: "second") 100%
+    );
+
+    background-size: 120% 120%;
+
+    color: $white;
+  }
+}
+
+// gradient angle 45 deg
+@each $key, $value in $gradient-colors {
+  .bg-gradient-#{$key}-45 {
+    background: map-get($map: $value, $key: "first");
+    background: linear-gradient(
+      45deg,
+      map-get($map: $value, $key: "first") 0%,
+      map-get($map: $value, $key: "second") 100%
+    );
+
+    background-size: 120% 120%;
+
+    color: $white;
+  }
+}
+
+// gradient angle 90 deg
+@each $key, $value in $gradient-colors {
+  .bg-gradient-#{$key}-90 {
+    background: map-get($map: $value, $key: "first");
+    background: linear-gradient(
+      90deg,
+      map-get($map: $value, $key: "first") 0%,
+      map-get($map: $value, $key: "second") 100%
+    );
+
+    background-size: 120% 120%;
+
+    color: $white;
+  }
+}
+
+// gradient angle 180 deg
+@each $key, $value in $gradient-colors {
+  .bg-gradient-#{$key}-180 {
+    background: map-get($map: $value, $key: "first");
+    background: linear-gradient(
+      180deg,
+      map-get($map: $value, $key: "first") 0%,
+      map-get($map: $value, $key: "second") 100%
+    );
+
+    background-size: 120% 120%;
+
+    color: $white;
+  }
+}
+// gradient angle 270 deg
+@each $key, $value in $gradient-colors {
+  .bg-gradient-#{$key}-270 {
+    background: map-get($map: $value, $key: "first");
+    background: linear-gradient(
+      270deg,
+      map-get($map: $value, $key: "first") 0%,
+      map-get($map: $value, $key: "second") 100%
+    );
+
+    background-size: 120% 120%;
+
+    color: $white;
+  }
+}
+
+/*
+  Shadow
+*/
+
+.shadow-default {
+  @include DropShadow("default");
+}
+.shadow-1 {
+  @include DropShadow(1);
+}
+.shadow-2 {
+  @include DropShadow(2);
+}
+.shadow-3 {
+  @include DropShadow(3);
+}
+.shadow-4 {
+  @include DropShadow(4);
+}
+.shadow-4 {
+  @include DropShadow(5);
+}
+
+/* Width */
+
+@each $key, $value in $width-height-sizes {
+  .w-#{$key} {
+    width: $value;
+  }
+}
+
+/* Height */
+
+@each $key, $value in $width-height-sizes {
+  .h-#{$key} {
+    height: $value;
+  }
+}
