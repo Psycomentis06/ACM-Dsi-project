@@ -1,0 +1,19 @@
+.messages {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  li {
+    list-style: none;
+    width: auto;
+    max-width: 40%;
+    margin: 10px 0;
+
+    background-color: darkorange;
+    padding: 5px 10px;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  .mine {
+    margin-left: auto;
+    background-color: rgb(224, 213, 213);
+  }
+}

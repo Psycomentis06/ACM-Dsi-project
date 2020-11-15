@@ -7,7 +7,7 @@ export default function AdminNavbar() {
   return (
     <>
       <Navbar expand="md" className="gradient-full" color="light" light>
-        <div className="navbar-slider-background"></div>
+        {openSlider ? <div className="navbar-slider-background"></div> : ""}
         <NavbarToggler
           onClick={() => {
             setOpenSlider(!openSlider);
