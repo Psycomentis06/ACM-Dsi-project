@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Container,
-  Jumbotron,
-  Row,
-  Col,
-  Input,
-  InputGroup,
-  Button,
-} from "reactstrap";
+import { Container, Jumbotron, Input, InputGroup, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./Chat.scss";
 export default (props) => {
@@ -33,7 +25,7 @@ export default (props) => {
           <hr className="my-3" />
           <InputGroup>
             <Input placeholder="Send text to the user" />
-            <Button>Send</Button>
+            <Button color="primary">Send</Button>
           </InputGroup>
         </Container>
       </Jumbotron>
