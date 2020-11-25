@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 // import pages
 import NotFound from "../pages/NotFound";
@@ -14,17 +14,18 @@ export default function Routes() {
       <Route exact path="/">
         <Home />
       </Route>
-      <Route path="/store">
+      <Route exact path="/store">
         <Store />
       </Route>
 
       {/* Admin Routes */}
-      <Route path="/admin/">
+      <Route exact path="/admin">
         <Dashboard />
       </Route>
-      <Route path="**">
+      <Route path="/404">
         <NotFound />
       </Route>
+      <Redirect to="/404" />
     </Switch>
   );
 }
