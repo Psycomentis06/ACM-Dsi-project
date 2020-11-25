@@ -7,6 +7,7 @@ import Home from "../pages/Home";
 import Store from "../pages/Store";
 import Dashboard from "../pages/admin/Dashboard";
 import Inbox from "../pages/admin/Inbox";
+import Chat from "../components/Chat";
 export default function Routes() {
   return (
     <Switch>
@@ -24,6 +25,9 @@ export default function Routes() {
       </Route>
       <Route exact path="/admin/inbox">
         <Inbox />
+      </Route>
+      <Route exact path="/admin/inbox/:id">
+        <Chat />
       </Route>
       <Route path="/404">
         <NotFound />

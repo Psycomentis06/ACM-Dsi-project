@@ -1,11 +1,18 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import UserLogo from "../../assets/images/avatar.svg";
 import "./UserChatRoom.scss";
 
 export default function UserChatRoomLink(props) {
+  let history = useHistory();
+  const handleOnClick = () => history.push("/admin/inbox/" + props.roomId);
+
   return (
     <>
-      <div className={"user-chat-room " + (props.bgColor ? props.bgColor : "")}>
+      <div
+        className={"user-chat-room " + (props.bgColor ? props.bgColor : "")}
+        onClick={handleOnClick}
+      >
         <div className="avatar shadow-3">
           <img
             src={props.userLogo ? props.userLogo : UserLogo}
