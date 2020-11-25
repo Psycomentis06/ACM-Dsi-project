@@ -22,7 +22,9 @@ export default function Routes() {
       <Route exact path="/admin">
         <Dashboard />
       </Route>
-      <Route exact path="/admin/inbox"></Route>
+      <Route exact path="/admin/inbox">
+        <Inbox />
+      </Route>
       <Route path="/404">
         <NotFound />
       </Route>
