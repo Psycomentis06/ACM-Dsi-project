@@ -10,7 +10,7 @@ export default function Dashboard() {
           <h1 className="display-4">Stats</h1>
           <hr className="my-4" />
           <Row>
-            <Col>
+            <Col md className="mb-md-5">
               <StatCard
                 bg="materialgray"
                 textColor="dark"
@@ -27,7 +27,7 @@ export default function Dashboard() {
               </StatCard>
             </Col>
 
-            <Col>
+            <Col md className="mb-md-5">
               <StatCard
                 bg="materialgray"
                 textColor="dark"
@@ -44,7 +44,7 @@ export default function Dashboard() {
               </StatCard>
             </Col>
 
-            <Col>
+            <Col md className="mb-md-5">
               <StatCard
                 bg="materialgray"
                 textColor="dark"
@@ -61,7 +61,7 @@ export default function Dashboard() {
               </StatCard>
             </Col>
 
-            <Col>
+            <Col md className="mb-md-5">
               <StatCard
                 bg="materialgray"
                 textColor="dark"
