@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 // import components
 import Routes from "./Routes";
