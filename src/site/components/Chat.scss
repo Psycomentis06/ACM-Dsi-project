@@ -1,19 +1,21 @@
 .messages {
   overflow-y: scroll;
   overflow-x: hidden;
-  li {
+  height: 400px;
+  .line {
     list-style: none;
     width: auto;
     max-width: 40%;
     margin: 10px 0;
 
-    background-color: darkorange;
-    padding: 5px 10px;
+    background-color: rgb(235, 226, 216);
+    padding: 10px;
     border-radius: 15px;
-    overflow: hidden;
+    //overflow: hidden;
   }
   .mine {
     margin-left: auto;
-    background-color: rgb(224, 213, 213);
+    background-color: rgb(113, 63, 192);
+    color: white;
   }
 }
