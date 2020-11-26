@@ -3,10 +3,11 @@ import { Row, Col } from "reactstrap";
 import "./UserCard.scss";
 export default function UserCard(props) {
   return (
-    <div className="user-card shadow-1">
+    <div className={"user-card shadow-1 " + (props.role ? props.role : "")}>
       <div className="header">
         <div className="img">
           <img src={props.imgSrc} alt={props.imgAlt} />
+          <div className="bg bg-dark"></div>
         </div>
         <div className="meta text-center">
           <div className="username">{props.username}</div>
