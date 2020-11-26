@@ -2,16 +2,25 @@
   overflow-y: scroll;
   overflow-x: hidden;
   height: 400px;
+  background-color: #e9ecef;
+  background-image: radial-gradient(
+      #a269df 1.9000000000000001px,
+      transparent 1.9000000000000001px
+    ),
+    radial-gradient(#a269df 1.9000000000000001px, #e9ecef 1.9000000000000001px);
+  background-size: 76px 76px;
+  background-position: 0 0, 38px 38px;
   .line {
     list-style: none;
     width: auto;
     max-width: 40%;
     margin: 10px 0;
 
-    background-color: rgb(235, 226, 216);
+    background-color: #c13584;
     padding: 10px;
     border-radius: 15px;
-    //overflow: hidden;
+    color: white;
+    overflow-wrap: break-word;
   }
   .mine {
     margin-left: auto;
