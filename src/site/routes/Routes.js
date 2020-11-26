@@ -9,6 +9,7 @@ import Dashboard from "../pages/admin/Dashboard";
 import Inbox from "../pages/admin/Inbox";
 import Chat from "../components/Chat";
 import Users from "../pages/admin/Users";
+import User from "../pages/admin/User";
 export default function Routes() {
   return (
     <Switch>
@@ -32,6 +33,9 @@ export default function Routes() {
       </Route>
       <Route exact path="/admin/users">
         <Users />
+      </Route>
+      <Route exact path="/admin/users/:userId">
+        <User />
       </Route>
       <Route path="/404">
         <NotFound />
