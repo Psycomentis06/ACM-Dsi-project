@@ -67,6 +67,7 @@ export default function AdminNavbar() {
                     backgroundColor: "transparent",
                     borderColor: "transparent",
                   }}
+                  className="text-primary"
                 >
                   <i className="fas fa-sort-down fa-2x"></i>
                 </DropdownToggle>
