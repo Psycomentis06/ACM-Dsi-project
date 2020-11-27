@@ -55,6 +55,8 @@ export default function Users() {
   }, []);
   // Filter by user status
   const [filterValue, setFilterValue] = useState("all");
+  // filter by search
+  const [searchValue, setSearchValue] = useState("");
   return (
     <Container>
       <Navbar className="mt-5" expand="md" light>
@@ -110,7 +112,13 @@ export default function Users() {
               <Row>
                 <Col>
                   <InputGroup>
-                    <Input placeholder="Search for user by name" />
+                    <Input
+                      placeholder="Search for user by name"
+                      value={searchValue}
+                      onChange={(e) => {
+                        setSearchValue(e.target.value);
+                      }}
+                    />
                     <Button>
                       <i className="fas fa-search"></i>
                     </Button>
@@ -234,10 +242,19 @@ export default function Users() {
                 {users
                   .filter((user) => {
                     if (filterValue === "all") {
-                      return user.role === "ROLE_USER"; // all user in user section
+                      return (
+                        user.role === "ROLE_USER" &&
+                        (user.first_name + " " + user.last_name)
+                          .toLowerCase()
+                          .includes(searchValue)
+                      ); // all user in user section
                     } else {
                       return (
-                        user.status === filterValue && user.role === "ROLE_USER"
+                        user.status === filterValue &&
+                        user.role === "ROLE_USER" &&
+                        (user.first_name + " " + user.last_name)
+                          .toLowerCase()
+                          .includes(searchValue)
                       ); // active or offline regular users
                     }
                   })
@@ -262,11 +279,19 @@ export default function Users() {
                 {users
                   .filter((user) => {
                     if (filterValue === "all") {
-                      return user.role === "ROLE_ADMIN"; // all admins
+                      return (
+                        user.role === "ROLE_ADMIN" &&
+                        (user.first_name + " " + user.last_name)
+                          .toLowerCase()
+                          .includes(searchValue)
+                      ); // all admins
                     } else {
                       return (
                         user.status === filterValue &&
-                        user.role === "ROLE_ADMIN"
+                        user.role === "ROLE_ADMIN" &&
+                        (user.first_name + " " + user.last_name)
+                          .toLowerCase()
+                          .includes(searchValue)
                       ); // active or offline admins
                     }
                   })
@@ -291,11 +316,19 @@ export default function Users() {
                 {users
                   .filter((user) => {
                     if (filterValue === "all") {
-                      return user.role === "ROLE_SUPERADMIN"; // all user in user section
+                      return (
+                        user.role === "ROLE_SUPERADMIN" &&
+                        (user.first_name + " " + user.last_name)
+                          .toLowerCase()
+                          .includes(searchValue)
+                      ); // all user in user section
                     } else {
                       return (
                         user.status === filterValue &&
-                        user.role === "ROLE_SUPERADMIN"
+                        user.role === "ROLE_SUPERADMIN" &&
+                        (user.first_name + " " + user.last_name)
+                          .toLowerCase()
+                          .includes(searchValue)
                       ); // active or offline regular users
                     }
                   })
