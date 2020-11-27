@@ -234,9 +234,11 @@ export default function Users() {
                 {users
                   .filter((user) => {
                     if (filterValue === "all") {
-                      return true;
+                      return user.role === "ROLE_USER"; // all user in user section
                     } else {
-                      return user.status === filterValue;
+                      return (
+                        user.status === filterValue && user.role === "ROLE_USER"
+                      ); // active or offline regular users
                     }
                   })
                   .map((el) => (
@@ -257,11 +259,27 @@ export default function Users() {
                 style={{ height: "600px", overflowY: "scroll" }}
                 className="scrollbar-hide"
               >
-                <UserListItem
-                  avatarSrc="https://images.unsplash.com/photo-1503249023995-51b0f3778ccf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=311&q=80"
-                  avatarAlt="userprofile image"
-                  username="Ali Amor"
-                />
+                {users
+                  .filter((user) => {
+                    if (filterValue === "all") {
+                      return user.role === "ROLE_ADMIN"; // all admins
+                    } else {
+                      return (
+                        user.status === filterValue &&
+                        user.role === "ROLE_ADMIN"
+                      ); // active or offline admins
+                    }
+                  })
+                  .map((el) => (
+                    <UserListItem
+                      key={el.id}
+                      avatarSrc={el.avatar}
+                      avatarAlt="userprofile image"
+                      username={el.first_name + " " + el.last_name}
+                      email={el.email}
+                      bio="try something"
+                    />
+                  ))}
               </div>
             </Col>
             <Col md>
@@ -270,13 +288,27 @@ export default function Users() {
                 className="scrollbar-hide"
                 style={{ height: "600px", overflowY: "scroll" }}
               >
-                <UserListItem
-                  avatarSrc="https://images.unsplash.com/photo-1503249023995-51b0f3778ccf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=311&q=80"
-                  avatarAlt="userprofile image"
-                  username="Ali Amor"
-                  bio="Hello my name is idon't know"
-                  email="alibenamor@gmail.com"
-                />
+                {users
+                  .filter((user) => {
+                    if (filterValue === "all") {
+                      return user.role === "ROLE_SUPERADMIN"; // all user in user section
+                    } else {
+                      return (
+                        user.status === filterValue &&
+                        user.role === "ROLE_SUPERADMIN"
+                      ); // active or offline regular users
+                    }
+                  })
+                  .map((el) => (
+                    <UserListItem
+                      key={el.id}
+                      avatarSrc={el.avatar}
+                      avatarAlt="userprofile image"
+                      username={el.first_name + " " + el.last_name}
+                      email={el.email}
+                      bio="try something"
+                    />
+                  ))}
               </div>
             </Col>
           </Row>
