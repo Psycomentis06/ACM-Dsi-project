@@ -17,7 +17,6 @@ export default function UserListItem(props) {
         toggle={() => setPopover(!popover)}
         isOpen={popover}
         placement="top-start"
-        delay="200"
       >
         <PopoverBody className="text-center">
           <p className="h6 mb-3">{props.email}</p>
