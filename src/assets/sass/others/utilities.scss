@@ -125,3 +125,11 @@
     height: $value;
   }
 }
+
+/* Scroll bar hide */
+.scrollbar-hide {
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+  }
+}
