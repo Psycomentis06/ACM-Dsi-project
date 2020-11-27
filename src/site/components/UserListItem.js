@@ -13,7 +13,7 @@ export default function UserListItem(props) {
         <p className="h6 mb-3">{props.email}</p>
         <p className="text-justified">
           {props.bio === undefined || props.bio.length < 1 ? (
-            <p style={{ opacity: 0.5 }}>No bio</p>
+            <span style={{ opacity: 0.5 }}>No bio</span>
           ) : (
             props.bio
           )}
