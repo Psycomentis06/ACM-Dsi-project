@@ -1,28 +1,24 @@
 import React, { useState } from "react";
-import { UncontrolledPopover, PopoverBody } from "reactstrap";
 import "./UserListItem.scss";
 export default function UserListItem(props) {
-  const [popover, setPopover] = useState(false);
   return (
-    <div className="user-list-item bg-materialgray shadow-2">
-      <div className="avatar" id="user-list">
+    <div className="user-list-item shadow-2">
+      <div className="avatar">
         <figure>
           <img src={props.avatarSrc} alt={props.avatarAlt} />
           <figcaption>{props.username}</figcaption>
         </figure>
       </div>
-      <UncontrolledPopover
-        trigger="legacy"
-        target="user-list"
-        toggle={() => setPopover(!popover)}
-        isOpen={popover}
-        placement="top-start"
-      >
-        <PopoverBody className="text-center">
-          <p className="h6 mb-3">{props.email}</p>
-          <p className="text-justified">{props.bio}</p>
-        </PopoverBody>
-      </UncontrolledPopover>
+      <div className="popover-data">
+        <p className="h6 mb-3">{props.email}</p>
+        <p className="text-justified">
+          {props.bio === undefined || props.bio.length < 1 ? (
+            <p style={{ opacity: 0.5 }}>No bio</p>
+          ) : (
+            props.bio
+          )}
+        </p>
+      </div>
     </div>
   );
 }
