@@ -6,10 +6,10 @@ http
     res.setHeader("Content-Type", "application/json");
     if (path === "/") {
       res.end(JSON.stringify({ message: "Home" }, null, 3));
-    } else if (path === "/getusers") {
+    } else if (path === "/api/getusers") {
       const users = require("./users.json");
       res.end(JSON.stringify(users.user, null, 3));
-    } else if (path.match("/getmessages/*")) {
+    } else if (path.match("/api/getmessages/*")) {
       let urlParams = path.split("/");
       let userId = urlParams[2];
       if (urlParams.length != 3) {
