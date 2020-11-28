@@ -37,3 +37,20 @@ $width-height-sizes: (
   "150px": 150px,
   "200px": 200px,
 );
+
+$input-border-colors: (
+  "text": #b100e8,
+  "password": #e500a4,
+  "email": #8900f2,
+  "date": #d100d1,
+  "datetime": #2d00f7,
+  "datetime-local": #6a00f4,
+  "month": #8900f2,
+  "time": #f20089,
+  "week": #e500a4,
+  "number": #bc00dd,
+  "url": #a100f2,
+  "search": #6a00f4,
+  "tel": #d100d1,
+  "color": #f20089,
+);
