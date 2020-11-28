@@ -22,4 +22,14 @@
   .content {
     margin-top: 50px;
   }
+  .pass-btn {
+    background-color: transparent;
+    color: black;
+    border: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
 }
