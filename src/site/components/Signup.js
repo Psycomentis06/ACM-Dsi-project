@@ -8,7 +8,7 @@ export default function Signup() {
   const onSubmit = (data) => console.log(data);
   return (
     <>
-      <div className="signup border-danger shadow-4">
+      <div className="signup border-danger shadow-4 bg-white">
         <h1 className="text-center">Register</h1>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Row>
