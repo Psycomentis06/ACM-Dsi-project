@@ -42,3 +42,35 @@
     }
   }
 }
+
+/* React transition */
+
+.col2-animation-enter {
+  transform: scale(0);
+}
+.col2-animation-enter-active {
+  transform: scale(1);
+  transition: transform 800ms;
+}
+.col2-animation-exit {
+  transform: translateX(50%);
+}
+.col2-animation-exit-active {
+  transform: translateX(0);
+  transition: transform 800ms;
+}
+
+.col1-animation-enter {
+  transform: translateX(50%);
+}
+.col1-animation-enter-active {
+  transform: translateX(0);
+  transition: transform 800ms;
+}
+.col1-animation-exit {
+  transform: scale(0);
+}
+.col1-animation-exit-active {
+  transform: scale(1);
+  transition: transform 800ms;
+}
