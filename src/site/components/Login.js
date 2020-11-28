@@ -9,12 +9,26 @@ export default function Login() {
       <div className="content">
         <Row>
           <Col>
-            <Input type="email" placeholder="User Email" />
+            <div className="input-float">
+              <label htmlFor="__email" className="label bg-white">
+                Email
+              </label>
+              <Input type="email" placeholder="User Email" id="__email" />
+            </div>
           </Col>
         </Row>
-        <Row>
+        <Row className="mt-3">
           <Col>
-            <Input type="password" placeholder="User password" />
+            <div className="input-float">
+              <label htmlFor="__password" className="label bg-white">
+                Password
+              </label>
+              <Input
+                type="password"
+                placeholder="User password"
+                id="__password"
+              />
+            </div>
           </Col>
         </Row>
       </div>
