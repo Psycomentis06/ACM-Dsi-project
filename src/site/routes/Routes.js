@@ -5,6 +5,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import NotFound from "../pages/NotFound";
 import Home from "../pages/Home";
 import Store from "../pages/Store";
+import LoginRegister from "../pages/user/LoginRegister";
 import Dashboard from "../pages/admin/Dashboard";
 import Inbox from "../pages/admin/Inbox";
 import Chat from "../components/Chat";
@@ -19,6 +20,9 @@ export default function Routes() {
       </Route>
       <Route exact path="/store">
         <Store />
+      </Route>
+      <Route exact path="/login">
+        <LoginRegister />
       </Route>
 
       {/* Admin Routes */}
