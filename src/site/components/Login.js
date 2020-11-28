@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Col, Input, Row, FormFeedback, Button } from "reactstrap";
 import { useForm, Controller } from "react-hook-form";
 import "./Login.scss";
@@ -6,6 +6,8 @@ export default function Login() {
   // form hook
   const { control, handleSubmit, errors } = useForm();
   const onSubmit = (data) => console.log(data);
+  // password toggle
+  const [passwordType, setPasswordType] = useState(true); // true = password is set to type="password"
   return (
     <div className="login border-danger shadow-4">
       <div className="user-logo bg-white text-danger">
@@ -31,7 +33,7 @@ export default function Login() {
                       id="__email"
                       onChange={(e) => props.onChange(e.target.value)}
                       autoComplete="off"
-                      invalid={errors.email ? 1 : 0}
+                      invalid={errors.email ? true : false}
                     />
                     {errors.email && (
                       <FormFeedback invalid>Email is required</FormFeedback>
@@ -54,14 +56,24 @@ export default function Login() {
                       Password
                     </label>
                     <Input
-                      type="password"
+                      type={passwordType ? "password" : "text"}
                       placeholder="User password"
                       id="__password"
                       invalid={errors.password ? true : false}
                       onChange={(e) => props.onChange(e.target.value)}
                     />
-                    <Button type="button" className="pass-btn">
-                      <i className="fas fa-eye"></i>
+                    <Button
+                      type="button"
+                      className="pass-btn"
+                      onClick={() => {
+                        setPasswordType(!passwordType);
+                      }}
+                    >
+                      <i
+                        className={
+                          "fas " + (passwordType ? "fa-eye" : "fa-eye-slash")
+                        }
+                      ></i>
                     </Button>
                     {errors.password?.type === "required" && (
                       <FormFeedback invalid>Password is required</FormFeedback>
