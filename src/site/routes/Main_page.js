@@ -11,7 +11,7 @@ export default function MainInterface() {
   return (
     <>
       {
-        path.pathname === "/404" ? (
+        path.pathname === "/404" || path.pathname === "/login" ? (
           ""
         ) : path.pathname.includes("/admin") ? (
           <AdminNavbar />
