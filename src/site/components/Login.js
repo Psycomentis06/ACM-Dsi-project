@@ -9,12 +9,14 @@ export default function Login() {
   // password toggle
   const [passwordType, setPasswordType] = useState(true); // true = password is set to type="password"
   return (
-    <div className="login border-danger shadow-4">
+    <div className="login border-danger shadow-4 bg-white">
       <div className="user-logo bg-white text-danger">
         <i className="fas fa-user-tie fa-5x"></i>
       </div>
       <div className="content">
         <Form onSubmit={handleSubmit(onSubmit)}>
+          <h1 className="text-center"> Login</h1>
+
           <Row className="mt-4">
             <Col>
               <Controller
