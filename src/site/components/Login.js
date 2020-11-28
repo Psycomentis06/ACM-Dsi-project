@@ -1,13 +1,15 @@
 import React from "react";
-import { Col, Input, Row } from "reactstrap";
+import { Button, Col, Input, Row } from "reactstrap";
+import "./Login.scss";
 export default function Login() {
   return (
-    <div className="login">
-      <div className="user-logo">
-        <i class="fas fa-user-tie fa-5x"></i>
+    <div className="login border-danger shadow-4">
+      <div className="user-logo bg-white text-danger">
+        <i className="fas fa-user-tie fa-5x"></i>
       </div>
       <div className="content">
-        <Row>
+        <h2 className="text-center">Login</h2>
+        <Row className="mt-4">
           <Col>
             <div className="input-float">
               <label htmlFor="__email" className="label bg-white">
@@ -17,7 +19,7 @@ export default function Login() {
             </div>
           </Col>
         </Row>
-        <Row className="mt-3">
+        <Row className="mt-4">
           <Col>
             <div className="input-float">
               <label htmlFor="__password" className="label bg-white">
@@ -30,6 +32,11 @@ export default function Login() {
               />
             </div>
           </Col>
+        </Row>
+        <Row className="mt-4">
+          <button className="btn bg-gradient-purple rounded-pill mx-auto font-weight-bolder">
+            Login
+          </button>
         </Row>
       </div>
     </div>
