@@ -9,3 +9,37 @@
     }
   }
 }
+/* Floating input */
+
+.input-float {
+  position: relative;
+  &:focus-within {
+    .label {
+      top: -15px;
+      left: 15px;
+      color: rgb(46, 46, 46);
+      width: auto;
+    }
+    input {
+      &::-webkit-input-placeholder {
+        opacity: 1;
+      }
+    }
+  }
+  .label {
+    width: 90%;
+    padding: 0 5px;
+    position: absolute;
+    top: 5px;
+    left: 15px;
+    color: rgb(173, 173, 173);
+    transition: cubic-bezier(0.19, 1, 0.22, 1) 0.3s;
+  }
+  input {
+    border-radius: 15px;
+    padding: 5px 15px;
+    &::-webkit-input-placeholder {
+      opacity: 0;
+    }
+  }
+}
