@@ -11,6 +11,7 @@ import Inbox from "../pages/admin/Inbox";
 import Chat from "../components/Chat";
 import Users from "../pages/admin/Users";
 import User from "../pages/admin/User";
+import Orders from "../pages/admin/Orders";
 export default function Routes() {
   return (
     <Switch>
@@ -40,6 +41,9 @@ export default function Routes() {
       </Route>
       <Route exact path="/admin/users/:userId">
         <User />
+      </Route>
+      <Route path="/admin/orders">
+        <Orders />
       </Route>
       <Route path="/404">
         <NotFound />
