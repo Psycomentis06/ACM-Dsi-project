@@ -77,6 +77,14 @@ export default function AdminNavbar() {
                       Orders
                     </Link>
                   </DropdownItem>
+                  <DropdownItem>
+                    <Link
+                      to="/admin/products"
+                      style={{ textDecoration: "none" }}
+                    >
+                      Products
+                    </Link>
+                  </DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem onClick={logout}>Logout</DropdownItem>
                 </DropdownMenu>
