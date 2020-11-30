@@ -1,0 +1,34 @@
+.orders-page {
+  height: 90vh;
+  .orders-items {
+    .orders-item {
+      display: block;
+      margin-top: 10px;
+      width: 100%;
+      text-decoration: none;
+      padding: 20px;
+      border-radius: 30px;
+      background-color: rgb(221, 221, 221);
+      color: rgb(59, 59, 59);
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: bold;
+      font-size: large;
+      transition: cubic-bezier(0.445, 0.05, 0.55, 0.95) 0.4s;
+      &:hover {
+        background-color: rgb(180, 180, 180);
+      }
+      &:active {
+        transform: scale(0.9);
+      }
+      .last-time {
+        font-size: x-small;
+        color: grey;
+        font-family: serif;
+        margin-left: 10px;
+      }
+      &.active {
+        background-color: rgb(180, 180, 180);
+      }
+    }
+  }
+}

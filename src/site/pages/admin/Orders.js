@@ -1,27 +1,54 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import {
-  Link,
+  NavLink,
   BrowserRouter as Router,
   Route,
   Switch,
   useRouteMatch,
 } from "react-router-dom";
 import Order from "./Order";
-import UserListItem from "../../components/UserListItem";
+import "./Orders.scss";
 export default function Orders() {
   let { path, url } = useRouteMatch();
   return (
     <Router>
-      <Container className="mt-3">
+      <Container className="mt-3" className="orders-page">
         <Row>
           <Col sm="4">
             <h3>Users</h3>
             <hr />
-            <Link to={url + "/user1"}>User1</Link>
-            <Link to={url + "/user2"}>User2</Link>
-            <Link to={url + "/user3"}>User3</Link>
-            <Link to={url + "/user4"}>User4</Link>
+            <div className="orders-items">
+              <NavLink
+                to={url + "/user1"}
+                className="orders-item"
+                activeClassName="active"
+              >
+                User1
+                <div className="last-time">Last order : 11/30/2020</div>
+              </NavLink>
+              <NavLink
+                to={url + "/user2"}
+                className="orders-item"
+                activeClassName="active"
+              >
+                User2
+              </NavLink>
+              <NavLink
+                to={url + "/user3"}
+                className="orders-item"
+                activeClassName="active"
+              >
+                User3
+              </NavLink>
+              <NavLink
+                to={url + "/user4"}
+                className="orders-item"
+                activeClassName="active"
+              >
+                User4
+              </NavLink>
+            </div>
           </Col>
           <Col>
             <h3>Orders</h3>
