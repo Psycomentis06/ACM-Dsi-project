@@ -6,6 +6,10 @@
   @include GradientButton("background");
 }
 
+.bg-gradient-nav {
+  @include GradientButton("nav");
+}
+
 // gradient colors
 
 // by deafult angle is 0 deg
