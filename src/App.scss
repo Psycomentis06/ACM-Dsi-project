@@ -1,0 +1,46 @@
+/* React css transitions */
+// Fade
+.fade-enter {
+  opacity: 0;
+}
+.fade-active {
+  opacity: 1;
+  transition: opacity 800ms;
+}
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 800ms;
+}
+// Slide
+.sliderLeft-enter {
+  transform: translateX(100%);
+}
+.sliderLeft-enter.pageSliderLeft-enter-active {
+  transform: translateX(0);
+  transition: transition cubic-bezier(0.755, 0.05, 0.855, 0.06) 0.8s;
+}
+.sliderLeft-exit {
+  transform: translateX(0);
+}
+.sliderLeft-exit.pageSliderLeft-exit-active {
+  transform: translateX(100%);
+  transition: transition cubic-bezier(0.755, 0.05, 0.855, 0.06) 0.8s;
+}
+
+.sliderRight-enter {
+  transform: translateX(-100%);
+}
+.sliderRight-enter.pageSliderRight-enter-active {
+  transform: translateX(0);
+  transition: transition cubic-bezier(0.755, 0.05, 0.855, 0.06) 0.8s;
+}
+.sliderRight-exit {
+  transform: translateX(0);
+}
+.sliderRight-exit.pageSliderRight-exit-active {
+  transform: translateX(-100%);
+  transition: transition cubic-bezier(0.755, 0.05, 0.855, 0.06) 0.8s;
+}
