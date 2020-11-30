@@ -3,7 +3,6 @@ import {
   Navbar,
   Nav,
   NavItem,
-  NavLink,
   NavbarToggler,
   Dropdown,
   DropdownItem,
@@ -47,9 +46,9 @@ export default function AdminNavbar() {
               </Link>
             </NavItem>
             <NavItem>
-              <NavLink className="admin-logo">
+              <Link className="admin-logo" to="/admin/profile">
                 <img src={AdminAvatar} alt="Admin avatar" />
-              </NavLink>
+              </Link>
             </NavItem>
             <NavItem>
               <Link to="/admin/inbox" className="nav-link">

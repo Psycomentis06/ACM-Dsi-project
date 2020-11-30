@@ -14,6 +14,7 @@ import User from "../pages/admin/User";
 import Orders from "../pages/admin/Orders";
 import Products from "../pages/admin/Products";
 import Product from "../pages/admin/Product";
+import Profile from "../pages/admin/Profile";
 export default function Routes() {
   return (
     <Switch>
@@ -52,6 +53,9 @@ export default function Routes() {
       </Route>
       <Route exact path="/admin/products/:productId">
         <Product />
+      </Route>
+      <Route path="/admin/profile">
+        <Profile />
       </Route>
       <Route path="/404">
         <NotFound />
