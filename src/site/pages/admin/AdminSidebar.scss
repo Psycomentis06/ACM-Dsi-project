@@ -38,7 +38,7 @@
         opacity: 0;
         left: 0;
         z-index: -1;
-        transition: top cubic-bezier(0.6, 0.04, 0.98, 0.335) 0.3s;
+        transition: top ease-out 0.4s;
       }
       &:nth-child(1) {
         &.active-nav {
@@ -51,7 +51,7 @@
       &:nth-child(2) {
         &.active-nav {
           & ~ .active-link {
-            top: 120px;
+            top: 115px;
             opacity: 1;
           }
         }
@@ -59,7 +59,15 @@
       &:nth-child(3) {
         &.active-nav {
           & ~ .active-link {
-            top: 245px;
+            top: 240px;
+            opacity: 1;
+          }
+        }
+      }
+      &:nth-child(4) {
+        &.active-nav {
+          & ~ .active-link {
+            top: 370px;
             opacity: 1;
           }
         }

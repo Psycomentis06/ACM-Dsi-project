@@ -8,15 +8,18 @@ import {
 import "./AdminSidebar.scss";
 import AdminSidebar from "./AdminSidebar";
 import SidebarContent from "./SidebarContent";
+import AdminProfileNotification from "./AdminProfileNotification";
+import AdminProfilePassword from "./AdminProfilePassword";
+import AdminProfileSettings from "./AdminProfileSettings";
 export default function Profile() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const { url } = useRouteMatch();
+  const { path, url } = useRouteMatch();
   return (
     <Router>
       <div className="profile">
         <SidebarContent isOpen={sidebarOpen}>
           <div className="sidebar">
-            <AdminSidebar isOpen={sidebarOpen} />
+            <AdminSidebar isOpen={sidebarOpen} url={url} />
           </div>
           <div className="content">
             <div className="sidebar-toggler">
@@ -36,8 +39,21 @@ export default function Profile() {
               </button>
             </div>
             <Switch>
-              <Route path={url + "/password"}></Route>
-              <Route path={url + "/"}></Route>
+              <Route exact path={path + "/password"}>
+                <AdminProfilePassword />
+              </Route>
+              <Route exact path={path + "/notification"}>
+                <AdminProfileNotification />
+              </Route>
+              <Route exact path={path + "/settings"}>
+                <AdminProfileSettings />
+              </Route>
+              <Route exact path={path + "/"}>
+                {
+                  // Profile content here
+                  <h1>Profile home page</h1>
+                }
+              </Route>
             </Switch>
           </div>
         </SidebarContent>

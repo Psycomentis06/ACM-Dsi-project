@@ -1,7 +1,6 @@
 import React from "react";
-import { NavLink, useRouteMatch } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 export default function AdminSidebar(props) {
-  const { path } = useRouteMatch();
   return (
     <div
       className={
@@ -10,7 +9,7 @@ export default function AdminSidebar(props) {
     >
       <div className="list-items">
         <NavLink
-          to={path + "/"}
+          to={props.url + "/"}
           className="list-item text-shadow"
           exact
           activeClassName="active-nav"
@@ -18,18 +17,25 @@ export default function AdminSidebar(props) {
           Profile
         </NavLink>
         <NavLink
-          to={path + "/password"}
+          to={props.url + "/password"}
           className="list-item text-shadow"
           activeClassName="active-nav"
         >
           Password
         </NavLink>
         <NavLink
-          to={path + "/account"}
+          to={props.url + "/notification"}
           className="list-item text-shadow"
           activeClassName="active-nav"
         >
-          Account
+          Notifications
+        </NavLink>
+        <NavLink
+          to={props.url + "/settings"}
+          className="list-item text-shadow"
+          activeClassName="active-nav"
+        >
+          Settings
         </NavLink>
         <a className="active-link list-item shadow-2"></a>
       </div>
