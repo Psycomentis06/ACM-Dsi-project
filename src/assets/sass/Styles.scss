@@ -1,10 +1,15 @@
+// custom font
+@import url("https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap");
+body {
+  font-family: "Fredoka One", cursive !important;
+}
 // Bootstrap theme
-@import './bootstrap.theme.scss';
+@import "./bootstrap.theme.scss";
 
 // element and components
-@import './others/_varibles';
-@import './others/_function';
-@import './others/_mixin';
-@import './others/utilities.scss';
-@import './elements/all';
-@import './components/all';
+@import "./others/_varibles";
+@import "./others/_function";
+@import "./others/_mixin";
+@import "./others/utilities.scss";
+@import "./elements/all";
+@import "./components/all";
