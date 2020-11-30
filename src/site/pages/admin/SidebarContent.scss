@@ -1,0 +1,21 @@
+.sidebar-content {
+  width: calc(100% + 250px);
+  display: grid;
+  grid-template-columns: 250px auto;
+  transform: translateX(0);
+  transition: cubic-bezier(0.6, 0.04, 0.98, 0.335) 0.3s;
+  .sidebar {
+    grid-column: 1;
+  }
+  .content {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: 50px auto;
+    .sidebar-toggler {
+      grid-column: 1;
+    }
+  }
+  &.is-active {
+    transform: translateX(-250px);
+  }
+}
