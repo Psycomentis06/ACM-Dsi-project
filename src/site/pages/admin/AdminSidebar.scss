@@ -1,0 +1,22 @@
+.side-bar {
+  height: 90vh;
+  width: 250px;
+  transition: cubic-bezier(0.55, 0.055, 0.675, 0.19) 0.3s;
+  &.open-sidebar {
+    // sidebar opened
+    transform: translateX(0);
+  }
+  &.close-sidebar {
+    transform: translateX(-300px);
+  }
+  ul {
+    height: 90%;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    li {
+      margin-top: 50px;
+      color: #8900f2;
+    }
+  }
+}
