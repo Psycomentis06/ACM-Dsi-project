@@ -1,19 +1,38 @@
 /* React css transitions */
-// Fade
+// Fade scale
+.fadeScale-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.fadeScale-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+.fadeScale-exit {
+  opacity: 1;
+}
+.fadeScale-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}
+// Fade scale
 .fade-enter {
   opacity: 0;
 }
-.fade-active {
+.fade-enter-active {
   opacity: 1;
-  transition: opacity 800ms;
+  transition: opacity 300ms;
 }
 .fade-exit {
   opacity: 1;
 }
 .fade-exit-active {
   opacity: 0;
-  transition: opacity 800ms;
+  transition: opacity 300ms;
 }
+
 // Slide
 .sliderLeft-enter {
   transform: translateX(100%);
