@@ -1,6 +1,6 @@
 import React from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { Switch, Route, Redirect, useLocation } from "react-router-dom";
+import { SwitchTransition, CSSTransition } from "react-transition-group";
 // import pages
 import NotFound from "../pages/NotFound";
 import Home from "../pages/Home";
@@ -16,59 +16,56 @@ import Products from "../pages/admin/Products";
 import Product from "../pages/admin/Product";
 import Profile from "../pages/admin/Profile";
 export default function Routes() {
+  let location = useLocation();
   return (
-    <Route
-      render={({ location }) => (
-        <TransitionGroup>
-          <CSSTransition key={location.key} timeout={800} classNames="fade">
-            <Switch location={location}>
-              {/* User Routes*/}
-              <Route exact path="/">
-                <Home />
-              </Route>
-              <Route exact path="/store">
-                <Store />
-              </Route>
-              <Route exact path="/login">
-                <LoginRegister />
-              </Route>
+    <SwitchTransition>
+      <CSSTransition key={location.key} timeout={800} classNames="fade">
+        <Switch location={location}>
+          {/* User Routes*/}
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/store">
+            <Store />
+          </Route>
+          <Route exact path="/login">
+            <LoginRegister />
+          </Route>
 
-              {/* Admin Routes */}
-              <Route exact path="/admin">
-                <Dashboard />
-              </Route>
-              <Route exact path="/admin/inbox">
-                <Inbox />
-              </Route>
-              <Route exact path="/admin/inbox/:id">
-                <Chat />
-              </Route>
-              <Route exact path="/admin/users">
-                <Users />
-              </Route>
-              <Route exact path="/admin/users/:userId">
-                <User />
-              </Route>
-              <Route path="/admin/orders">
-                <Orders />
-              </Route>
-              <Route exact path="/admin/products">
-                <Products />
-              </Route>
-              <Route exact path="/admin/products/:productId">
-                <Product />
-              </Route>
-              <Route path="/admin/profile">
-                <Profile />
-              </Route>
-              <Route path="/404">
-                <NotFound />
-              </Route>
-              <Redirect to="/404" />
-            </Switch>
-          </CSSTransition>
-        </TransitionGroup>
-      )}
-    />
+          {/* Admin Routes */}
+          <Route exact path="/admin">
+            <Dashboard />
+          </Route>
+          <Route exact path="/admin/inbox">
+            <Inbox />
+          </Route>
+          <Route exact path="/admin/inbox/:id">
+            <Chat />
+          </Route>
+          <Route exact path="/admin/users">
+            <Users />
+          </Route>
+          <Route exact path="/admin/users/:userId">
+            <User />
+          </Route>
+          <Route path="/admin/orders">
+            <Orders />
+          </Route>
+          <Route exact path="/admin/products">
+            <Products />
+          </Route>
+          <Route exact path="/admin/products/:productId">
+            <Product />
+          </Route>
+          <Route path="/admin/profile">
+            <Profile />
+          </Route>
+          <Route path="/404">
+            <NotFound />
+          </Route>
+          <Redirect to="/404" />
+        </Switch>
+      </CSSTransition>
+    </SwitchTransition>
   );
 }
