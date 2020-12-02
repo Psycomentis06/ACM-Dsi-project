@@ -1,11 +1,24 @@
 import React from "react";
+import Axios from "axios";
 import { Row, Col, Form, Input, FormGroup, FormFeedback } from "reactstrap";
 import { Controller, useForm } from "react-hook-form";
 import "./Signup.scss";
 export default function Signup() {
   // form validation
   const { control, handleSubmit, errors } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => register(data);
+  const register = async (data) => {
+    await Axios.post(process.env.REACT_APP_API_URL + "/user/add", {
+      first_name: data.firstName,
+      last_name: data.lastName,
+      email: data.email,
+      password: data.password,
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <>
       <div className="signup border-danger shadow-4 bg-white">
