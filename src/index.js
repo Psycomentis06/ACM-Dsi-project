@@ -4,6 +4,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 // Sass imports
 import "./assets/sass/Styles.scss";
+import "./assets/sass/sweet_alert2.theme.scss";
 import "./index.scss";
 ReactDOM.render(<App />, document.getElementById("root"));
 
