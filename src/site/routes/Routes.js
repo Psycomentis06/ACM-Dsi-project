@@ -19,7 +19,11 @@ export default function Routes() {
   let location = useLocation();
   return (
     <SwitchTransition>
-      <CSSTransition key={location.key} timeout={800} classNames="fadeScale">
+      <CSSTransition
+        key={location.key || false}
+        timeout={800}
+        classNames="fadeScale"
+      >
         <Switch location={location}>
           {/* User Routes*/}
           <Route exact path="/">
