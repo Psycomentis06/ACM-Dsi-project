@@ -23,9 +23,9 @@ export default function Signup() {
           .fire({
             title: "Register success",
             text:
-              "Your account has been created but not activated. We sent you an email for " +
+              "Your account has been created but not activated. We sent you an email for <u>" +
               data.email +
-              " containg your verification key",
+              "<u> containg your verification key",
             input: "number",
             showCancelButton: true,
             showLoaderOnConfirm: true,
@@ -49,7 +49,7 @@ export default function Signup() {
             if (result.isConfirmed) {
               swal.fire(
                 "Verification success",
-                "Your account has been activated",
+                "Your account has been activated <br> You can Login now",
                 "success"
               );
             }
