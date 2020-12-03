@@ -2,12 +2,16 @@ import React from "react";
 import Axios from "axios";
 import { Row, Col, Form, Input, FormGroup, FormFeedback } from "reactstrap";
 import { Controller, useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import "./Signup.scss";
 export default function Signup() {
   // form validation
   const { control, handleSubmit, errors } = useForm();
   const onSubmit = (data) => register(data);
   const register = async (data) => {
+    // sweet alert 2
+    const swal = withReactContent(Swal);
     await Axios.post(process.env.REACT_APP_API_URL + "/user/add", {
       first_name: data.firstName,
       last_name: data.lastName,
@@ -15,9 +19,61 @@ export default function Signup() {
       password: data.password,
     })
       .then((res) => {
-        console.log(res);
+        swal
+          .fire({
+            title: "Register success",
+            text:
+              "Your account has been created but not activated. We sent you an email for " +
+              data.email +
+              " containg your verification key",
+            input: "number",
+            showCancelButton: true,
+            showLoaderOnConfirm: true,
+            preConfirm: (vkey) => {
+              return Axios.put(
+                `${process.env.REACT_APP_API_URL}/user/${res.data.id}/verify`,
+                {
+                  vkey: vkey,
+                }
+              )
+                .then((res) => {
+                  return res.data;
+                })
+                .catch((err) => {
+                  throw new Error(err.response.data.message);
+                });
+            },
+            allowOutsideClick: () => swal.isLoading(),
+          })
+          .then((result) => {
+            if (result.isConfirmed) {
+              swal.fire(
+                "Verification success",
+                "Your account has been activated",
+                "success"
+              );
+            }
+          });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.response) {
+          let errorsToString = "";
+          if (err.response.data.error) {
+            err.response.data.error.map((err) => {
+              errorsToString += err + " <br /> ";
+            });
+            swal.fire(
+              "Registration Error",
+              `<p class="text-danger"> ${errorsToString} </p>`,
+              "error"
+            );
+          } else {
+            swal.fire("Error", "Response error", "error");
+          }
+        } else if (err.request) {
+          swal.fire("Error", "Request error", "error");
+        }
+      });
   };
   return (
     <>
