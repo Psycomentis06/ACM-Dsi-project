@@ -1,0 +1,48 @@
+// Fade
+@keyframes FadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes FadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes FadeScale {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+// Slide
+@keyframes SlideRight {
+  from {
+    left: -500px;
+    opacity: 0;
+  }
+  to {
+    left: 10px;
+    opacity: 1;
+  }
+}
+@keyframes SlideLeft {
+  from {
+    right: -500px;
+    opacity: 0;
+  }
+  to {
+    right: 10px;
+    opacity: 1;
+  }
+}
