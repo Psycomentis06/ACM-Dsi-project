@@ -11,6 +11,20 @@ function Home() {
       >
         Open
       </button>
+      <div className="alert-float-container">
+        <div className="alert alert-danger top left slide-left">
+          Alert top left
+        </div>
+        <div className="alert alert-danger top right slide-right">
+          Alert top right
+        </div>
+        <div className="alert alert-danger bottom left slide-left">
+          Alert bottom left
+        </div>
+        <div className="alert alert-danger bottom right slide-right">
+          Alert bottom right
+        </div>
+      </div>
     </div>
   );
 }
