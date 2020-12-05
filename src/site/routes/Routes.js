@@ -1,6 +1,8 @@
 import React from "react";
 import { Switch, Route, Redirect, useLocation } from "react-router-dom";
 import { SwitchTransition, CSSTransition } from "react-transition-group";
+//---
+import ProtectedRoute from "../components/ProtectedRoute";
 // import pages
 import NotFound from "../pages/NotFound";
 import Home from "../pages/Home";
@@ -37,33 +39,37 @@ export default function Routes() {
           </Route>
 
           {/* Admin Routes */}
-          <Route exact path="/admin">
+          <ProtectedRoute permission="admin" exact path="/admin">
             <Dashboard />
-          </Route>
-          <Route exact path="/admin/inbox">
+          </ProtectedRoute>
+          <ProtectedRoute permission="admin" exact path="/admin/inbox">
             <Inbox />
-          </Route>
-          <Route exact path="/admin/inbox/:id">
+          </ProtectedRoute>
+          <ProtectedRoute permission="admin" exact path="/admin/inbox/:id">
             <Chat />
-          </Route>
-          <Route exact path="/admin/users">
+          </ProtectedRoute>
+          <ProtectedRoute permission="admin" exact path="/admin/users">
             <Users />
-          </Route>
-          <Route exact path="/admin/users/:userId">
+          </ProtectedRoute>
+          <ProtectedRoute permission="admin" exact path="/admin/users/:userId">
             <User />
-          </Route>
-          <Route path="/admin/orders">
+          </ProtectedRoute>
+          <ProtectedRoute permission="admin" path="/admin/orders">
             <Orders />
-          </Route>
-          <Route exact path="/admin/products">
+          </ProtectedRoute>
+          <ProtectedRoute permission="admin" exact path="/admin/products">
             <Products />
-          </Route>
-          <Route exact path="/admin/products/:productId">
+          </ProtectedRoute>
+          <ProtectedRoute
+            permission="admin"
+            exact
+            path="/admin/products/:productId"
+          >
             <Product />
-          </Route>
-          <Route path="/admin/profile">
+          </ProtectedRoute>
+          <ProtectedRoute permission="admin" path="/admin/profile">
             <Profile />
-          </Route>
+          </ProtectedRoute>
           <Route path="/404">
             <NotFound />
           </Route>
