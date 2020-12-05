@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Form, Col, Input, Row, FormFeedback, Button, Alert } from "reactstrap";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import Axios from "axios";
 import "./Login.scss";
 export default function Login() {
   const history = useHistory();
+  const location = useLocation();
+  let { from } = location.state || { from: { pathname: "/" } };
   // form hook
   const { control, handleSubmit, errors } = useForm();
   const onSubmit = (data) => login(data);
@@ -28,7 +30,7 @@ export default function Login() {
           // 1st we save the token
           localStorage.setItem("token", response.data.token);
           // we redirect for last route
-          history.push("/");
+          history.replace(from);
         } else {
           setReqError("Unhandled response please try again");
         }
