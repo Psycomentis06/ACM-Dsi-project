@@ -16,6 +16,8 @@
     "bootstrap": "^4.5.3",
     "chart.js": "^2.9.4",
     "firebase": "^8.1.1",
+    "jsrsasign": "^10.1.4",
+    "jsrsasign-util": "^1.0.2",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-chartjs-2": "^2.11.1",
