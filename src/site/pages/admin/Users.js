@@ -262,7 +262,7 @@ export default function Users() {
                 .map((user) => (
                   <Col key={user.id} className="mb-4">
                     <UserCard
-                      role="user"
+                      role={user.roles}
                       imgSrc={user.photo}
                       username={user.firstName + " " + user.lastName}
                       email={user.email}
