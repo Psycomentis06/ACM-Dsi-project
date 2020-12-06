@@ -11,7 +11,8 @@ function Home() {
       >
         Open
       </button>
-      <div className="alert-float-container">
+      {/*
+        <div className="alert-float-container">
         <div className="alert alert-danger top left slide-left">
           Alert top left
         </div>
@@ -25,6 +26,7 @@ function Home() {
           Alert bottom right
         </div>
       </div>
+        */}
     </div>
   );
 }
