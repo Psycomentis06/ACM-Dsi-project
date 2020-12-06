@@ -2,8 +2,8 @@ $transition-duration: 2s;
 $path-length: 157px; // Retrieved using SVG's getTotalLength()
 
 .loading-page {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
