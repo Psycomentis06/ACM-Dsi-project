@@ -10,10 +10,15 @@ import {
   InputGroup,
   Button,
   Tooltip,
+  Alert,
+  Spinner,
 } from "reactstrap";
 import UserCard from "../../components/UserCard";
 import UserListItem from "../../components/UserListItem";
 import axios from "axios";
+import NoData from "../../components/NoData";
+import LoadingPage from "../../components/LoadingPage";
+import excerpt from "../../functions/excerpt";
 export default function Users() {
   // filter bar collapse state
   const [navbar, setNavbar] = useState(false);
@@ -37,26 +42,48 @@ export default function Users() {
   // get users from API
   const [users, setUsers] = useState([]); // data
   const [error, setError] = useState([]); // request errors
-  const [loading, setLoading] = useState(true); // request loader
-  const getUsers = () => {
+  const [pageLoading, setPageLoading] = useState(true); // request loader
+  const [usersLoading, setUsersLoading] = useState(false);
+  let limit = 15; // result limit
+  let offset = 0; // result offset
+  const getUsers = (username, limit, offset) => {
+    const name = username || "";
+    const reqLimit = limit || "";
+    const reqOffset = offset || "";
     axios
-      .get("/api/getusers")
+      .get(
+        `${process.env.REACT_APP_API_URL}/user/all?username=${name}&limit=${reqLimit}&offset=${reqOffset}`
+      )
       .then((res) => {
-        setUsers(res.data);
-        setLoading(false);
+        setUsers(res.data.users);
       })
       .catch((err) => {
-        setError(err);
+        if (err.response) {
+          setError(err.response.error);
+        } else if (err.request) {
+          setError("Error made in request");
+        } else {
+          setError("Connection Error");
+        }
+      })
+      .finally(() => {
+        setPageLoading(false);
+        limit += 15;
+        offset += 15;
       });
   };
-  let usersData = users;
   useEffect(() => {
-    getUsers();
+    setTimeout(() => {
+      getUsers();
+    }, 500);
   }, []);
   // Filter by user status
   const [filterValue, setFilterValue] = useState("all");
   // filter by search
   const [searchValue, setSearchValue] = useState("");
+  if (pageLoading) {
+    return <LoadingPage />;
+  }
   return (
     <Container>
       <Navbar className="mt-5" expand="md" light>
@@ -119,7 +146,16 @@ export default function Users() {
                         setSearchValue(e.target.value);
                       }}
                     />
-                    <Button>
+                    <Button
+                      onClick={() => {
+                        setUsers([""]);
+                        setUsersLoading(true);
+                        setTimeout(() => {
+                          getUsers(searchValue);
+                          setUsersLoading(false);
+                        }, 1000);
+                      }}
+                    >
                       <i className="fas fa-search"></i>
                     </Button>
                   </InputGroup>
@@ -191,162 +227,191 @@ export default function Users() {
           </Row>
         </Collapse>
       </Navbar>
-      {
-        // render gird if viewType is grid
-        viewType === "grid" ? (
-          <Row>
-            <Col>
-              <UserCard
-                imgSrc="https://images.unsplash.com/photo-1605562181850-9bb0267553a4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
-                username="Ali Amor"
-                email="alibenamor30@gmail.com"
-                bio="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi fuga reprehenderit, rerum officiis atque modi laboriosam esse. Eos, laborum veritatis placeat dolorum blanditiis quibusdam eveniet totam nostrum quisquam vitae ipsa!"
-                orders="15"
-                products="52"
-                reviews="13"
+      {error.length > 0 && <Alert color="danger">{error}</Alert>}
+      {users.length === 0 ? (
+        <NoData />
+      ) : // render gird if viewType is grid
+      viewType === "grid" ? (
+        <Row>
+          {usersLoading && (
+            <div className="mx-auto">
+              <Spinner
+                color="danger"
+                style={{ height: "50px", width: "50px" }}
+                className="mx-auto"
               />
-            </Col>
-            <Col>
-              <UserCard
-                role="admin"
-                imgSrc="https://images.unsplash.com/photo-1605562181850-9bb0267553a4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
-                username="Ali Amor"
-                email="alibenamor30@gmail.com"
-                bio="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi fuga reprehenderit, rerum officiis atque modi laboriosam esse. Eos, laborum veritatis placeat dolorum blanditiis quibusdam eveniet totam nostrum quisquam vitae ipsa!"
-                orders="15"
-                products="52"
-                reviews="13"
-              />
-            </Col>
-            <Col>
-              <UserCard
-                role="superadmin"
-                imgSrc="https://images.unsplash.com/photo-1605562181850-9bb0267553a4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
-                username="Ali Amor"
-                email="alibenamor30@gmail.com"
-                bio="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi fuga reprehenderit, rerum officiis atque modi laboriosam esse. Eos, laborum veritatis placeat dolorum blanditiis quibusdam eveniet totam nostrum quisquam vitae ipsa!"
-                orders="15"
-                products="52"
-                reviews="13"
-              />
-            </Col>
-          </Row>
-        ) : (
-          <Row className="text-center">
-            <Col md>
-              <h4 className="mb-3">Regular Users</h4>
-              <div
-                className="scrollbar-hide"
-                style={{ height: "600px", overflowY: "scroll" }}
-              >
-                {users
-                  .filter((user) => {
-                    if (filterValue === "all") {
-                      return (
-                        user.role === "ROLE_USER" &&
-                        (user.first_name + " " + user.last_name)
-                          .toLowerCase()
-                          .includes(searchValue)
-                      ); // all user in user section
-                    } else {
-                      return (
-                        user.status === filterValue &&
-                        user.role === "ROLE_USER" &&
-                        (user.first_name + " " + user.last_name)
-                          .toLowerCase()
-                          .includes(searchValue)
-                      ); // active or offline regular users
-                    }
-                  })
-                  .map((el) => (
-                    <UserListItem
-                      key={el.id}
-                      avatarSrc={el.avatar}
-                      avatarAlt="userprofile image"
-                      username={el.first_name + " " + el.last_name}
-                      email={el.email}
-                      bio="try something"
+              <p className="h5 text-danger mt-3">Loading users</p>
+            </div>
+          )}
+          {users.length > 1
+            ? users
+                .filter((user) => {
+                  if (filterValue === "all") {
+                    return (user.firstName + " " + user.lastName)
+                      .toLowerCase()
+                      .includes(searchValue); // all user in user section
+                  } else {
+                    return (
+                      user.status === filterValue &&
+                      (user.firstName + " " + user.lastName)
+                        .toLowerCase()
+                        .includes(searchValue)
+                    ); // active or offline users
+                  }
+                })
+                .map((user) => (
+                  <Col key={user.id} className="mb-4">
+                    <UserCard
+                      role="user"
+                      imgSrc={user.photo}
+                      username={user.firstName + " " + user.lastName}
+                      email={user.email}
+                      bio={
+                        user.bio
+                          ? excerpt(user.bio, 50)
+                          : "User don't have description"
+                      }
+                      orders="15"
+                      products="52"
+                      reviews="13"
                     />
-                  ))}
-              </div>
-            </Col>
-            <Col md className="border-primary border-right border-left">
-              <h4 className="mb-3">Admin</h4>
-              <div
-                style={{ height: "600px", overflowY: "scroll" }}
-                className="scrollbar-hide"
-              >
-                {users
-                  .filter((user) => {
-                    if (filterValue === "all") {
-                      return (
-                        user.role === "ROLE_ADMIN" &&
-                        (user.first_name + " " + user.last_name)
-                          .toLowerCase()
-                          .includes(searchValue)
-                      ); // all admins
-                    } else {
-                      return (
-                        user.status === filterValue &&
-                        user.role === "ROLE_ADMIN" &&
-                        (user.first_name + " " + user.last_name)
-                          .toLowerCase()
-                          .includes(searchValue)
-                      ); // active or offline admins
-                    }
-                  })
-                  .map((el) => (
-                    <UserListItem
-                      key={el.id}
-                      avatarSrc={el.avatar}
-                      avatarAlt="userprofile image"
-                      username={el.first_name + " " + el.last_name}
-                      email={el.email}
-                      bio="try something"
-                    />
-                  ))}
-              </div>
-            </Col>
-            <Col md>
-              <h4 className="mb-3">Superadmin</h4>
-              <div
-                className="scrollbar-hide"
-                style={{ height: "600px", overflowY: "scroll" }}
-              >
-                {users
-                  .filter((user) => {
-                    if (filterValue === "all") {
-                      return (
-                        user.role === "ROLE_SUPERADMIN" &&
-                        (user.first_name + " " + user.last_name)
-                          .toLowerCase()
-                          .includes(searchValue)
-                      ); // all user in user section
-                    } else {
-                      return (
-                        user.status === filterValue &&
-                        user.role === "ROLE_SUPERADMIN" &&
-                        (user.first_name + " " + user.last_name)
-                          .toLowerCase()
-                          .includes(searchValue)
-                      ); // active or offline regular users
-                    }
-                  })
-                  .map((el) => (
-                    <UserListItem
-                      key={el.id}
-                      avatarSrc={el.avatar}
-                      avatarAlt="userprofile image"
-                      username={el.first_name + " " + el.last_name}
-                      email={el.email}
-                      bio="try something"
-                    />
-                  ))}
-              </div>
-            </Col>
-          </Row>
-        )
-      }
+                  </Col>
+                ))
+            : null}
+        </Row>
+      ) : (
+        <Row className="text-center">
+          <Col md>
+            <h4 className="mb-3">Regular Users</h4>
+            <div
+              className="scrollbar-hide"
+              style={{ height: "600px", overflowY: "scroll" }}
+            >
+              {users
+                .filter((user) => {
+                  if (filterValue === "all") {
+                    return (
+                      user.roles === "ROLE_USER" &&
+                      (user.firstName + " " + user.lastName)
+                        .toLowerCase()
+                        .includes(searchValue)
+                    ); // all user in user section
+                  } else {
+                    return (
+                      user.status === filterValue &&
+                      user.roles === "ROLE_USER" &&
+                      (user.firstName + " " + user.lastName)
+                        .toLowerCase()
+                        .includes(searchValue)
+                    ); // active or offline regular users
+                  }
+                })
+                .map((el) => (
+                  <UserListItem
+                    key={el.id}
+                    avatarSrc={el.photo}
+                    avatarAlt="userprofile image"
+                    username={el.firstName + " " + el.lastName}
+                    email={el.email}
+                    bio={el.bio ? excerpt(el.bio, 4) : ""}
+                  />
+                ))}
+              {usersLoading && (
+                <div>
+                  <Spinner color="success" />
+                  <p className="h5 text-success">Loading users</p>
+                </div>
+              )}
+            </div>
+          </Col>
+          <Col md className="border-primary border-right border-left">
+            <h4 className="mb-3">Admin</h4>
+            <div
+              style={{ height: "600px", overflowY: "scroll" }}
+              className="scrollbar-hide"
+            >
+              {users
+                .filter((user) => {
+                  if (filterValue === "all") {
+                    return (
+                      user.roles === "ROLE_ADMIN" &&
+                      (user.firstName + " " + user.lastName)
+                        .toLowerCase()
+                        .includes(searchValue)
+                    ); // all admins
+                  } else {
+                    return (
+                      user.status === filterValue &&
+                      user.roles === "ROLE_ADMIN" &&
+                      (user.firstName + " " + user.lastName)
+                        .toLowerCase()
+                        .includes(searchValue)
+                    ); // active or offline admins
+                  }
+                })
+                .map((el) => (
+                  <UserListItem
+                    key={el.id}
+                    avatarSrc={el.photo}
+                    avatarAlt="userprofile image"
+                    username={el.firstName + " " + el.lastName}
+                    email={el.email}
+                    bio="try something"
+                  />
+                ))}
+              {usersLoading && (
+                <div>
+                  <Spinner color="success" />
+                  <p className="h5 text-success">Loading admins</p>
+                </div>
+              )}
+            </div>
+          </Col>
+          <Col md>
+            <h4 className="mb-3">Superadmin</h4>
+            <div
+              className="scrollbar-hide"
+              style={{ height: "600px", overflowY: "scroll" }}
+            >
+              {users
+                .filter((user) => {
+                  if (filterValue === "all") {
+                    return (
+                      user.roles === "ROLE_SUPERADMIN" &&
+                      (user.firstName + " " + user.lastName)
+                        .toLowerCase()
+                        .includes(searchValue)
+                    ); // all user in user section
+                  } else {
+                    return (
+                      user.status === filterValue &&
+                      user.roles === "ROLE_SUPERADMIN" &&
+                      (user.firstName + " " + user.lastName)
+                        .toLowerCase()
+                        .includes(searchValue)
+                    ); // active or offline regular users
+                  }
+                })
+                .map((el) => (
+                  <UserListItem
+                    key={el.id}
+                    avatarSrc={el.photo}
+                    avatarAlt="userprofile image"
+                    username={el.firstName + " " + el.lastName}
+                    email={el.email}
+                    bio="try something"
+                  />
+                ))}
+              {usersLoading && (
+                <div>
+                  <Spinner color="success" />
+                  <p className="h5 text-success">Loading superadmins</p>
+                </div>
+              )}
+            </div>
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 }
