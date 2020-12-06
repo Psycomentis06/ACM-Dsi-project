@@ -38,8 +38,10 @@ export default function Login() {
       .catch((err) => {
         if (err.response) {
           setReqError(err.response.data.message);
-        } else {
+        } else if (err.request) {
           setReqError("Error made in request try again");
+        } else {
+          setReqError("Connection error");
         }
       })
       .finally(() => setLoading(false));
