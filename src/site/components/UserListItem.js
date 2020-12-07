@@ -5,7 +5,17 @@ export default function UserListItem(props) {
     <div className="user-list-item shadow-2">
       <div className="avatar">
         <figure>
-          <img src={props.avatarSrc} alt={props.avatarAlt} />
+          <img
+            className={
+              props.status === "online"
+                ? props.status
+                : props.status === "offline"
+                ? props.status
+                : ""
+            }
+            src={props.avatarSrc}
+            alt={props.avatarAlt}
+          />
           <figcaption>{props.username}</figcaption>
         </figure>
       </div>
