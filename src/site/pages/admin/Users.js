@@ -44,8 +44,7 @@ export default function Users() {
   const [error, setError] = useState([]); // request errors
   const [pageLoading, setPageLoading] = useState(true); // request loader
   const [usersLoading, setUsersLoading] = useState(false);
-  let limit = 15; // result limit
-  let offset = 0; // result offset
+
   const getUsers = (username, limit, offset) => {
     const name = username || "";
     const reqLimit = limit || "";
@@ -68,10 +67,9 @@ export default function Users() {
       })
       .finally(() => {
         setPageLoading(false);
-        limit += 15;
-        offset += 15;
       });
   };
+  // get users
   useEffect(() => {
     setTimeout(() => {
       getUsers();
@@ -143,17 +141,30 @@ export default function Users() {
                       placeholder="Search for user by name"
                       value={searchValue}
                       onChange={(e) => {
+                        if (
+                          searchValue.trim().length > 0 &&
+                          e.target.value.length === 0
+                        ) {
+                          setUsers([""]);
+                          setUsersLoading(true);
+                          setTimeout(() => {
+                            getUsers();
+                            setUsersLoading(false);
+                          }, 500);
+                        }
                         setSearchValue(e.target.value);
                       }}
                     />
                     <Button
                       onClick={() => {
-                        setUsers([""]);
-                        setUsersLoading(true);
-                        setTimeout(() => {
-                          getUsers(searchValue);
-                          setUsersLoading(false);
-                        }, 1000);
+                        if (searchValue.trim().length > 0) {
+                          setUsers([""]);
+                          setUsersLoading(true);
+                          setTimeout(() => {
+                            getUsers(searchValue);
+                            setUsersLoading(false);
+                          }, 500);
+                        }
                       }}
                     >
                       <i className="fas fa-search"></i>
@@ -314,6 +325,7 @@ export default function Users() {
                     username={el.firstName + " " + el.lastName}
                     email={el.email}
                     bio={el.bio ? excerpt(el.bio, 4) : ""}
+                    status={el.status}
                   />
                 ))}
               {usersLoading && (
@@ -356,7 +368,8 @@ export default function Users() {
                     avatarAlt="userprofile image"
                     username={el.firstName + " " + el.lastName}
                     email={el.email}
-                    bio="try something"
+                    bio={el.bio ? excerpt(el.bio, 4) : ""}
+                    status={el.status}
                   />
                 ))}
               {usersLoading && (
@@ -399,7 +412,8 @@ export default function Users() {
                     avatarAlt="userprofile image"
                     username={el.firstName + " " + el.lastName}
                     email={el.email}
-                    bio="try something"
+                    bio={el.bio ? excerpt(el.bio, 4) : ""}
+                    status={el.status}
                   />
                 ))}
               {usersLoading && (
