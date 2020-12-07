@@ -1,8 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDrag } from "react-dnd";
 import "./UserListItem.scss";
 export default function UserListItem(props) {
+  const [{ isDragging }, drag] = useDrag({
+    item: {
+      type: "User",
+      user: {
+        name: props.username,
+        role: props.role,
+        id: props.userId,
+      },
+    },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  });
   return (
-    <div className="user-list-item shadow-2">
+    <div
+      className="user-list-item shadow-2"
+      ref={drag}
+      style={{ display: isDragging ? "none" : "block" }}
+    >
       <div className="avatar">
         <figure>
           <img
