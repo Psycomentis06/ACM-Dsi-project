@@ -14,11 +14,12 @@
     transform: scale(1.1);
   }
   .avatar {
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    overflow: hidden;
+    img {
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+    }
   }
   .data {
     color: #726d6d;
@@ -35,12 +36,12 @@
         bottom: 10px;
         left: 15px;
       }
-      &.active {
+      &.online {
         &::after {
           background-color: greenyellow;
         }
       }
-      &.inactive {
+      &.offline {
         &::after {
           background-color: orangered;
         }

@@ -13,8 +13,9 @@ export default function UserChatRoomLink(props) {
         className={"user-chat-room " + (props.bgColor ? props.bgColor : "")}
         onClick={handleOnClick}
       >
-        <div className="avatar shadow-3">
+        <div className="avatar">
           <img
+            className="shadow-3"
             src={props.userLogo ? props.userLogo : UserLogo}
             alt="user img"
           />
