@@ -8,7 +8,11 @@ export default function User() {
   const { userId } = useParams(); // userid
   const history = useHistory();
   const [user, setUser] = useState({});
-  const [redirect, setRedirect] = useState({ valid: false, path: "" });
+  const [redirect, setRedirect] = useState({
+    valid: false,
+    path: "",
+    message: "",
+  });
   const [pageLoading, setPageLoading] = useState(true);
   const [error, setError] = useState("");
   useEffect(() => {
@@ -30,9 +34,18 @@ export default function User() {
                 setRedirect({ valid: true, path: "/404" });
               case 401:
                 if (err.response.data.message === "Auth error") {
-                  setRedirect({ valid: true, path: "/login" });
+                  setRedirect({
+                    valid: true,
+                    path: "/login",
+                    message: "You must login to access this route",
+                  });
                 } else if (err.response.data.message === "Wrong privileges") {
-                  setRedirect({ valid: true, path: "/login" });
+                  setRedirect({
+                    valid: true,
+                    path: "/login",
+                    message:
+                      "You need higher privileges to complete this action",
+                  });
                 } else if (err.response.data.error) {
                   setError(err.response.data.error);
                 }
@@ -48,7 +61,14 @@ export default function User() {
   }
 
   if (redirect.valid) {
-    return <Redirect to={redirect.path} />;
+    return (
+      <Redirect
+        to={{
+          pathname: redirect.path,
+          state: { message: redirect.message, path: "/admin/user" + userId },
+        }}
+      />
+    );
   }
   return (
     <div className="user-preview">

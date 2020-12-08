@@ -16,6 +16,7 @@ import {
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useCustomEventListener } from "react-custom-events";
+import { Redirect } from "react-router-dom";
 import UserCard from "../../components/UserCard";
 import UserListItem from "../../components/UserListItem";
 import axios from "axios";
@@ -59,6 +60,11 @@ export default function Users() {
   const [error, setError] = useState([]); // request errors
   const [pageLoading, setPageLoading] = useState(true); // request loader
   const [usersLoading, setUsersLoading] = useState(false);
+  const [redirect, setRedirect] = useState({
+    valid: false,
+    path: "",
+    message: "",
+  });
 
   const getUsers = (username, limit, offset) => {
     const name = username || "";
@@ -66,14 +72,44 @@ export default function Users() {
     const reqOffset = offset || "";
     axios
       .get(
-        `${process.env.REACT_APP_API_URL}/user/all?username=${name}&limit=${reqLimit}&offset=${reqOffset}`
+        `${process.env.REACT_APP_API_URL}/user/all?username=${name}&limit=${reqLimit}&offset=${reqOffset}`,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
       )
       .then((res) => {
         setUsers(res.data.users);
       })
       .catch((err) => {
         if (err.response) {
-          setError(err.response.error);
+          switch (err.response.status) {
+            case 404:
+              setRedirect({ valid: true, path: "/404" });
+            case 401:
+              if (err.response.data.message === "Auth error") {
+                setRedirect({
+                  valid: true,
+                  path: "/login",
+                  message: "You must login to continue",
+                });
+              } else if (err.response.data.message === "Wrong privileges") {
+                setRedirect({
+                  valid: true,
+                  path: "/login",
+                  message: "Missing privileges try other account",
+                });
+              } else if (err.response.data.error) {
+                setError(err.response.data.error);
+              }
+            default:
+              if (err.response.data.error) {
+                setError(err.response.data.error);
+              } else if (err.response.data.message) {
+                setError(err.response.data.message);
+              }
+          }
         } else if (err.request) {
           setError("Error made in request");
         } else {
@@ -94,6 +130,16 @@ export default function Users() {
   const [filterValue, setFilterValue] = useState("all");
   // filter by search
   const [searchValue, setSearchValue] = useState("");
+  if (redirect.valid) {
+    return (
+      <Redirect
+        to={{
+          pathname: redirect.path,
+          state: { message: redirect.message, path: "/admin/users" },
+        }}
+      />
+    );
+  }
   if (pageLoading) {
     return <LoadingPage />;
   }
