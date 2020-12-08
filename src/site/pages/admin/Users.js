@@ -15,6 +15,7 @@ import {
 } from "reactstrap";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { useCustomEventListener } from "react-custom-events";
 import UserCard from "../../components/UserCard";
 import UserListItem from "../../components/UserListItem";
 import axios from "axios";
@@ -23,6 +24,17 @@ import LoadingPage from "../../components/LoadingPage";
 import excerpt from "../../functions/excerpt";
 import UsersDropZone from "../../components/UsersDropZone";
 export default function Users() {
+  // custom event hook
+  useCustomEventListener("user-role-changed", () => {
+    setTimeout(() => {
+      setUsers([""]);
+      setUsersLoading(true);
+      setTimeout(() => {
+        getUsers(searchValue);
+        setUsersLoading(false);
+      }, 500);
+    }, 500);
+  });
   // filter bar collapse state
   const [navbar, setNavbar] = useState(false);
   const navbarHandler = () => {
@@ -244,7 +256,7 @@ export default function Users() {
         </Navbar>
         {error.length > 0 && <Alert color="danger">{error}</Alert>}
         {users.length === 0 ? (
-          <NoData />
+          <NoData status="Not user found with given name" />
         ) : // render gird if viewType is grid
         viewType === "grid" ? (
           <Row>

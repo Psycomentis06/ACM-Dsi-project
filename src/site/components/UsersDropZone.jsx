@@ -2,6 +2,8 @@ import React from "react";
 import { useDrop } from "react-dnd";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import Axios from "axios";
+import { emitCustomEvent } from "react-custom-events";
 export default function UsersDropZone({
   message,
   userType,
@@ -18,7 +20,25 @@ export default function UsersDropZone({
         confirmButtonText: "Confirm",
         cancelButtonText: "Go back",
         showCancelButton: true,
+        showLoaderOnConfirm: true,
         icon: "warning",
+        allowOutsideClick: () => !swal.isLoading(),
+        preConfirm: (user) => {
+          return Axios.put(
+            process.env.REACT_APP_API_URL + "/user/" + e.user.id + "/roles",
+            {
+              role: userType,
+            }
+          )
+            .then((response) => {
+              swal.fire("Success", response.data.message, "success");
+              // emit custom event to handle in parent
+              emitCustomEvent("user-role-changed", e.user);
+            })
+            .catch((err) => {
+              swal.fire("Error", err.response.data.message, "error");
+            });
+        },
       });
     },
     canDrop: (e) => {
