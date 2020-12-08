@@ -31,7 +31,11 @@ export default function User() {
           if (err.response) {
             switch (err.response.status) {
               case 404:
-                setRedirect({ valid: true, path: "/404" });
+                setRedirect({
+                  valid: true,
+                  path: "/404",
+                  message: "User not found",
+                });
               case 401:
                 if (err.response.data.message === "Auth error") {
                   setRedirect({
