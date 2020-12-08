@@ -1,7 +1,9 @@
 import React from "react";
 import { useDrag } from "react-dnd";
+import { useHistory } from "react-router-dom";
 import "./UserListItem.scss";
 export default function UserListItem(props) {
+  const history = useHistory();
   const [{ isDragging }, drag] = useDrag({
     item: {
       type: "User",
@@ -20,6 +22,7 @@ export default function UserListItem(props) {
       className="user-list-item shadow-2"
       ref={drag}
       style={{ display: isDragging ? "none" : "block" }}
+      onClick={() => history.push("/admin/users/" + props.userId)}
     >
       <div className="avatar">
         <figure>
