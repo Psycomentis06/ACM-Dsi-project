@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
+import { useLocation } from "react-router-dom";
 import Login from "../../components/Login";
 import Signup from "../../components/Signup";
 import "./LoginRegister.scss";
 export default function LoginRegister() {
   const [registerView, setRegisterView] = useState(false); // true = show signup component
+  const location = useLocation();
+  console.log(location.state);
   const registerText = `If you already registred and you have a verified account you don't have to
   create another one just login with your cridentials or if you have a problem contuct us`;
   const loginText = `Welcome! If you are a new user click the register button bellow so you can create
@@ -22,7 +25,11 @@ export default function LoginRegister() {
                   timeout={800}
                   classNames="col1-animation"
                 >
-                  {registerView ? <Signup /> : <Login />}
+                  {registerView ? (
+                    <Signup />
+                  ) : (
+                    <Login locationState={location.state} />
+                  )}
                 </CSSTransition>
               </div>
             </div>

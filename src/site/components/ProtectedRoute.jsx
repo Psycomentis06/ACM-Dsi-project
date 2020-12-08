@@ -10,7 +10,18 @@ export default function ProtectedRoute({ children, permission, ...reste }) {
         return hasPermission(permission) ? (
           children
         ) : (
-          <Redirect to={{ pathname: "/login", state: location }} />
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: {
+                message:
+                  "Route protected only for " +
+                  permission +
+                  ", login to proove it",
+                path: location.pathname,
+              },
+            }}
+          />
         );
       }}
     />
