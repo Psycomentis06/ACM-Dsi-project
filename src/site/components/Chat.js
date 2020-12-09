@@ -64,7 +64,7 @@ export default () => {
   };
 
   // get messages
-  const getMessages = () => {
+  useEffect(() => {
     setLoading(true);
 
     setTimeout(() => {
@@ -101,9 +101,7 @@ export default () => {
           }
         );
     }, 500);
-  };
-  useEffect(() => {
-    getMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (redirect.valid) {
     return (

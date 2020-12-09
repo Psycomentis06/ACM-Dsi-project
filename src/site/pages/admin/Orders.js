@@ -13,7 +13,7 @@ export default function Orders() {
   let { path, url } = useRouteMatch();
   return (
     <Router>
-      <Container className="mt-3" className="orders-page">
+      <Container className="mt-3 orders-page">
         <Row>
           <Col sm="4">
             <h3>Users</h3>

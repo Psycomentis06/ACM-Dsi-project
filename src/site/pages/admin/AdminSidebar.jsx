@@ -37,7 +37,7 @@ export default function AdminSidebar(props) {
         >
           Settings
         </NavLink>
-        <a className="active-link list-item shadow-2"></a>
+        <span className="active-link list-item shadow-2"></span>
       </div>
     </div>
   );

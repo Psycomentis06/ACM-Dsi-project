@@ -91,6 +91,7 @@ export default function Users() {
                 path: "/404",
                 message: "User not found",
               });
+              break;
             case 401:
               if (err.response.data.message === "Auth error") {
                 setRedirect({
@@ -98,6 +99,7 @@ export default function Users() {
                   path: "/login",
                   message: "You must login to continue",
                 });
+                break;
               } else if (err.response.data.message === "Wrong privileges") {
                 setRedirect({
                   valid: true,
@@ -107,12 +109,14 @@ export default function Users() {
               } else if (err.response.data.error) {
                 setError(err.response.data.error);
               }
+              break;
             default:
               if (err.response.data.error) {
                 setError(err.response.data.error);
               } else if (err.response.data.message) {
                 setError(err.response.data.message);
               }
+              break;
           }
         } else if (err.request) {
           setError("Error made in request");

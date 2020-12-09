@@ -36,6 +36,7 @@ export default function User() {
                   path: "/404",
                   message: "User not found",
                 });
+                break;
               case 401:
                 if (err.response.data.message === "Auth error") {
                   setRedirect({
@@ -53,11 +54,15 @@ export default function User() {
                 } else if (err.response.data.error) {
                   setError(err.response.data.error);
                 }
+                break;
+              default:
+                break;
             }
           }
         })
         .finally(() => setPageLoading(false));
     }, 500);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (pageLoading === true) {

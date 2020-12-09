@@ -59,7 +59,7 @@ export default function Signup() {
         if (err.response) {
           let errorsToString = "";
           if (err.response.data.error) {
-            err.response.data.error.map((err) => {
+            err.response.data.error.foreach((err) => {
               errorsToString += err + " <br /> ";
             });
             swal.fire(

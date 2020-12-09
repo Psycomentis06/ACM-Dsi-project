@@ -8,7 +8,6 @@ import "./LoginRegister.scss";
 export default function LoginRegister() {
   const [registerView, setRegisterView] = useState(false); // true = show signup component
   const location = useLocation();
-  console.log(location.state);
   const registerText = `If you already registred and you have a verified account you don't have to
   create another one just login with your cridentials or if you have a problem contuct us`;
   const loginText = `Welcome! If you are a new user click the register button bellow so you can create
