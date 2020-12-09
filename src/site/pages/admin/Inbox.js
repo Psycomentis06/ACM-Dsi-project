@@ -21,7 +21,7 @@ export default function Inbox() {
         .database()
         .ref("rooms")
         .orderByKey()
-        .startAt(offset || "")
+        .startAt(offset || "0")
         .limitToFirst(16)
         .on(
           "value",
@@ -55,7 +55,7 @@ export default function Inbox() {
       firebase
         .database()
         .ref("rooms")
-        .child(Math.floor(Math.random(20) * 10000) + " ")
+        .child(Math.floor(Math.random(20) * 10000))
         .set({
           createdAt: firebase.database.ServerValue.TIMESTAMP,
           username: Math.floor(Math.random(20) * 10000),
@@ -97,8 +97,8 @@ export default function Inbox() {
         {rooms.length > 0 &&
           rooms
             .filter((room) => {
-              console.log(room);
-              return (room.username + "")
+              return room.username
+                .toString()
                 .toLowerCase()
                 .includes(usernameSearch);
             })
