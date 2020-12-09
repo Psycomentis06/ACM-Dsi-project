@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Container,
   Jumbotron,
@@ -7,21 +7,22 @@ import {
   Button,
   Tooltip,
 } from "reactstrap";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, Redirect } from "react-router-dom";
 import firebase from "../../firebase.config";
-import { useList } from "react-firebase-hooks/database";
 import "./Chat.scss";
 export default () => {
   let { id } = useParams();
-  const [firebaseMessages, loading, error] = useList(
-    firebase
-      .database()
-      .ref("/rooms/" + id)
-      .limitToLast(25)
-  );
+  const [firebaseMessages, setFirebaseMessages] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [backToolTip, setBackToolTip] = useState(false);
   const [message, setMessage] = useState("");
   const [sendMsgError, setSendMsgError] = useState("");
+  const [redirect, setRedirect] = useState({
+    valid: false,
+    message: "",
+    path: "",
+  });
   const endLine = useRef(null);
   const backToolTipHandler = () => {
     setBackToolTip(!backToolTip);
@@ -42,12 +43,13 @@ export default () => {
     if (message.length > 0) {
       firebase
         .database()
-        .ref("/rooms/" + id)
+        .ref("rooms")
+        .child(id + "/messages")
         .push(
           {
             message: message,
             sender: "user1",
-            date: Date.now(),
+            createdAt: firebase.database.ServerValue.TIMESTAMP,
           },
           (err) => {
             if (err) {
@@ -60,6 +62,59 @@ export default () => {
       scrollBottom();
     }
   };
+
+  // get messages
+  const getMessages = () => {
+    setLoading(true);
+
+    setTimeout(() => {
+      firebase
+        .database()
+        .ref("rooms/" + id)
+        .on(
+          "value",
+          (data) => {
+            if (data.exists()) {
+              // valid room
+              let exportedData = data.exportVal();
+              let messages = exportedData.messages;
+              let arrayMsgs = [];
+              for (const msg in messages) {
+                messages[msg].id = msg;
+                arrayMsgs.push(messages[msg]);
+              }
+              exportedData.messages = arrayMsgs;
+              setFirebaseMessages(exportedData);
+            } else {
+              setRedirect({
+                valid: true,
+                message: "Can't find room with id: " + id,
+                path: "/404",
+              });
+            }
+            setLoading(false);
+          },
+          (err) => {
+            if (err) {
+              setError(err.message);
+            }
+          }
+        );
+    }, 500);
+  };
+  useEffect(() => {
+    getMessages();
+  }, []);
+  if (redirect.valid) {
+    return (
+      <Redirect
+        to={{
+          pathname: redirect.path,
+          state: { message: redirect.message, path: "/admin/inbox/" + id },
+        }}
+      />
+    );
+  }
   return (
     <Container fluid={false}>
       <Jumbotron className="mt-2">
@@ -76,30 +131,37 @@ export default () => {
             Go back To Inbox page
           </Tooltip>
         </div>
-        <h2 className="mt-3">Username</h2>
+        <h2 className="mt-3">
+          <Link to={"/admin/users/" + firebaseMessages.userId || ""}>
+            {firebaseMessages.username || "Username"}
+          </Link>
+        </h2>
         <h3>Room id : {id}</h3>
         <hr />
         <Container>
           <div className="messages">
             {error && <strong>Error: {error}</strong>}
             {loading && <span>List: Loading...</span>}
-            {!loading && scrollBottom()}
-            {!loading && firebaseMessages.length === 0 && (
-              <h2 className="text-center text-success">
-                Conversation is empty
-              </h2>
-            )}
-            {firebaseMessages.map((el) => (
+            {/*!loading && scrollBottom()*/}
+            {!loading &&
+              (firebaseMessages?.messages?.length === 0 ||
+                firebaseMessages.messages === undefined) && (
+                <h2 className="text-center text-success">
+                  {"New Conversation Say hi to " + firebaseMessages.username}
+                </h2>
+              )}
+            {firebaseMessages?.messages?.map((el) => (
               <div
                 className={
                   "line " +
-                  (el.val().sender === localStorage.getItem("userId")
-                    ? "mine"
-                    : "")
+                  (el.sender === localStorage.getItem("userId") ? "mine" : "")
                 }
-                key={el.key}
+                key={el.id}
               >
-                {el.val().message}
+                {el.message}
+                <span className="message-date">
+                  {new Date(el.createdAt).toLocaleString()}
+                </span>
               </div>
             ))}
             <div ref={endLine} style={{ float: "left", clear: "both" }}></div>
