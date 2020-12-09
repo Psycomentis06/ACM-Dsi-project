@@ -13,7 +13,7 @@ export default function Inbox() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(true);
-
+  const [usernameSearch, setUsernameSearch] = useState("");
   const getRooms = (offset) => {
     setLoading(true);
     setTimeout(() => {
@@ -34,6 +34,8 @@ export default function Inbox() {
             });
             if (table.length <= 1) {
               setHasNextPage(false);
+            } else {
+              setHasNextPage(true);
             }
             delete rooms[rooms.length - 1]; // remove last element cuz it"s first one in the new added list
             setRooms(rooms.concat(table));
@@ -82,22 +84,35 @@ export default function Inbox() {
   }
   return (
     <Container className="mt-4" style={{ position: "relative" }}>
-      <Input type="text" placeholder="Search for users" />
+      <Input
+        type="text"
+        placeholder="Search for users"
+        value={usernameSearch}
+        onChange={(e) => {
+          setUsernameSearch(e.target.value);
+        }}
+      />
       {error && <Alert color="danger">{error}</Alert>}
       <Row>
-        {rooms.map((user, index) => (
-          <Col key={user.chatRoom}>
-            <UserChatRoom
-              roomId={user.chatRoom}
-              userLogo={user.photo}
-              username={user.username}
-              lastMessage={
-                "Last seen " + new Date(user.updatedAt).toLocaleString()
-              }
-              status={user.status}
-            />
-          </Col>
-        ))}
+        {rooms.length > 0 &&
+          rooms
+            .filter((room) => {
+              console.log(room);
+              return (room.username + "")
+                .toLowerCase()
+                .includes(usernameSearch);
+            })
+            .map((user, index) => (
+              <Col key={user.chatRoom}>
+                <UserChatRoom
+                  roomId={user.chatRoom}
+                  userLogo={user.photo}
+                  username={user.username}
+                  lastMessage={"Last seen " + user.lastMessage}
+                  status={user.status}
+                />
+              </Col>
+            ))}
         {rooms.length > 0 && <div ref={infiniteRef}></div>}
       </Row>
       {!hasNextPage && (
