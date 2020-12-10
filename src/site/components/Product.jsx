@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import "./Product.scss";
+import { Tooltip } from "reactstrap";
 export default function Product({
   path,
   title,
@@ -10,10 +11,13 @@ export default function Product({
   category,
   price,
   description,
+  liked,
   productBgColor,
   ...rest
 }) {
   const history = useHistory();
+  const [likeTooltip, setLikeTooltip] = useState(false);
+  const [shareTooltip, setShareTooltip] = useState(false);
   return (
     <div
       className="product-card shadow-4 bg-materialgray"
@@ -28,9 +32,9 @@ export default function Product({
       }}
     >
       <div className="w-75 mx-auto">
-        <h2 className="text-center text-wrap pt-3 text-primary">
+        <h1 className="text-center text-wrap pt-3 text-primary">
           {title || "Title"}
-        </h2>
+        </h1>
         <p
           className="h6 mt-3 text-left font-light text-wrap category text-secondary-2"
           style={{ opacity: 0.7 }}
@@ -42,19 +46,41 @@ export default function Product({
       <div className="body">
         <div className="left">
           <div
-            className="content"
-            style={{ backgroundColor: productBgColor || "unset" }}
+            className="content shadow-4"
+            style={{ backgroundColor: productBgColor || "#e9e9e9" }}
           >
             <div className="product-img">
               <div className="actions">
-                <div className="like">
-                  <button className="btn">
-                    <i className="fas fa-heart fa-2x"></i>
+                <div className={!liked ? "like" : "dislike"}>
+                  <button className="btn" id="likedislikebutton">
+                    <i
+                      className={
+                        "fas " + (!liked ? "fa-heart" : "fa-heart-broken")
+                      }
+                    ></i>
+                    <Tooltip
+                      isOpen={likeTooltip}
+                      toggle={() => {
+                        setLikeTooltip(!likeTooltip);
+                      }}
+                      target="likedislikebutton"
+                    >
+                      {!liked ? "Like product" : "Dislike product"}
+                    </Tooltip>
                   </button>
                 </div>
                 <div className="share">
-                  <button className="btn">
+                  <button className="btn" id="sharebutton">
                     <i className="fas fa-share"></i>
+                    <Tooltip
+                      isOpen={shareTooltip}
+                      toggle={() => {
+                        setShareTooltip(!shareTooltip);
+                      }}
+                      target="sharebutton"
+                    >
+                      Share product
+                    </Tooltip>
                   </button>
                 </div>
               </div>
@@ -70,10 +96,29 @@ export default function Product({
         </div>
         <div className="right">
           <div className="content">
-            <p className="h3 price">{price || "Price"}</p>
-            <p className="h5 description">{description || "Description"}</p>
+            <div className="text-secondary">
+              <p className="h2 price">
+                Price: &nbsp;
+                <span>{(price || "Price") + " TND"}</span>
+              </p>
+            </div>
+            <div>
+              <p className="h3 text-secondary description">Description</p>
+              <p
+                className="ml-4 p5 text-wrap text-justify"
+                style={{ opacity: 0.7 }}
+              >
+                {description || "Description"}
+              </p>
+            </div>
           </div>
         </div>
+      </div>
+      <div className="footer w-100 p-4 text-center">
+        <button className="btn bg-gradient-primary-45 rounded-pill">
+          <i className="fas fa-shopping-cart mr-2"></i>
+          Add to card
+        </button>
       </div>
     </div>
   );
