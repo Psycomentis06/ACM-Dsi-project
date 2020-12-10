@@ -6,6 +6,25 @@
   height: calc(100vh - 120px);
   border-radius: 15px;
   padding: 10px;
+  .edit-content {
+    transition: cubic-bezier(0.165, 0.84, 0.44, 1) 0.2s;
+    cursor: pointer;
+    .edit-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: scale(0);
+      transition: 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    &:hover {
+      border: 2px solid;
+      padding: 10px;
+      border-radius: 10px;
+      .edit-btn {
+        transform: scale(1);
+      }
+    }
+  }
   .left {
     width: 100%;
     padding: 10px;
@@ -30,4 +49,11 @@
   position: absolute;
   top: 0;
   left: 0;
+}
+
+@media only screen and (max-width: 768px) {
+  .product-view {
+    flex-direction: column;
+    height: 100%;
+  }
 }

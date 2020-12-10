@@ -1,41 +1,349 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Container } from "reactstrap";
+import { Container, Tooltip, Form } from "reactstrap";
+import { useForm } from "react-hook-form";
 import "./Product.scss";
+import { title } from "process";
 export default function Product() {
   let { productId } = useParams();
+  // form hooks
+  const { control, handleSubmit, errors } = useForm();
+  const onSubmit = (data) => console.log(data);
+  // data state
+  const [product, setProduct] = useState({
+    title: "MS 194 C-E",
+    category: "Chainsaws",
+    description:
+      "STIHL took a top-rated saw and made it better. The MS 194 C-E has greater displacement, more power, and improved cutting performance versus the previous model - without adding weight and reducing user fatigue. ",
+    sale: 10,
+    image:
+      "https://www.stihlusa.com/WebContent/Images/Product/3478/ms194ce.png?preset=Product.ProductDetails",
+    color: "#22af9b",
+    price: 250,
+  });
+  // Tooltip states
+  const [imageTooltip, setImageTooltip] = useState(false);
+  const [titleTooltip, setTitleTooltip] = useState(false);
+  const [categoryTooltip, setCategoryTooltip] = useState(false);
+  const [descTooltip, setDescTooltip] = useState(false);
+  const [saleTooltip, setSaleTooltip] = useState(false);
+  const [colorTooltip, setColorTooltip] = useState(false);
+  const [priceTooltip, setPriceTooltip] = useState(false);
+  // Edit inputs
+  const [imageEdit, setImageEdit] = useState(false);
+  const [titleEdit, setTitleEdit] = useState(false);
+  const [categoryEdit, setCategoryEdit] = useState(false);
+  const [descEdit, setDescEdit] = useState(false);
+  const [saleEdit, setSaleEdit] = useState(false);
+  const [colorEdit, setColorEdit] = useState(false);
+  const [priceEdit, setPriceEdit] = useState(false);
+  // Inputs states
+  const [imageInput, setImageInput] = useState(product.image);
+  const [titleInput, setTitleInput] = useState(product.title);
+  const [categoryInput, setCategoryInput] = useState(product.category);
+  const [descInput, setDescInput] = useState(product.description);
+  const [saleInput, setSaleInput] = useState(product.sale);
+  const [colorInput, setColorInput] = useState(product.color);
+  const [priceInput, setPriceInput] = useState(product.price);
+
   return (
     <Container className="mt-3" style={{ position: "relative" }}>
-      <div className="product-view bg-materialgray shadow-4">
-        <div className="left">
-          <img
-            className="shadow-2"
-            src="https://images.unsplash.com/photo-1556912743-54b370e8385b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
-            alt="Product image preview"
-          />
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <div className="product-view bg-materialgray shadow-4">
+          <div className="left">
+            <div style={{ position: "relative" }} className="edit-content">
+              <img
+                className="shadow-2"
+                src={
+                  product.image ||
+                  "https://images.unsplash.com/photo-1556912743-54b370e8385b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
+                }
+                alt="Product image preview"
+              />
+              <button
+                type="button"
+                className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
+                id="imageEdit"
+              >
+                <i className="fas fa-pencil-alt"></i>
+              </button>
+              <Tooltip
+                isOpen={imageTooltip}
+                toggle={() => setImageTooltip(!imageTooltip)}
+                target="imageEdit"
+              >
+                Edit Product image
+              </Tooltip>
+            </div>
+          </div>
+          <div className="right">
+            {
+              /** Category */
+              categoryEdit ? (
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Product category"
+                    value={categoryInput}
+                    onChange={(e) => setCategoryInput(e.target.value)}
+                    style={{ padding: "0 10px" }}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-info"
+                    onClick={() => {
+                      setCategoryInput(product.category);
+                      setCategoryEdit(false);
+                      setCategoryTooltip(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-success ml-3"
+                    onClick={() => {
+                      setProduct((prevState) => ({
+                        ...prevState,
+                        category: categoryInput,
+                      }));
+                      setCategoryEdit(false);
+                      setCategoryTooltip(false);
+                    }}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              ) : (
+                <div
+                  style={{ position: "relative" }}
+                  className="edit-content border-secondary"
+                >
+                  <p className="h6" style={{ opacity: 0.6 }}>
+                    {product.category || "Category"}
+                  </p>
+                  <button
+                    type="button"
+                    className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
+                    id="categoryEdit"
+                    onClick={() => setCategoryEdit(true)}
+                  >
+                    <i className="fas fa-pencil-alt"></i>
+                  </button>
+                  <Tooltip
+                    target="categoryEdit"
+                    isOpen={categoryTooltip}
+                    toggle={() => setCategoryTooltip(!categoryTooltip)}
+                  >
+                    Edit Product category
+                  </Tooltip>
+                </div>
+              )
+            }
+            {
+              /** Title */
+              titleEdit ? (
+                <div>
+                  <input
+                    type="text"
+                    value={titleInput}
+                    onChange={(e) => setTitleInput(e.target.value)}
+                    placeholder="Product title"
+                    style={{ padding: "0 10px" }}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-info"
+                    onClick={() => {
+                      setTitleInput(product.title);
+                      setTitleEdit(false);
+                      setTitleTooltip(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-success ml-3"
+                    onClick={() => {
+                      setProduct((prevState) => ({
+                        ...prevState,
+                        title: titleInput,
+                      }));
+                      setTitleEdit(false);
+                      setTitleTooltip(false);
+                    }}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              ) : (
+                <div
+                  style={{ position: "relative" }}
+                  className="edit-content border-primary"
+                >
+                  <h2 className="text-wrap text-primary">
+                    {product.title || "Product name"}
+                  </h2>
+                  <button
+                    type="button"
+                    className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
+                    id="titleEdit"
+                    onClick={() => setTitleEdit(true)}
+                  >
+                    <i className="fas fa-pencil-alt"></i>
+                  </button>
+                  <Tooltip
+                    target="titleEdit"
+                    isOpen={titleTooltip}
+                    toggle={() => setTitleTooltip(!titleTooltip)}
+                  >
+                    Edit Product name
+                  </Tooltip>
+                </div>
+              )
+            }
+            {
+              /** Description */
+              descEdit ? (
+                <div>
+                  <textarea
+                    onChange={(e) => setDescInput(e.target.value)}
+                    placeholder="Product description"
+                    value={descInput}
+                  ></textarea>
+                  <button
+                    type="button"
+                    className="btn btn-info"
+                    onClick={() => {
+                      setDescInput(product.description);
+                      setDescEdit(false);
+                      setDescTooltip(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-success ml-3"
+                    onClick={() => {
+                      setProduct((prevState) => ({
+                        ...prevState,
+                        description: descInput,
+                      }));
+                      setDescEdit(false);
+                      setDescTooltip(false);
+                    }}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              ) : (
+                <div
+                  style={{ position: "relative" }}
+                  className="edit-content border-secondary-1"
+                >
+                  <p
+                    className="h5 text-justify text-secondary-1"
+                    style={{ opacity: 0.7 }}
+                  >
+                    {product.description ||
+                      `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                Doloremque, modi, cumque illo optio tenetur alias aliquam porro
+                dolorum explicabo vel aspernatur omnis ex reiciendis nemo
+                maiores asperiores perferendis? Eaque, velit.`}
+                  </p>
+                  <button
+                    type="button"
+                    className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
+                    id="descEdit"
+                    onClick={() => setDescEdit(true)}
+                  >
+                    <i className="fas fa-pencil-alt"></i>
+                  </button>
+                  <Tooltip
+                    target="descEdit"
+                    isOpen={descTooltip}
+                    toggle={() => setDescTooltip(!descTooltip)}
+                  >
+                    Edit Product description
+                  </Tooltip>
+                </div>
+              )
+            }
+            <div
+              style={{ position: "relative" }}
+              className="edit-content border-secondary"
+            >
+              <h4 className="text-secondary" style={{ opacity: 0.9 }}>
+                {"Sale: " + product.sale + "%" || "Sale: 10%"}
+              </h4>
+              <button
+                type="button"
+                className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
+                id="saleEdit"
+              >
+                <i className="fas fa-pencil-alt"></i>
+              </button>
+              <Tooltip
+                target="saleEdit"
+                isOpen={saleTooltip}
+                toggle={() => setSaleTooltip(!saleTooltip)}
+              >
+                Edit Product sale
+              </Tooltip>
+            </div>
+            <div
+              style={{
+                position: "relative",
+                borderColor: product.color || "#54f1fa",
+              }}
+              className="edit-content"
+            >
+              <h5 style={{ color: product.color || "#54f1fa" }}>
+                {"Product color: " + product.color || "Product color: #54f1fa"}
+              </h5>
+              <button
+                type="button"
+                className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
+                id="colorEdit"
+              >
+                <i className="fas fa-pencil-alt"></i>
+              </button>
+              <Tooltip
+                target="colorEdit"
+                isOpen={colorTooltip}
+                toggle={() => setColorTooltip(!colorTooltip)}
+              >
+                Edit Product color
+              </Tooltip>
+            </div>
+            <div
+              style={{ position: "relative" }}
+              className="edit-content border-secondary"
+            >
+              <h3 className="text-center text-secondary">
+                {" "}
+                {"Price: " + product.price + " TND" || "Price: 25 TND"}{" "}
+              </h3>
+              <button
+                type="button"
+                className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
+                id="priceEdit"
+              >
+                <i className="fas fa-pencil-alt"></i>
+              </button>
+              <Tooltip
+                target="priceEdit"
+                isOpen={priceTooltip}
+                toggle={() => setPriceTooltip(!priceTooltip)}
+              >
+                Edit Product price
+              </Tooltip>
+            </div>
+          </div>
         </div>
-        <div className="right">
-          <p className="h6" style={{ opacity: 0.6 }}>
-            Category
-          </p>
-          <h2 className="text-wrap text-primary">Product name</h2>
-          <p
-            className="h5 text-justify text-secondary-1"
-            style={{ opacity: 0.7 }}
-          >
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-            Doloremque, modi, cumque illo optio tenetur alias aliquam porro
-            dolorum explicabo vel aspernatur omnis ex reiciendis nemo maiores
-            asperiores perferendis? Eaque, velit.
-          </p>
-          <hr />
-          <h4 className="text-secondary" style={{ opacity: 0.9 }}>
-            Sale: 10%
-          </h4>
-          <h5 style={{ color: "#54f1fa" }}>Product color: #54f1fa</h5>
-          <h3 className="text-center text-secondary">Price: 25 TND</h3>
-        </div>
-      </div>
+      </Form>
       {
         // SVGs
       }
