@@ -2,11 +2,19 @@
 
 $theme-colors: (
   "materialgray": #e9e9e9,
+  "primary": #6a00f4,
+  "secondary": #e400f4,
+  "secondary-2": #495867,
+  "success": #8af400,
+  "danger": #f43500,
+  "warning": #f47200,
 );
 
 // Option A: Include all of Bootstrap
-
 @import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+// form var
+$component-active-color: red !important;
+$component-active-bg: theme-color("success") !important;
 
 /*
 Future Colors
