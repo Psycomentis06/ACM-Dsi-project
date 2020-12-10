@@ -5,8 +5,8 @@ import "./Product.scss";
 export default function Product() {
   let { productId } = useParams();
   return (
-    <Container className="mt-3">
-      <div className="product-view">
+    <Container className="mt-3" style={{ position: "relative" }}>
+      <div className="product-view bg-materialgray shadow-4">
         <div className="left">
           <img
             className="shadow-2"
@@ -35,6 +35,20 @@ export default function Product() {
           <h5 style={{ color: "#54f1fa" }}>Product color: #54f1fa</h5>
           <h3 className="text-center text-secondary">Price: 25 TND</h3>
         </div>
+      </div>
+      {
+        // SVGs
+      }
+      <div className="svgs">
+        <svg height="100" width="100">
+          <circle cx="50" cy="50" r="350" fill="#e400f4" />
+        </svg>
+        <svg height="100" width="100">
+          <circle cx="450" cy="550" r="250" fill="#e400f4" />
+        </svg>
+        <svg height="100" width="100">
+          <circle cx="850" cy="450" r="400" fill="#6a00f4" />
+        </svg>
       </div>
     </Container>
   );
