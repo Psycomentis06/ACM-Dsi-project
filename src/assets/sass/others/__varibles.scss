@@ -2,8 +2,8 @@
 
 $gradient-colors: (
   "primary": (
-    "first": $primary,
-    "second": $secondary,
+    "first": theme-color("primary"),
+    "second": theme-color("secondary"),
   ),
   "peach": (
     "first": #fd1d1d,
