@@ -1,0 +1,22 @@
+.product-view {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+  height: calc(100vh - 120px);
+  .left {
+    width: 100%;
+    padding: 10px;
+    img {
+      width: 100%;
+      border-radius: 30px;
+    }
+  }
+  .right {
+    width: 100%;
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+}
