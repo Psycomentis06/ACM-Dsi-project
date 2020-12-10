@@ -51,22 +51,35 @@ export default function Product({
           >
             <div className="product-img">
               <div className="actions">
-                <div className={!liked ? "like" : "dislike"}>
+                <div className={liked === false ? "like" : "dislike"}>
                   <button className="btn" id="likedislikebutton">
                     <i
                       className={
-                        "fas " + (!liked ? "fa-heart" : "fa-heart-broken")
+                        "fas " +
+                        (liked === false ? "fa-heart" : "fa-heart-broken")
                       }
                     ></i>
-                    <Tooltip
-                      isOpen={likeTooltip}
-                      toggle={() => {
-                        setLikeTooltip(!likeTooltip);
-                      }}
-                      target="likedislikebutton"
-                    >
-                      {!liked ? "Like product" : "Dislike product"}
-                    </Tooltip>
+                    {liked === false ? (
+                      <Tooltip
+                        isOpen={likeTooltip}
+                        toggle={() => {
+                          setLikeTooltip(!likeTooltip);
+                        }}
+                        target="likedislikebutton"
+                      >
+                        Dislike product
+                      </Tooltip>
+                    ) : (
+                      <Tooltip
+                        isOpen={likeTooltip}
+                        toggle={() => {
+                          setLikeTooltip(!likeTooltip);
+                        }}
+                        target="likedislikebutton"
+                      >
+                        Like Product
+                      </Tooltip>
+                    )}
                   </button>
                 </div>
                 <div className="share">

@@ -10,11 +10,12 @@ export default function Product() {
           <ProductCard
             productBgColor="rgb(64, 128, 224)"
             path="/admin/products/p1"
+            liked={true}
           />
         </Col>
         <Col md>
           {" "}
-          <ProductCard path="/admin/products/p2" />
+          <ProductCard path="/admin/products/p2" liked={false} />
         </Col>
       </Row>
     </Container>
