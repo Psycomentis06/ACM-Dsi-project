@@ -45,6 +45,8 @@ export default function UploadImage({ type, ...rest }) {
             case "storage/unknown":
               swal.fire({ text: "Unkown error", icon: "error" });
               break;
+            default:
+              break;
           }
         },
         () => {
