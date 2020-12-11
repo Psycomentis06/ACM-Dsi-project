@@ -4,6 +4,7 @@ import { Container, Tooltip, Form } from "reactstrap";
 import { useForm } from "react-hook-form";
 import "./Product.scss";
 import { title } from "process";
+import UploadImage from "../../components/UploadImage";
 export default function Product() {
   let { productId } = useParams();
   // form hooks
@@ -51,30 +52,38 @@ export default function Product() {
       <Form onSubmit={handleSubmit(onSubmit)}>
         <div className="product-view bg-materialgray shadow-4">
           <div className="left">
-            <div style={{ position: "relative" }} className="edit-content">
-              <img
-                className="shadow-2"
-                src={
-                  product.image ||
-                  "https://images.unsplash.com/photo-1556912743-54b370e8385b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
-                }
-                alt="Product image preview"
-              />
-              <button
-                type="button"
-                className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
-                id="imageEdit"
-              >
-                <i className="fas fa-pencil-alt"></i>
-              </button>
-              <Tooltip
-                isOpen={imageTooltip}
-                toggle={() => setImageTooltip(!imageTooltip)}
-                target="imageEdit"
-              >
-                Edit Product image
-              </Tooltip>
-            </div>
+            {
+              /** Image */
+              imageEdit ? (
+                <UploadImage />
+              ) : (
+                <div style={{ position: "relative" }} className="edit-content">
+                  <img
+                    className="shadow-2"
+                    src={
+                      product.image ||
+                      "https://images.unsplash.com/photo-1556912743-54b370e8385b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
+                    }
+                    alt="Product image preview"
+                  />
+                  <button
+                    type="button"
+                    className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
+                    id="imageEdit"
+                    onClick={() => setImageEdit(true)}
+                  >
+                    <i className="fas fa-pencil-alt"></i>
+                  </button>
+                  <Tooltip
+                    isOpen={imageTooltip}
+                    toggle={() => setImageTooltip(!imageTooltip)}
+                    target="imageEdit"
+                  >
+                    Edit Product image
+                  </Tooltip>
+                </div>
+              )
+            }
           </div>
           <div className="right">
             {
