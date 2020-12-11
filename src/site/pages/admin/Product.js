@@ -271,76 +271,200 @@ export default function Product() {
                 </div>
               )
             }
-            <div
-              style={{ position: "relative" }}
-              className="edit-content border-secondary"
-            >
-              <h4 className="text-secondary" style={{ opacity: 0.9 }}>
-                {"Sale: " + product.sale + "%" || "Sale: 10%"}
-              </h4>
-              <button
-                type="button"
-                className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
-                id="saleEdit"
-              >
-                <i className="fas fa-pencil-alt"></i>
-              </button>
-              <Tooltip
-                target="saleEdit"
-                isOpen={saleTooltip}
-                toggle={() => setSaleTooltip(!saleTooltip)}
-              >
-                Edit Product sale
-              </Tooltip>
-            </div>
-            <div
-              style={{
-                position: "relative",
-                borderColor: product.color || "#54f1fa",
-              }}
-              className="edit-content"
-            >
-              <h5 style={{ color: product.color || "#54f1fa" }}>
-                {"Product color: " + product.color || "Product color: #54f1fa"}
-              </h5>
-              <button
-                type="button"
-                className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
-                id="colorEdit"
-              >
-                <i className="fas fa-pencil-alt"></i>
-              </button>
-              <Tooltip
-                target="colorEdit"
-                isOpen={colorTooltip}
-                toggle={() => setColorTooltip(!colorTooltip)}
-              >
-                Edit Product color
-              </Tooltip>
-            </div>
-            <div
-              style={{ position: "relative" }}
-              className="edit-content border-secondary"
-            >
-              <h3 className="text-center text-secondary">
-                {" "}
-                {"Price: " + product.price + " TND" || "Price: 25 TND"}{" "}
-              </h3>
-              <button
-                type="button"
-                className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
-                id="priceEdit"
-              >
-                <i className="fas fa-pencil-alt"></i>
-              </button>
-              <Tooltip
-                target="priceEdit"
-                isOpen={priceTooltip}
-                toggle={() => setPriceTooltip(!priceTooltip)}
-              >
-                Edit Product price
-              </Tooltip>
-            </div>
+            {
+              /** Product sale */
+              saleEdit ? (
+                <div>
+                  <input
+                    type="number"
+                    value={saleInput}
+                    onChange={(e) => setSaleInput(e.target.value)}
+                    placeholder="Product sale"
+                    style={{ padding: "0 10px" }}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-info"
+                    onClick={() => {
+                      setSaleInput(product.sale);
+                      setSaleEdit(false);
+                      setSaleTooltip(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-success ml-3"
+                    onClick={() => {
+                      setProduct((prevState) => ({
+                        ...prevState,
+                        sale: saleInput,
+                      }));
+                      setSaleEdit(false);
+                      setSaleTooltip(false);
+                    }}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              ) : (
+                <div
+                  style={{ position: "relative" }}
+                  className="edit-content border-secondary"
+                >
+                  <h4 className="text-secondary" style={{ opacity: 0.9 }}>
+                    {"Sale: " + product.sale + "%" || "Sale: 10%"}
+                  </h4>
+                  <button
+                    type="button"
+                    className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
+                    id="saleEdit"
+                    onClick={() => setSaleEdit(true)}
+                  >
+                    <i className="fas fa-pencil-alt"></i>
+                  </button>
+                  <Tooltip
+                    target="saleEdit"
+                    isOpen={saleTooltip}
+                    toggle={() => setSaleTooltip(!saleTooltip)}
+                  >
+                    Edit Product sale
+                  </Tooltip>
+                </div>
+              )
+            }
+            {
+              /** Color */
+              colorEdit ? (
+                <div>
+                  <input
+                    type="color"
+                    value={colorInput}
+                    onChange={(e) => setColorInput(e.target.value)}
+                    placeholder="Product color"
+                    style={{ padding: "0 10px" }}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-info"
+                    onClick={() => {
+                      setColorInput(product.color);
+                      setColorEdit(false);
+                      setColorTooltip(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-success ml-3"
+                    onClick={() => {
+                      setProduct((prevState) => ({
+                        ...prevState,
+                        color: colorInput,
+                      }));
+                      setColorEdit(false);
+                      setColorTooltip(false);
+                    }}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              ) : (
+                <div
+                  style={{
+                    position: "relative",
+                    borderColor: product.color || "#54f1fa",
+                  }}
+                  className="edit-content"
+                >
+                  <h5 style={{ color: product.color || "#54f1fa" }}>
+                    {"Product color: " + product.color ||
+                      "Product color: #54f1fa"}
+                  </h5>
+                  <button
+                    type="button"
+                    className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
+                    id="colorEdit"
+                    onClick={() => setColorEdit(true)}
+                  >
+                    <i className="fas fa-pencil-alt"></i>
+                  </button>
+                  <Tooltip
+                    target="colorEdit"
+                    isOpen={colorTooltip}
+                    toggle={() => setColorTooltip(!colorTooltip)}
+                  >
+                    Edit Product color
+                  </Tooltip>
+                </div>
+              )
+            }
+            {
+              /** Price */
+              priceEdit ? (
+                <div>
+                  <input
+                    type="number"
+                    value={priceInput}
+                    onChange={(e) => setPriceInput(e.target.value)}
+                    placeholder="Product price"
+                    style={{ padding: "0 10px" }}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-info"
+                    onClick={() => {
+                      setPriceInput(product.price);
+                      setPriceEdit(false);
+                      setPriceTooltip(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-success ml-3"
+                    onClick={() => {
+                      setProduct((prevState) => ({
+                        ...prevState,
+                        price: priceInput,
+                      }));
+                      setPriceEdit(false);
+                      setPriceTooltip(false);
+                    }}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              ) : (
+                <div
+                  style={{ position: "relative" }}
+                  className="edit-content border-secondary"
+                >
+                  <h3 className="text-center text-secondary">
+                    {" "}
+                    {"Price: " + product.price + " TND" || "Price: 25 TND"}{" "}
+                  </h3>
+                  <button
+                    type="button"
+                    className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
+                    id="priceEdit"
+                    onClick={() => setPriceEdit(true)}
+                  >
+                    <i className="fas fa-pencil-alt"></i>
+                  </button>
+                  <Tooltip
+                    target="priceEdit"
+                    isOpen={priceTooltip}
+                    toggle={() => setPriceTooltip(!priceTooltip)}
+                  >
+                    Edit Product price
+                  </Tooltip>
+                </div>
+              )
+            }
           </div>
         </div>
       </Form>
