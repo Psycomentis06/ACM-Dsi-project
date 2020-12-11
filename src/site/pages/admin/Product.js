@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+//import { useParams } from "react-router-dom";
 import { Container, Tooltip, Form } from "reactstrap";
 import { useForm } from "react-hook-form";
+import { useCustomEventListener } from "react-custom-events";
 import "./Product.scss";
-import { title } from "process";
 import UploadImage from "../../components/UploadImage";
 export default function Product() {
-  let { productId } = useParams();
+  //let { productId } = useParams();
   // form hooks
-  const { control, handleSubmit, errors } = useForm();
+  const { /*control,*/ handleSubmit /*, errors*/ } = useForm();
   const onSubmit = (data) => console.log(data);
   // data state
   const [product, setProduct] = useState({
@@ -23,7 +23,6 @@ export default function Product() {
     price: 250,
   });
   // Tooltip states
-  const [imageTooltip, setImageTooltip] = useState(false);
   const [titleTooltip, setTitleTooltip] = useState(false);
   const [categoryTooltip, setCategoryTooltip] = useState(false);
   const [descTooltip, setDescTooltip] = useState(false);
@@ -39,14 +38,19 @@ export default function Product() {
   const [colorEdit, setColorEdit] = useState(false);
   const [priceEdit, setPriceEdit] = useState(false);
   // Inputs states
-  const [imageInput, setImageInput] = useState(product.image);
   const [titleInput, setTitleInput] = useState(product.title);
   const [categoryInput, setCategoryInput] = useState(product.category);
   const [descInput, setDescInput] = useState(product.description);
   const [saleInput, setSaleInput] = useState(product.sale);
   const [colorInput, setColorInput] = useState(product.color);
   const [priceInput, setPriceInput] = useState(product.price);
-
+  useCustomEventListener("image-uploaded", (data) => {
+    setProduct((prevState) => ({
+      ...prevState,
+      image: data.imageUrl,
+    }));
+    setImageEdit(false);
+  });
   return (
     <Container className="mt-3" style={{ position: "relative" }}>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -55,7 +59,17 @@ export default function Product() {
             {
               /** Image */
               imageEdit ? (
-                <UploadImage />
+                <>
+                  <UploadImage type="products" />
+                  <button
+                    className="btn btn-info"
+                    onClick={() => {
+                      setImageEdit(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </>
               ) : (
                 <div style={{ position: "relative" }} className="edit-content">
                   <img
@@ -74,13 +88,6 @@ export default function Product() {
                   >
                     <i className="fas fa-pencil-alt"></i>
                   </button>
-                  <Tooltip
-                    isOpen={imageTooltip}
-                    toggle={() => setImageTooltip(!imageTooltip)}
-                    target="imageEdit"
-                  >
-                    Edit Product image
-                  </Tooltip>
                 </div>
               )
             }
