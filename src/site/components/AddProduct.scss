@@ -1,0 +1,22 @@
+.add-product {
+  border-radius: 15px;
+  padding: 20px;
+  width: 500px;
+  height: 800px;
+  transform: translate(100px, 50px) scale(0);
+  transition: cubic-bezier(0.55, 0.055, 0.675, 0.19) 0.4s;
+  .open {
+    transform: translate(0, 0) scale(1);
+  }
+  header {
+    border: 1px solid;
+    .content {
+      margin-left: auto;
+    }
+  }
+  section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+}
