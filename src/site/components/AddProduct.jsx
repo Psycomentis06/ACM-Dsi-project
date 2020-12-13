@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Collapse } from "reactstrap";
+import { Collapse, Input, Tooltip } from "reactstrap";
 import { useCustomEventListener } from "react-custom-events";
 import "./AddProduct.scss";
 import UploadImage from "./UploadImage";
@@ -18,6 +18,7 @@ export default function AddProduct() {
   const [open, setOpen] = useState(false);
   const [minimise, setMinimise] = useState(false);
   const [identifyingColor, setIdentifyingColor] = useState(false);
+  const [tooltip, setTooltip] = useState(false);
   useCustomEventListener("image-uploaded", (data) => {
     setProduct((prevState) => ({
       ...prevState,
@@ -51,7 +52,7 @@ export default function AddProduct() {
           <section>
             <div>
               <label htmlFor="productName">Product name</label>
-              <input
+              <Input
                 type="text"
                 id="productName"
                 placeholder="Product name"
@@ -66,7 +67,7 @@ export default function AddProduct() {
             </div>
             <div>
               <label htmlFor="productPrice">Product price</label>
-              <input
+              <Input
                 type="number"
                 id="productPrice"
                 placeholder="Product price"
@@ -81,7 +82,7 @@ export default function AddProduct() {
             </div>
             <div>
               <label htmlFor="productSale">Product sale</label>
-              <input
+              <Input
                 type="number"
                 id="productSale"
                 placeholder="Product sale"
@@ -97,6 +98,8 @@ export default function AddProduct() {
             <div>
               <label htmlFor="productDesc">Product description</label>
               <textarea
+                wrap="on"
+                style={{ resize: "none", width: "100%" }}
                 type="text"
                 id="productDesc"
                 placeholder="Product name"
@@ -111,7 +114,7 @@ export default function AddProduct() {
             </div>
             <div>
               <label htmlFor="productStock">Product stock</label>
-              <input
+              <Input
                 type="text"
                 id="productStock"
                 placeholder="Product stock"
@@ -126,7 +129,7 @@ export default function AddProduct() {
             </div>
             <div>
               <label htmlFor="productCategory">Product category</label>
-              <input
+              <Input
                 type="text"
                 id="productCategory"
                 placeholder="Product category"
@@ -149,20 +152,25 @@ export default function AddProduct() {
                   style={{ objectFit: "cover" }}
                   src={product.imageUrl}
                   onLoad={(e) => {
+                    setIdentifyingColor(true);
                     try {
-                      let colorThief = new ColorThief().getColor(
-                        e.currentTarget
-                      );
+                      setTimeout(() => {
+                        let colorThief = new ColorThief().getColor(
+                          e.currentTarget
+                        );
 
-                      setProduct((prevState) => ({
-                        ...prevState,
-                        color: `rbg(${colorThief[0]}, ${colorThief[1]}, ${colorThief[2]})`,
-                      }));
+                        setProduct((prevState) => ({
+                          ...prevState,
+                          color: `rbg(${colorThief[0]}, ${colorThief[1]}, ${colorThief[2]})`,
+                        }));
+                      }, 500);
                     } catch (err) {
                       setProduct((prevState) => ({
                         ...prevState,
                         color: "#7f8c8d",
                       }));
+                    } finally {
+                      setIdentifyingColor(false);
                     }
                   }}
                 />
@@ -179,15 +187,27 @@ export default function AddProduct() {
                 </h4>
               </div>
             ) : null}
+
+            <button className="btn btn-primary btn-fluid my-3">
+              Add Product
+            </button>
           </section>
         </Collapse>
       </div>
       <button
         className="btn bg-gradient-primary btn-fab float-right-bottom"
         onClick={() => setOpen(true)}
+        id="addProduct"
       >
         <i className="fas fa-plus fa-3x"></i>
       </button>
+      <Tooltip
+        isOpen={tooltip}
+        toggle={() => setTooltip(!tooltip)}
+        target="addProduct"
+      >
+        Add new product
+      </Tooltip>
     </>
   );
 }

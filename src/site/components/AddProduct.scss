@@ -9,9 +9,6 @@
   right: 10px;
   transform: translate(600px, 500px) scale(0);
   transition: cubic-bezier(0.55, 0.055, 0.675, 0.19) 0.4s;
-  input {
-    padding: 0 10px;
-  }
   &.open {
     transform: translate(0, 0) scale(1);
   }
