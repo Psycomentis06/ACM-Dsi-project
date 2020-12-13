@@ -47,7 +47,13 @@ export default function AdminNavbar() {
             </NavItem>
             <NavItem>
               <Link className="admin-logo" to="/admin/profile">
-                <img src={AdminAvatar} alt="Admin avatar" />
+                <img
+                  src={
+                    JSON.parse(localStorage.getItem("userData"))?.photo ||
+                    AdminAvatar
+                  }
+                  alt="Admin avatar"
+                />
               </Link>
             </NavItem>
             <NavItem>
