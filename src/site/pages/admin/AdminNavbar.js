@@ -22,6 +22,7 @@ export default function AdminNavbar() {
 
   const logout = () => {
     localStorage.removeItem("token"); // lose token
+    localStorage.removeItem("userData"); // remove userdata
     history.push("/");
   };
   return (
