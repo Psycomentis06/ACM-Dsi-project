@@ -1,22 +1,37 @@
 .add-product {
+  z-index: 1;
   border-radius: 15px;
   padding: 20px;
-  width: 500px;
-  height: 800px;
-  transform: translate(100px, 50px) scale(0);
+  width: 600px;
+  overflow-y: hidden;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  transform: translate(600px, 500px) scale(0);
   transition: cubic-bezier(0.55, 0.055, 0.675, 0.19) 0.4s;
-  .open {
+  input {
+    padding: 0 10px;
+  }
+  &.open {
     transform: translate(0, 0) scale(1);
   }
   header {
-    border: 1px solid;
+    margin-bottom: 10px;
     .content {
-      margin-left: auto;
+      width: 100%;
+      text-align: right;
     }
   }
   section {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    overflow-y: scroll;
+    height: 500px;
+    div {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
   }
 }
