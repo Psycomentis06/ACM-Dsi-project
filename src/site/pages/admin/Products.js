@@ -1,9 +1,11 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import ProductCard from "../../components/Product";
+import AddProduct from "../../components/AddProduct";
 export default function Product() {
   return (
     <Container className="mt-3">
+      <AddProduct />
       <Row>
         <Col md>
           {" "}

@@ -4,6 +4,7 @@
   justify-content: space-evenly;
   width: 100%;
   height: calc(100vh - 120px);
+  overflow-y: hidden;
   border-radius: 15px;
   padding: 10px;
   .edit-content {
