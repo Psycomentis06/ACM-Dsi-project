@@ -2,7 +2,20 @@ import isLoggedIn from "./isLoggedIn";
 export default function hasPermission(permission) {
   if (isLoggedIn().valid) {
     // logged in already
-    if (isLoggedIn().role === permission) {
+    let loggedIn = isLoggedIn();
+    if (
+      permission === "user" &&
+      (loggedIn.role === "user" ||
+        loggedIn.role === "admin" ||
+        loggedIn.role === "superadmin")
+    ) {
+      return true;
+    } else if (
+      permission === "admin" &&
+      (loggedIn.role === "admin" || loggedIn.role === "superadmin")
+    ) {
+      return true;
+    } else if (permission === "superadmin" && loggedIn.role === permission) {
       return true;
     } else {
       return false;

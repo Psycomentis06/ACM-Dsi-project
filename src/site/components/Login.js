@@ -27,8 +27,10 @@ export default function Login({ locationState }) {
           // valid response
           // 1st we save the token
           localStorage.setItem("token", response.data.token);
+          // 2nd set userData
+          localStorage.setItem("userData", JSON.stringify(response.data.data));
           // we redirect for last route
-          history.replace(locationState.path || "/"); // if user redirected take him to last path otherwise go to home
+          history.replace(locationState?.path || "/"); // if user redirected take him to last path otherwise go to home
         } else {
           setReqError("Unhandled response please try again");
         }
@@ -39,6 +41,7 @@ export default function Login({ locationState }) {
         } else if (err.request) {
           setReqError("Error made in request try again");
         } else {
+          console.log(err);
           setReqError("Connection error");
         }
       })

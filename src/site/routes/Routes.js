@@ -48,10 +48,14 @@ export default function Routes() {
           <ProtectedRoute permission="admin" exact path="/admin/inbox/:id">
             <Chat />
           </ProtectedRoute>
-          <ProtectedRoute permission="admin" exact path="/admin/users">
+          <ProtectedRoute permission="superadmin" exact path="/admin/users">
             <Users />
           </ProtectedRoute>
-          <ProtectedRoute permission="admin" exact path="/admin/users/:userId">
+          <ProtectedRoute
+            permission="superadmin"
+            exact
+            path="/admin/users/:userId"
+          >
             <User />
           </ProtectedRoute>
           <ProtectedRoute permission="admin" path="/admin/orders">
