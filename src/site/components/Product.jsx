@@ -17,6 +17,7 @@ export default function Product({
 }) {
   const history = useHistory();
   const [likeTooltip, setLikeTooltip] = useState(false);
+  const [dislikeTooltip, setDislikeTooltip] = useState(false);
   const [shareTooltip, setShareTooltip] = useState(false);
   return (
     <div
@@ -52,24 +53,26 @@ export default function Product({
             <div className="product-img">
               <div className="actions">
                 <div className={liked === false ? "like" : "dislike"}>
-                  <button className="btn" id="likedislikebutton">
-                    <i
-                      className={
-                        "fas " +
-                        (liked === false ? "fa-heart" : "fa-heart-broken")
-                      }
-                    ></i>
-                    {liked === false ? (
+                  {liked === true ? (
+                    <>
+                      <button className="btn" id="dislikedislikebutton">
+                        <i className="fas fa-heart-broken"></i>
+                      </button>
                       <Tooltip
-                        isOpen={likeTooltip}
+                        isOpen={dislikeTooltip}
                         toggle={() => {
-                          setLikeTooltip(!likeTooltip);
+                          setDislikeTooltip(!dislikeTooltip);
                         }}
-                        target="likedislikebutton"
+                        target="dislikedislikebutton"
                       >
                         Dislike product
                       </Tooltip>
-                    ) : (
+                    </>
+                  ) : (
+                    <>
+                      <button className="btn" id="likedislikebutton">
+                        <i className="fas fa-heart"></i>
+                      </button>
                       <Tooltip
                         isOpen={likeTooltip}
                         toggle={() => {
@@ -79,8 +82,8 @@ export default function Product({
                       >
                         Like Product
                       </Tooltip>
-                    )}
-                  </button>
+                    </>
+                  )}
                 </div>
                 <div className="share">
                   <button className="btn" id="sharebutton">
