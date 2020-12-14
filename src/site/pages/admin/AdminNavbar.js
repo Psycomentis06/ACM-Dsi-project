@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Navbar,
   Nav,
@@ -9,10 +9,53 @@ import {
   DropdownMenu,
   DropdownToggle,
 } from "reactstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
+import Axios from "axios";
 import "./dashboard.scss";
 import AdminAvatar from "../../../assets/images/avatar.svg";
 export default function AdminNavbar() {
+  const [redirect, setRedirect] = useState({
+    valid: false,
+    message: "",
+    path: "",
+  });
+  useEffect(() => {
+    let unmounted = false;
+    const userData = localStorage.getItem("userData"); // if user logged before
+    if (userData !== undefined && userData !== null) {
+      const parsedData = JSON.parse(userData);
+      Axios.get(process.env.REACT_APP_API_URL + "/user/" + parsedData.id, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }).catch((err) => {
+        if (!unmounted) {
+          if (err.response) {
+            if (err.response.status === 401) {
+              if (
+                err.response.data.message === "Wrong privileges" ||
+                err.response.data.message === "Auth error"
+              ) {
+                setRedirect({
+                  valid: true,
+                  message: "Your session is expired, please login again",
+                  path: "/login",
+                });
+              }
+            } else if (err.response.status === 404) {
+              setRedirect({
+                valid: true,
+                message: "It looks like your id is not valid, log in again",
+                path: "/login",
+              });
+            }
+          }
+        }
+      });
+    }
+    return () => (unmounted = true);
+  }, []);
+
   const [openSlider, setOpenSlider] = useState(false);
   const [navDropdown, setNavDropdown] = useState(false);
   const navDropdownHandler = () => {
@@ -25,6 +68,21 @@ export default function AdminNavbar() {
     localStorage.removeItem("userData"); // remove userdata
     history.push("/");
   };
+
+  if (redirect.valid) {
+    return (
+      <Redirect
+        to={{
+          pathname: redirect.path,
+          state: {
+            message: redirect.message,
+            path: "/admin",
+          },
+        }}
+      />
+    );
+  }
+
   return (
     <>
       <Navbar expand="md" className="gradient-full" color="light" light>
