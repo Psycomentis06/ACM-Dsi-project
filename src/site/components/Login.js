@@ -55,7 +55,7 @@ export default function Login({ locationState }) {
       <div className="content">
         <Form onSubmit={handleSubmit(onSubmit)}>
           <h1 className="text-center"> Login</h1>
-          {reqError.length > 0 ? (
+          {reqError?.length > 0 ? (
             <Alert color="danger">{reqError} </Alert>
           ) : null}
           {locationState !== undefined ? (
