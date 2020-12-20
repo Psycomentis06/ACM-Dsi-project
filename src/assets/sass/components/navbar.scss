@@ -11,6 +11,14 @@
       .nav-link {
         color: $white;
         text-shadow: 1px 3px 10px $black;
+        transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        &:hover {
+          color: darken($color: $white, $amount: 10);
+        }
+        &.disabled {
+          color: rgba(255, 255, 255, 0.5);
+          text-shadow: unset;
+        }
       }
     }
   }

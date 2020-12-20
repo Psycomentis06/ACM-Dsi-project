@@ -82,7 +82,7 @@ export default function AdminNavbar() {
       />
     );
   }
-
+  const userRole = JSON.parse(localStorage.getItem("userDate"))?.roles;
   return (
     <>
       <Navbar expand="md" className="gradient-full" color="light" light>
@@ -100,7 +100,13 @@ export default function AdminNavbar() {
               </Link>
             </NavItem>
             <NavItem>
-              <Link to="/admin/users" className="nav-link">
+              <Link
+                to="/admin/users"
+                className={
+                  "nav-link " +
+                  (userRole === "ROLE_SUPERADMIN" ? "" : "disabled")
+                }
+              >
                 Users
               </Link>
             </NavItem>
