@@ -16,7 +16,7 @@ export default function UsersDropZone({
     drop: (e) => {
       swal.fire({
         title: "Confirmation",
-        text: `You are going to give the user ${e.user.name} the following role ${e.user.role}. if you are sure click ok or cancel`,
+        text: `You are going to give the user ${e.user.name} the following role ${userType}. if you are sure click ok or cancel`,
         confirmButtonText: "Confirm",
         cancelButtonText: "Go back",
         showCancelButton: true,
@@ -28,12 +28,24 @@ export default function UsersDropZone({
             process.env.REACT_APP_API_URL + "/user/" + e.user.id + "/roles",
             {
               role: userType,
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("token"),
+              },
             }
           )
             .then((response) => {
               swal.fire("Success", response.data.message, "success");
               // emit custom event to handle in parent
               emitCustomEvent("user-role-changed", e.user);
+              // if logged superadmin change his own role he will get logged out automatically
+              if (
+                e.user.id === JSON.parse(localStorage.getItem("userData"))?.id
+              ) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("userData");
+              }
             })
             .catch((err) => {
               swal.fire("Error", err.response.data.message, "error");
