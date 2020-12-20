@@ -293,7 +293,11 @@ export default function AddProduct() {
                 </h4>
               </div>
             ) : null}
-
+            {error?.length > 0 && (
+              <div>
+                <Alert color="danger">{error}</Alert>
+              </div>
+            )}
             {loading ? (
               <button className="btn btn-primary btn-fluid my-3" disabled>
                 <span
@@ -320,25 +324,26 @@ export default function AddProduct() {
           </section>
         </Collapse>
       </div>
-      {error?.length > 0 && (
-        <div>
-          <Alert color="danger">{error}</Alert>
-        </div>
-      )}
-      <button
-        className="btn bg-gradient-primary btn-fab float-right-bottom"
-        onClick={() => setOpen(true)}
-        id="addProduct"
-      >
-        <i className="fas fa-plus fa-3x"></i>
-      </button>
-      <Tooltip
-        isOpen={tooltip}
-        toggle={() => setTooltip(!tooltip)}
-        target="addProduct"
-      >
-        Add new product
-      </Tooltip>
+
+      {open === false ? (
+        <>
+          <button
+            style={{ zIndex: 1 }}
+            className="btn bg-gradient-primary btn-fab float-right-bottom"
+            onClick={() => setOpen(true)}
+            id="addProduct"
+          >
+            <i className="fas fa-plus fa-3x"></i>
+          </button>
+          <Tooltip
+            isOpen={tooltip}
+            toggle={() => setTooltip(!tooltip)}
+            target="addProduct"
+          >
+            Add new product
+          </Tooltip>
+        </>
+      ) : null}
     </>
   );
 }
