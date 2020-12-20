@@ -267,7 +267,7 @@ export default function AddProduct() {
 
                         setProduct((prevState) => ({
                           ...prevState,
-                          color: `rbg(${colorThief[0]}, ${colorThief[1]}, ${colorThief[2]})`,
+                          color: `rgb(${colorThief[0]}, ${colorThief[1]}, ${colorThief[2]})`,
                         }));
                       }, 500);
                     } catch (err) {
