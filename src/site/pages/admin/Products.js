@@ -92,9 +92,16 @@ export default function Product() {
         {products.map((product) => (
           <Col md>
             <ProductCard
-              productBgColor="rgb(64, 128, 224)"
+              key={product.id}
+              productBgColor={product.backgroundcolor}
               path="/admin/products/p1"
               liked={true}
+              category={product.category}
+              description={product.description}
+              img={product.imageurl}
+              title={product.title}
+              price={product.price}
+              sale={product.discount}
             />
           </Col>
         ))}
