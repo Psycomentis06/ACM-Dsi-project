@@ -19,8 +19,7 @@ export default function AdminNavbar() {
     message: "",
     path: "",
   });
-  useEffect(() => {
-    let unmounted = false;
+  const getUser = (unmounted) => {
     const userData = localStorage.getItem("userData"); // if user logged before
     if (userData !== undefined && userData !== null) {
       const parsedData = JSON.parse(userData);
@@ -53,6 +52,11 @@ export default function AdminNavbar() {
         }
       });
     }
+  };
+  useEffect(() => {
+    let unmounted = false;
+    getUser(unmounted);
+    setInterval(() => getUser(unmounted), 1800000);
     return () => (unmounted = true);
   }, []);
 
@@ -82,7 +86,7 @@ export default function AdminNavbar() {
       />
     );
   }
-  const userRole = JSON.parse(localStorage.getItem("userDate"))?.roles;
+  const userData = JSON.parse(localStorage.getItem("userData"));
   return (
     <>
       <Navbar expand="md" className="gradient-full" color="light" light>
@@ -104,7 +108,7 @@ export default function AdminNavbar() {
                 to="/admin/users"
                 className={
                   "nav-link " +
-                  (userRole === "ROLE_SUPERADMIN" ? "" : "disabled")
+                  (userData?.roles === "ROLE_SUPERADMIN" ? "" : "disabled")
                 }
               >
                 Users
@@ -112,13 +116,7 @@ export default function AdminNavbar() {
             </NavItem>
             <NavItem>
               <Link className="admin-logo" to="/admin/profile">
-                <img
-                  src={
-                    JSON.parse(localStorage.getItem("userData"))?.photo ||
-                    AdminAvatar
-                  }
-                  alt="Admin avatar"
-                />
+                <img src={userData?.photo || AdminAvatar} alt="Admin avatar" />
               </Link>
             </NavItem>
             <NavItem>
