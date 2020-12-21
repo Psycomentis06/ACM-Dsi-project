@@ -37,7 +37,11 @@ export default function Login({ locationState }) {
       })
       .catch((err) => {
         if (err.response) {
-          setReqError(err.response.data.message);
+          if (err.response.status === 500) {
+            setReqError("Internal server error please try later");
+          } else {
+            setReqError(err.response.data.message);
+          }
         } else if (err.request) {
           setReqError("Error made in request try again");
         } else {
