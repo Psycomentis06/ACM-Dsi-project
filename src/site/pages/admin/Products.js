@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Alert } from "reactstrap";
+import { Container, Row, Col, Alert, Spinner } from "reactstrap";
 import { Redirect } from "react-router-dom";
 import Axios from "axios";
+import { useCustomEventListener } from "react-custom-events";
 import ProductCard from "../../components/Product";
 import AddProduct from "../../components/AddProduct";
 import NoData from "../../components/NoData";
@@ -15,7 +16,8 @@ export default function Product() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
   const [loadingPage, setLoadingPage] = useState(true);
-  useEffect(() => {
+  const [loading, setLoading] = useState(false);
+  const getProducts = () => {
     setTimeout(() => {
       Axios.get(process.env.REACT_APP_API_URL + "/product/all", {
         headers: {
@@ -66,7 +68,18 @@ export default function Product() {
         })
         .finally(() => setLoadingPage(false));
     }, 500);
+  };
+  useEffect(() => {
+    getProducts();
   }, []);
+  // listen to add product event
+  useCustomEventListener("add-product", () => {
+    setLoading(true);
+    setTimeout(() => {
+      getProducts();
+      setLoading(false);
+    }, 500);
+  });
   if (redirect.valid) {
     return (
       <Redirect
@@ -88,6 +101,12 @@ export default function Product() {
       "ROLE_SUPERADMIN" ? (
         <AddProduct />
       ) : null}
+      {loading && (
+        <Spinner
+          color="success"
+          style={{ width: "150px", height: "150px", textAlign: "center" }}
+        />
+      )}
       <Row>
         {products.map((product) => (
           <Col md>

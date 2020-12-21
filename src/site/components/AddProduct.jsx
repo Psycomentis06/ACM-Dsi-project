@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Collapse, Input, Tooltip, Alert } from "reactstrap";
 import { useCustomEventListener } from "react-custom-events";
 import { Redirect } from "react-router-dom";
+import { emitCustomEvent } from "react-custom-events";
 import "./AddProduct.scss";
 import UploadImage from "./UploadImage";
 import ColorThief from "colorthief/dist/color-thief.umd";
@@ -73,6 +74,8 @@ export default function AddProduct() {
               title: "Product added successfuly",
               icon: "success",
             });
+            // emit event
+            emitCustomEvent("add-product");
           }
         })
         .catch((err) => {
