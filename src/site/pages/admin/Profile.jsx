@@ -11,6 +11,7 @@ import SidebarContent from "./SidebarContent";
 import AdminProfileNotification from "./AdminProfileNotification";
 import AdminProfilePassword from "./AdminProfilePassword";
 import AdminProfileSettings from "./AdminProfileSettings";
+import AdminProfile from "./AdminProfile";
 export default function Profile() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const { path, url } = useRouteMatch();
@@ -18,7 +19,7 @@ export default function Profile() {
     <Router>
       <div className="profile">
         <SidebarContent isOpen={sidebarOpen}>
-          <div className="sidebar">
+          <div className="sidebar" style={{ position: "fixed" }}>
             <AdminSidebar isOpen={sidebarOpen} url={url} />
           </div>
           <div className="content">
@@ -38,23 +39,22 @@ export default function Profile() {
                 ></i>
               </button>
             </div>
-            <Switch>
-              <Route exact path={path + "/password"}>
-                <AdminProfilePassword />
-              </Route>
-              <Route exact path={path + "/notification"}>
-                <AdminProfileNotification />
-              </Route>
-              <Route exact path={path + "/settings"}>
-                <AdminProfileSettings />
-              </Route>
-              <Route exact path={path + "/"}>
-                {
-                  // Profile content here
-                  <h1>Profile home page</h1>
-                }
-              </Route>
-            </Switch>
+            <div style={{ height: "90vh", overflowY: "scroll" }}>
+              <Switch>
+                <Route exact path={path + "/password"}>
+                  <AdminProfilePassword />
+                </Route>
+                <Route exact path={path + "/notification"}>
+                  <AdminProfileNotification />
+                </Route>
+                <Route exact path={path + "/settings"}>
+                  <AdminProfileSettings />
+                </Route>
+                <Route exact path={path + "/"}>
+                  <AdminProfile />
+                </Route>
+              </Switch>
+            </div>
           </div>
         </SidebarContent>
       </div>
