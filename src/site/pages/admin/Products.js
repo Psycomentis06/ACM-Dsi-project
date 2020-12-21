@@ -7,6 +7,7 @@ import ProductCard from "../../components/Product";
 import AddProduct from "../../components/AddProduct";
 import NoData from "../../components/NoData";
 import LoadingPage from "../../components/LoadingPage";
+import excerpt from "../../functions/excerpt";
 export default function Product() {
   const [redirect, setRedirect] = useState({
     valid: false,
@@ -116,7 +117,11 @@ export default function Product() {
               path="/admin/products/p1"
               liked={true}
               category={product.category}
-              description={product.description}
+              description={
+                product.description?.length > 0
+                  ? excerpt(product.description, 40)
+                  : ""
+              }
               img={product.imageurl}
               title={product.title}
               price={product.price}
