@@ -39,7 +39,13 @@ export default function Profile() {
                 ></i>
               </button>
             </div>
-            <div style={{ height: "90vh", overflowY: "scroll" }}>
+            <div
+              style={{
+                height: "90vh",
+                overflowX: "hidden",
+                overflowY: "scroll",
+              }}
+            >
               <Switch>
                 <Route exact path={path + "/password"}>
                   <AdminProfilePassword />
