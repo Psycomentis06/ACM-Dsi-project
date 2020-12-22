@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, FormGroup, FormFeedback, FormText, Input } from "reactstrap";
+import { Row, Col, FormGroup, Input, Form, Spinner } from "reactstrap";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/bootstrap.css";
 export default function AdminProfile() {
   const userData = JSON.parse(localStorage.getItem("userData"));
   const scrollIntoBtnView = (e) => {
@@ -13,14 +15,47 @@ export default function AdminProfile() {
   // Input states
   const [firstNameInput, setFirstNameInput] = useState("");
   const [lastNameInput, setLastNameInput] = useState("");
-  // Error States
-  const [firstNameError, setFirstNameError] = useState("");
-  const [lastNameError, setLastNameError] = useState("");
-
+  const [emailInput, setEmailInput] = useState("");
+  const [countryInput, setCountryInput] = useState("");
+  const [addressInput, setAddressInput] = useState("");
+  const [bioInput, setBioInput] = useState("");
+  const [phoneInput, setPhoneInput] = useState("");
+  // submit state
+  const [submitted, setSubmitted] = useState(false);
   useEffect(() => {
     setFirstNameInput(userData.firstName);
     setLastNameInput(userData.lastName);
+    setEmailInput(userData.email);
+    setCountryInput(userData.country || "");
+    setAddressInput(userData.address || "");
+    setBioInput(userData.bio || "");
+    setPhoneInput(userData.phoneNumber || "");
   }, []);
+
+  const EditPersonalInfos = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 1000);
+    console.log(firstNameInput + " | " + lastNameInput + " | " + emailInput);
+  };
+  const EditAddress = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 1000);
+    console.log(countryInput + " | " + addressInput);
+  };
+  const EditBio = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 1000);
+    console.log(bioInput);
+  };
+  const EditPhone = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 1000);
+    console.log(phoneInput);
+  };
   return (
     <div className="mt-4">
       <Row>
@@ -108,46 +143,22 @@ export default function AdminProfile() {
               <legend className="w-auto text-secondary-2">
                 Personal Infos
               </legend>
-              <div>
-                <Row>
+              <Form onSubmit={(e) => EditPersonalInfos(e)}>
+                <Row className="p-3 mt-4">
                   <Col>
                     <FormGroup>
                       <label htmlFor="firstNameId">First Name</label>
-                      {firstNameError?.length > 0 ? (
-                        <>
-                          <Input
-                            id="firstNameId"
-                            placeholder="Your first name"
-                            value={firstNameInput}
-                            onChange={(e) => {
-                              setFirstNameInput(e.target.value);
-                              if (firstNameInput.length > 3) {
-                                setFirstNameError("");
-                              }
-                            }}
-                            invalid
-                          />
-                          <FormFeedback> {firstNameError} </FormFeedback>
-                        </>
-                      ) : (
-                        <Input
-                          value={firstNameInput}
-                          id="firstNameId"
-                          placeholder="Your first name"
-                          onChange={(e) => {
-                            setFirstNameInput(e.target.value);
-                            if (firstNameInput.length < 3) {
-                              setFirstNameError(
-                                "First name length should be greater than 3"
-                              );
-                            }
-                          }}
-                        />
-                      )}
+                      <Input
+                        id="firstNameId"
+                        placeholder="Your first name"
+                        value={firstNameInput}
+                        onChange={(e) => {
+                          setFirstNameInput(e.target.value);
+                        }}
+                        required
+                      />
                     </FormGroup>
                   </Col>
-                </Row>
-                <Row>
                   <Col>
                     <FormGroup>
                       <label htmlFor="lastNameId">Last Name</label>
@@ -157,31 +168,48 @@ export default function AdminProfile() {
                         placeholder="Your last name"
                         onChange={(e) => {
                           setLastNameInput(e.target.value);
-                          if (lastNameInput.lenght < 3) {
-                            setLastNameError(
-                              "Last name length should be greater than 3"
-                            );
-                          }
                         }}
+                        required
                       />
                     </FormGroup>
                   </Col>
                 </Row>
-              </div>
+
+                <Row>
+                  <Col>
+                    <FormGroup>
+                      <label htmlFor="emailId">Email</label>
+                      <Input
+                        type="email"
+                        value={emailInput}
+                        id="emailId"
+                        placeholder="Your email"
+                        onChange={(e) => {
+                          setEmailInput(e.target.value);
+                        }}
+                        required
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="text-center my-3">
+                    <button
+                      type="submit"
+                      className="btn bg-gradient-purple w-75"
+                      disabled={submitted ? true : false}
+                    >
+                      {submitted ? (
+                        <Spinner style={{ width: "25px", height: "25px" }} />
+                      ) : (
+                        "Submit"
+                      )}
+                    </button>
+                  </Col>
+                </Row>
+              </Form>
             </fieldset>
           </div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
           <br />
           <br />
           <br />
@@ -202,18 +230,53 @@ export default function AdminProfile() {
               }}
             >
               <legend className="w-auto text-secondary-2">Address</legend>
+              <div>
+                <Form onSubmit={(e) => EditAddress(e)}>
+                  <Row>
+                    <Col>
+                      <FormGroup>
+                        <label htmlFor="countryId">Country</label>
+                        <Input
+                          id="countryId"
+                          placeholder="Your country"
+                          value={countryInput}
+                          onChange={(e) => setCountryInput(e.target.value)}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <FormGroup>
+                        <label htmlFor="addressId">Address</label>
+                        <Input
+                          id="addressId"
+                          placeholder="Your address"
+                          value={addressInput}
+                          onChange={(e) => setAddressInput(e.target.value)}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="text-center my-3">
+                      <button
+                        type="submit"
+                        className="btn bg-gradient-purple w-75"
+                        disabled={submitted ? true : false}
+                      >
+                        {submitted ? (
+                          <Spinner style={{ width: "25px", height: "25px" }} />
+                        ) : (
+                          "Submit"
+                        )}
+                      </button>
+                    </Col>
+                  </Row>
+                </Form>
+              </div>
             </fieldset>
-          </div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
+          </div>{" "}
           <br />
           <br />
           <br />
@@ -236,18 +299,43 @@ export default function AdminProfile() {
               }}
             >
               <legend className="w-auto text-secondary-2">Description</legend>
+              <Form onSubmit={(e) => EditBio(e)}>
+                <Row>
+                  <Col>
+                    <FormGroup>
+                      <label htmlFor="bioId">Bio</label>
+                      <textarea
+                        id="bioId"
+                        value={bioInput}
+                        placeholder="Your Bio"
+                        onChange={(e) => setBioInput(e.target.value)}
+                        style={{
+                          width: "100%",
+                          height: "250px",
+                          resize: "none",
+                        }}
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="text-center my-3">
+                    <button
+                      type="submit"
+                      className="btn bg-gradient-purple w-75"
+                      disabled={submitted ? true : false}
+                    >
+                      {submitted ? (
+                        <Spinner style={{ width: "25px", height: "25px" }} />
+                      ) : (
+                        "Submit"
+                      )}
+                    </button>
+                  </Col>
+                </Row>
+              </Form>
             </fieldset>
           </div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
           <br />
           <br />
           <br />
@@ -270,6 +358,43 @@ export default function AdminProfile() {
               }}
             >
               <legend className="w-auto text-secondary-2">Phone</legend>
+              <Form onSubmit={(e) => EditPhone(e)}>
+                <Row>
+                  <Col>
+                    <FormGroup>
+                      <label htmlFor="phoneId">Phone Number</label>
+                      <PhoneInput
+                        id="phoneId"
+                        country="tn"
+                        value={phoneInput}
+                        placeholder="Your phone number"
+                        onChange={(phone) => setPhoneInput(phone)}
+                        inputClass="border-secondary"
+                        inputStyle={{
+                          width: "100%",
+                          borderRadius: "15px",
+                          border: "2px solid",
+                        }}
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="text-center my-3">
+                    <button
+                      type="submit"
+                      className="btn bg-gradient-purple w-75"
+                      disabled={submitted ? true : false}
+                    >
+                      {submitted ? (
+                        <Spinner style={{ width: "25px", height: "25px" }} />
+                      ) : (
+                        "Submit"
+                      )}
+                    </button>
+                  </Col>
+                </Row>
+              </Form>
             </fieldset>
           </div>
           <br />
