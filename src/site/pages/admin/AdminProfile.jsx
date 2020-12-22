@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, FormGroup, Input, Form, Spinner } from "reactstrap";
+import Axios from "axios";
+import { Redirect } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";
+import errorsHandler from "../../functions/errorHandler";
 export default function AdminProfile() {
+  const swal = withReactContent(Swal);
   const userData = JSON.parse(localStorage.getItem("userData"));
   const scrollIntoBtnView = (e) => {
     document
@@ -47,8 +53,47 @@ export default function AdminProfile() {
   const EditBio = (e) => {
     e.preventDefault();
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 1000);
-    console.log(bioInput);
+    setTimeout(() => {
+      Axios.put(
+        process.env.REACT_APP_API_URL + "/user/" + userData.id + "/bio",
+        {
+          bio: bioInput,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
+        .then((response) => {
+          if (response.data.valid === true) {
+            swal.fire("Success", response.data.message, "success");
+            userData.bio = bioInput;
+            localStorage.setItem("userData", JSON.stringify(userData));
+          } else {
+            swal.fire("", "Unhandled response", "warning");
+          }
+        })
+        .catch((err) => {
+          const error = errorsHandler(err);
+          if (error.valid === true) {
+            // error encountred
+            if (error.type === "error") {
+              swal.fire("Error", error.message, "error");
+            } else if (error.type === "redirect") {
+              return (
+                <Redirect
+                  to={{
+                    pathname: error.path,
+                    state: { message: error.message, path: "/admin/profile" },
+                  }}
+                />
+              );
+            }
+          }
+        })
+        .finally(() => setSubmitted(false));
+    }, 1000);
   };
   const EditPhone = (e) => {
     e.preventDefault();
