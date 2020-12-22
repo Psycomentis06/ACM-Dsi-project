@@ -24,6 +24,7 @@ export default function AdminProfile() {
   const [emailInput, setEmailInput] = useState("");
   const [countryInput, setCountryInput] = useState("");
   const [addressInput, setAddressInput] = useState("");
+  const [cityInput, setCityInput] = useState("");
   const [bioInput, setBioInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
   // submit state
@@ -36,19 +37,106 @@ export default function AdminProfile() {
     setAddressInput(userData.address || "");
     setBioInput(userData.bio || "");
     setPhoneInput(userData.phoneNumber || "");
+    setCityInput(userData.city || "");
   }, []);
 
   const EditPersonalInfos = (e) => {
     e.preventDefault();
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 1000);
-    console.log(firstNameInput + " | " + lastNameInput + " | " + emailInput);
+    setTimeout(() => {
+      Axios.put(
+        process.env.REACT_APP_API_URL + "/user/" + userData.id,
+        {
+          first_name: firstNameInput,
+          last_name: lastNameInput,
+          email: emailInput,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
+        .then((response) => {
+          if (response.data.valid === true) {
+            swal.fire("Success", response.data.message, "success");
+            userData.firstName = firstNameInput;
+            userData.lastName = lastNameInput;
+            userData.email = emailInput;
+            localStorage.setItem("userData", JSON.stringify(userData));
+          } else {
+            swal.fire("", "Unhandled response", "warning");
+          }
+        })
+        .catch((err) => {
+          const error = errorsHandler(err);
+          if (error.valid === true) {
+            // error encountred
+            if (error.type === "error") {
+              swal.fire("Error", error.message, "error");
+            } else if (error.type === "redirect") {
+              return (
+                <Redirect
+                  to={{
+                    pathname: error.path,
+                    state: { message: error.message, path: "/admin/profile" },
+                  }}
+                />
+              );
+            }
+          }
+        })
+        .finally(() => setSubmitted(false));
+    }, 1000);
   };
   const EditAddress = (e) => {
     e.preventDefault();
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 1000);
-    console.log(countryInput + " | " + addressInput);
+    setTimeout(() => {
+      Axios.put(
+        process.env.REACT_APP_API_URL + "/user/" + userData.id + "/address",
+        {
+          address: addressInput,
+          city: cityInput,
+          country: countryInput,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
+        .then((response) => {
+          if (response.data.valid === true) {
+            swal.fire("Success", response.data.message, "success");
+            userData.city = cityInput;
+            userData.country = countryInput;
+            userData.address = addressInput;
+            localStorage.setItem("userData", JSON.stringify(userData));
+          } else {
+            swal.fire("", "Unhandled response", "warning");
+          }
+        })
+        .catch((err) => {
+          const error = errorsHandler(err);
+          if (error.valid === true) {
+            // error encountred
+            if (error.type === "error") {
+              swal.fire("Error", error.message, "error");
+            } else if (error.type === "redirect") {
+              return (
+                <Redirect
+                  to={{
+                    pathname: error.path,
+                    state: { message: error.message, path: "/admin/profile" },
+                  }}
+                />
+              );
+            }
+          }
+        })
+        .finally(() => setSubmitted(false));
+    }, 1000);
   };
   const EditBio = (e) => {
     e.preventDefault();
@@ -98,8 +186,47 @@ export default function AdminProfile() {
   const EditPhone = (e) => {
     e.preventDefault();
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 1000);
-    console.log(phoneInput);
+    setTimeout(() => {
+      Axios.put(
+        process.env.REACT_APP_API_URL + "/user/" + userData.id + "/phone",
+        {
+          phone_number: phoneInput,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
+        .then((response) => {
+          if (response.data.valid === true) {
+            swal.fire("Success", response.data.message, "success");
+            userData.phoneNumber = phoneInput;
+            localStorage.setItem("userData", JSON.stringify(userData));
+          } else {
+            swal.fire("", "Unhandled response", "warning");
+          }
+        })
+        .catch((err) => {
+          const error = errorsHandler(err);
+          if (error.valid === true) {
+            // error encountred
+            if (error.type === "error") {
+              swal.fire("Error", error.message, "error");
+            } else if (error.type === "redirect") {
+              return (
+                <Redirect
+                  to={{
+                    pathname: error.path,
+                    state: { message: error.message, path: "/admin/profile" },
+                  }}
+                />
+              );
+            }
+          }
+        })
+        .finally(() => setSubmitted(false));
+    }, 1000);
   };
   return (
     <div className="mt-4">
@@ -286,6 +413,19 @@ export default function AdminProfile() {
                           placeholder="Your country"
                           value={countryInput}
                           onChange={(e) => setCountryInput(e.target.value)}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <FormGroup>
+                        <label htmlFor="cityId">City</label>
+                        <Input
+                          id="cityId"
+                          placeholder="Your city"
+                          value={cityInput}
+                          onChange={(e) => setCityInput(e.target.value)}
                         />
                       </FormGroup>
                     </Col>
