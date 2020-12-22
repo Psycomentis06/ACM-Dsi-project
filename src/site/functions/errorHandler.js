@@ -23,7 +23,6 @@ export default function errorHandler(err) {
             type: "error",
           };
         }
-        break;
       case 401:
         if (responseError.data.message) {
           return {
@@ -38,7 +37,6 @@ export default function errorHandler(err) {
             type: "error",
           };
         }
-        break;
       case 403:
         // Auth error
         if (responseError.data.message === "Auth error") {
@@ -80,7 +78,6 @@ export default function errorHandler(err) {
             };
           }
         }
-        break;
       case 404:
         return {
           valid: true,
@@ -88,7 +85,6 @@ export default function errorHandler(err) {
           type: "redirect",
           path: "/404",
         };
-        break;
       case 406:
         if (responseError.data.message) {
           return {
@@ -103,14 +99,18 @@ export default function errorHandler(err) {
             type: "error",
           };
         }
-        break;
       case 500:
         return {
           valid: true,
           message: "Internal server error pleae try later",
           type: "error",
         };
-        break;
+      default:
+        return {
+          valid: true,
+          message: "Unkown error",
+          type: "error",
+        };
     }
   } else if (requestError) {
     return { valid: true, message: "Connection error", type: "error" };
