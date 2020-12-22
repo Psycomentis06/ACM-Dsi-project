@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, FormGroup, Input, Form, Spinner } from "reactstrap";
 import Axios from "axios";
 import { Redirect } from "react-router-dom";
+import { useCustomEventListener } from "react-custom-events";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";
 import errorsHandler from "../../functions/errorHandler";
+import UploadImage from "../../components/UploadImage";
 export default function AdminProfile() {
   const swal = withReactContent(Swal);
   const userData = JSON.parse(localStorage.getItem("userData"));
@@ -39,6 +41,51 @@ export default function AdminProfile() {
     setPhoneInput(userData.phoneNumber || "");
     setCityInput(userData.city || "");
   }, []);
+
+  const EditProfilePhoto = (imageUrl) => {
+    Axios.put(
+      process.env.REACT_APP_API_URL + "/user/" + userData.id + "/photo",
+      {
+        imageUrl: imageUrl,
+      },
+      {
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+      }
+    )
+      .then((response) => {
+        if (response.data.valid === true) {
+          swal.fire("Success", response.data.message, "success");
+          userData.photo = imageUrl;
+          localStorage.setItem("userData", JSON.stringify(userData));
+        } else {
+          swal.fire("", "Unhandled response", "warning");
+        }
+      })
+      .catch((err) => {
+        const error = errorsHandler(err);
+        if (error.valid === true) {
+          // error encountred
+          if (error.type === "error") {
+            swal.fire("Error", error.message, "error");
+          } else if (error.type === "redirect") {
+            return (
+              <Redirect
+                to={{
+                  pathname: error.path,
+                  state: { message: error.message, path: "/admin/profile" },
+                }}
+              />
+            );
+          }
+        }
+      });
+  };
+
+  // uploaded image event
+
+  useCustomEventListener("image-uploaded", (data) => {
+    EditProfilePhoto(data.imageUrl);
+  });
 
   const EditPersonalInfos = (e) => {
     e.preventDefault();
@@ -240,6 +287,54 @@ export default function AdminProfile() {
             style={{ width: "100%", height: "200px", objectFit: "cover" }}
             src={userData.photo}
             alt="Admin profile avatar"
+            onClick={() =>
+              swal.fire({
+                imageUrl: userData.photo,
+                showConfirmButton: true,
+                confirmButtonText: "Change image",
+                showCancelButton: true,
+                preConfirm: () => {
+                  // upload image modal
+                  swal.fire({
+                    title: "Upload your new image (png) or place url",
+                    html: <UploadImage type="users" />,
+                    input: "url",
+                    inputPlaceholder: "Profile picture",
+                    inputLabel: "Image Url",
+                    showConfirmButton: true,
+                    confirmButtonText: "Change image",
+                    showCancelButton: true,
+                    allowOutsideClick: () => swal.isLoading(),
+                    preConfirm: (imageUrl) => {
+                      // send request to check if url gives image or a false url
+                      Axios.get(imageUrl)
+                        .then((response) => {
+                          if (
+                            response.headers["content-type"].includes("image")
+                          ) {
+                            // valid
+                            EditProfilePhoto(imageUrl);
+                          } else {
+                            // invalid
+                            swal.fire(
+                              "Error",
+                              "Image url dosen't correpond to an image",
+                              "warning"
+                            );
+                          }
+                        })
+                        .catch((err) => {
+                          swal.fire(
+                            "Url Error",
+                            "Error while loading the url please try again or change url",
+                            "error"
+                          );
+                        });
+                    },
+                  });
+                },
+              })
+            }
           />
           <div className="mt-3" style={{ textAlign: "center" }}>
             <p className="h4"> {userData.firstName} </p>
