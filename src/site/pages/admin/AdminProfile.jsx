@@ -29,6 +29,7 @@ export default function AdminProfile() {
   const [cityInput, setCityInput] = useState("");
   const [bioInput, setBioInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
   // submit state
   const [submitted, setSubmitted] = useState(false);
   useEffect(() => {
@@ -40,6 +41,7 @@ export default function AdminProfile() {
     setBioInput(userData.bio || "");
     setPhoneInput(userData.phoneNumber || "");
     setCityInput(userData.city || "");
+    setPhotoUrl(userData.photo);
   }, []);
 
   const EditProfilePhoto = (imageUrl) => {
@@ -55,6 +57,7 @@ export default function AdminProfile() {
       .then((response) => {
         if (response.data.valid === true) {
           swal.fire("Success", response.data.message, "success");
+          setPhotoUrl(imageUrl);
           userData.photo = imageUrl;
           localStorage.setItem("userData", JSON.stringify(userData));
         } else {
@@ -285,11 +288,11 @@ export default function AdminProfile() {
         >
           <img
             style={{ width: "100%", height: "200px", objectFit: "cover" }}
-            src={userData.photo}
+            src={photoUrl}
             alt="Admin profile avatar"
             onClick={() =>
               swal.fire({
-                imageUrl: userData.photo,
+                imageUrl: photoUrl,
                 showConfirmButton: true,
                 confirmButtonText: "Change image",
                 showCancelButton: true,
