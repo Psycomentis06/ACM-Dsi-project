@@ -17,6 +17,7 @@ import Orders from "../pages/admin/Orders";
 import Products from "../pages/admin/Products";
 import Product from "../pages/admin/Product";
 import Profile from "../pages/admin/Profile";
+import UploadedImages from "../pages/admin/UploadedImages";
 export default function Routes() {
   let location = useLocation();
   return (
@@ -73,6 +74,9 @@ export default function Routes() {
           </ProtectedRoute>
           <ProtectedRoute permission="admin" path="/admin/profile">
             <Profile />
+          </ProtectedRoute>
+          <ProtectedRoute permission="superadmin" path="/admin/uploads">
+            <UploadedImages />
           </ProtectedRoute>
           <Route path="/404">
             <NotFound />
