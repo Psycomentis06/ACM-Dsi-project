@@ -76,26 +76,64 @@ export default function UploadedImages() {
     <div className="uploads-page">
       <Row className="my-3 w-75 mx-auto">
         <Col>
-          <Input placeholder="Search for image by user " />
+          <Row>
+            <Col className="text-center">
+              {" "}
+              <p className="h4">Search</p>{" "}
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Input placeholder="Search for image by user " />
+            </Col>
+          </Row>
         </Col>
         <Col className="text-center">
           <Row>
             <Col>
-              <label> All </label>
-              <label>Users</label>
-              <label>Products</label>
+              <p className="h4">Filter</p>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <label>All users</label>
+            </Col>
+            <Col>
+              <label>Online</label>
+            </Col>
+            <Col>
+              <label>Offline</label>
             </Col>
           </Row>
           <Row>
             <Col>
               <label>
-                <Input type="radio" name="category" />
+                <input
+                  type="radio"
+                  value="all"
+                  name="radio_filter"
+                  style={{ width: "20px", height: "20px" }}
+                />
               </label>
+            </Col>
+            <Col>
               <label>
-                <Input type="radio" name="category" />
+                <input
+                  type="radio"
+                  value="online"
+                  name="radio_filter"
+                  style={{ width: "20px", height: "20px" }}
+                />
               </label>
+            </Col>
+            <Col>
               <label>
-                <Input type="radio" name="category" />
+                <input
+                  type="radio"
+                  value="offline"
+                  name="radio_filter"
+                  style={{ width: "20px", height: "20px" }}
+                />
               </label>
             </Col>
           </Row>
