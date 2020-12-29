@@ -5,11 +5,13 @@ import { Line } from "react-chartjs-2";
 import { Redirect } from "react-router-dom";
 import Axios from "axios";
 import errorHandler from "../../functions/errorHandler";
+import dateHandler from "../../functions/dateHandler";
 import StatCard from "../../components/StatCard";
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [chart, setChart] = useState({ charOne: [], chartTwo: [] });
+  const [chart, setChart] = useState({ charOne: [], charTwo: [] });
+  const [chartDays, setChartDays] = useState([]);
   const [stats, setStats] = useState({
     likes: 0,
     usersMonthly: 0,
@@ -25,6 +27,12 @@ export default function Dashboard() {
       .then((response) => {
         if (response.data.valid === true) {
           let monthlyUsers = 0;
+          let dataArray = [];
+          let usersOverMonth = [];
+          let ordersOverMonth = [];
+          let monthDays = [];
+          const todayDate = new Date();
+
           response.data.data.map((item) => {
             if (
               new Date(item.day).toDateString() === new Date().toDateString()
@@ -38,11 +46,29 @@ export default function Dashboard() {
               }));
             }
             monthlyUsers += item.loggedUsers;
+            dataArray[new Date(item.day).getDate() - 1] = item;
           });
           setStats((prevState) => ({
             ...prevState,
             usersMonthly: monthlyUsers,
           }));
+          setChartDays(monthDays);
+          // Charts
+          for (
+            let i = 0;
+            i < dateHandler(todayDate.getMonth() + 1, todayDate.getFullYear());
+            i++
+          ) {
+            if (dataArray[i]) {
+              usersOverMonth[i] = dataArray[i].loggedUsers;
+              ordersOverMonth[i] = dataArray[i].orders;
+            } else {
+              usersOverMonth[i] = 0;
+              ordersOverMonth[i] = 0;
+            }
+            monthDays[i] = i + 1;
+          }
+          setChart({ charOne: usersOverMonth, charTwo: ordersOverMonth });
         } else {
           setError("Unhandled response");
         }
@@ -146,28 +172,20 @@ export default function Dashboard() {
             <Col lg="6">
               <Line
                 data={{
-                  labels: [
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July",
-                  ],
+                  labels: chartDays,
                   datasets: [
                     {
                       label: "Monthly Users login",
                       fill: false,
                       lineTension: 0.1,
                       backgroundColor: "rgba(75,192,192,0.4)",
-                      borderColor: "rgba(75,192,192,1)",
+                      borderColor: "#6a00f4",
                       borderCapStyle: "butt",
                       borderDash: [],
                       borderDashOffset: 0.0,
                       borderJoinStyle: "miter",
                       pointBorderColor: "rgba(75,192,192,1)",
-                      pointBackgroundColor: "#fff",
+                      pointBackgroundColor: "#E500A4",
                       pointBorderWidth: 1,
                       pointHoverRadius: 5,
                       pointHoverBackgroundColor: "rgba(75,192,192,1)",
@@ -175,7 +193,7 @@ export default function Dashboard() {
                       pointHoverBorderWidth: 2,
                       pointRadius: 1,
                       pointHitRadius: 10,
-                      data: [65, 59, 80, 81, 56, 55, 40],
+                      data: chart.charOne,
                     },
                   ],
                 }}
@@ -184,28 +202,20 @@ export default function Dashboard() {
             <Col lg="6">
               <Line
                 data={{
-                  labels: [
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July",
-                  ],
+                  labels: chartDays,
                   datasets: [
                     {
                       label: "Monthly ordered products",
                       fill: false,
                       lineTension: 0.1,
                       backgroundColor: "rgba(75,192,192,0.4)",
-                      borderColor: "rgba(75,192,192,1)",
+                      borderColor: "#e400f4",
                       borderCapStyle: "butt",
                       borderDash: [],
                       borderDashOffset: 0.0,
                       borderJoinStyle: "miter",
                       pointBorderColor: "rgba(75,100,100,1)",
-                      pointBackgroundColor: "#fff",
+                      pointBackgroundColor: "#f43500",
                       pointBorderWidth: 1,
                       pointHoverRadius: 5,
                       pointHoverBackgroundColor: "rgba(75,192,192,1)",
@@ -213,7 +223,7 @@ export default function Dashboard() {
                       pointHoverBorderWidth: 2,
                       pointRadius: 1,
                       pointHitRadius: 10,
-                      data: [140, 14, 54, 142, 48, 88, 67],
+                      data: chart.charTwo,
                     },
                   ],
                 }}
