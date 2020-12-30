@@ -1,26 +1,31 @@
-import React, { useState } from "react";
-//import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, Redirect } from "react-router-dom";
 import { Container, Tooltip, Form } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { useCustomEventListener } from "react-custom-events";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import Axios from "axios";
+import errorHandler from "../../functions/errorHandler";
 import "./Product.scss";
 import UploadImage from "../../components/UploadImage";
 export default function Product() {
-  //let { productId } = useParams();
+  let { productId } = useParams();
+  const swal = withReactContent(Swal);
   // form hooks
   const { /*control,*/ handleSubmit /*, errors*/ } = useForm();
   const onSubmit = (data) => console.log(data);
   // data state
   const [product, setProduct] = useState({
-    title: "MS 194 C-E",
-    category: "Chainsaws",
-    description:
-      "STIHL took a top-rated saw and made it better. The MS 194 C-E has greater displacement, more power, and improved cutting performance versus the previous model - without adding weight and reducing user fatigue. ",
-    sale: 10,
+    title: "",
+    category: "",
+    description: "",
+    sale: 0,
     image:
       "https://www.stihlusa.com/WebContent/Images/Product/3478/ms194ce.png?preset=Product.ProductDetails",
-    color: "#22af9b",
-    price: 250,
+    color: "#000",
+    price: 0,
+    stock: 0,
   });
   // Tooltip states
   const [titleTooltip, setTitleTooltip] = useState(false);
@@ -29,6 +34,7 @@ export default function Product() {
   const [saleTooltip, setSaleTooltip] = useState(false);
   const [colorTooltip, setColorTooltip] = useState(false);
   const [priceTooltip, setPriceTooltip] = useState(false);
+  const [stockTooltip, setStockTooltip] = useState(false);
   // Edit inputs
   const [imageEdit, setImageEdit] = useState(false);
   const [titleEdit, setTitleEdit] = useState(false);
@@ -37,20 +43,135 @@ export default function Product() {
   const [saleEdit, setSaleEdit] = useState(false);
   const [colorEdit, setColorEdit] = useState(false);
   const [priceEdit, setPriceEdit] = useState(false);
+  const [stockEdit, setStockEdit] = useState(false);
   // Inputs states
-  const [titleInput, setTitleInput] = useState(product.title);
-  const [categoryInput, setCategoryInput] = useState(product.category);
-  const [descInput, setDescInput] = useState(product.description);
-  const [saleInput, setSaleInput] = useState(product.sale);
-  const [colorInput, setColorInput] = useState(product.color);
-  const [priceInput, setPriceInput] = useState(product.price);
+  const [titleInput, setTitleInput] = useState("");
+  const [categoryInput, setCategoryInput] = useState("");
+  const [descInput, setDescInput] = useState("");
+  const [saleInput, setSaleInput] = useState(0);
+  const [colorInput, setColorInput] = useState("#000");
+  const [priceInput, setPriceInput] = useState(0);
+  const [stockInput, setStockInput] = useState(0);
+  const [imageUrlInput, setImageUrlInput] = useState("");
   useCustomEventListener("image-uploaded", (data) => {
     setProduct((prevState) => ({
       ...prevState,
       image: data.imageUrl,
     }));
     setImageEdit(false);
+    setImageUrlInput(data.imageUrl);
+    editProduct();
   });
+
+  const getProduct = () => {
+    Axios.get(process.env.REACT_APP_API_URL + "/product/" + productId, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+      .then((response) => {
+        if (response.data.valid === true) {
+          setProduct({
+            category: response.data.data.category,
+            color: response.data.data.backgroundcolor,
+            description: response.data.data.description,
+            image: response.data.data.imageurl,
+            price: response.data.data.price,
+            sale: response.data.data.discount,
+            title: response.data.data.title,
+            stock: response.data.data.stock,
+          });
+          setTitleInput(response.data.data.title);
+          setCategoryInput(response.data.data.category);
+          setDescInput(response.data.data.description);
+          setSaleInput(response.data.data.discount);
+          setColorInput(response.data.data.backgroundcolor);
+          setPriceInput(response.data.data.price);
+          setStockInput(response.data.data.stock);
+          setImageUrlInput(response.data.data.imageurl);
+        } else {
+          swal.fire({
+            title: "Error",
+            text: "Unhandled response",
+            icon: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        const error = errorHandler(err);
+        if (error.type === "error") {
+          swal.fire("Could not get", error.message, "error");
+        } else if (error.type === "redirect") {
+          return (
+            <Redirect
+              to={{
+                pathname: error.path,
+                state: {
+                  message: error.message,
+                  path: "/admin/products/" + productId,
+                },
+              }}
+            />
+          );
+        }
+      });
+  };
+
+  const editProduct = () => {
+    Axios.put(
+      process.env.REACT_APP_API_URL + "/product/" + productId,
+      {
+        title: titleInput,
+        price: priceInput,
+        description: descInput,
+        imageurl: imageUrlInput,
+        backgroundcolor: colorInput,
+        stock: stockInput,
+        category: categoryInput,
+        discount: saleInput,
+        backgroundcolor: colorInput,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    )
+      .then((response) => {
+        if (response.data.valid === true) {
+          getProduct();
+        } else {
+          swal.fire({
+            title: "Error",
+            text: "Unhandled response",
+            icon: "error",
+          });
+        }
+      })
+      .catch((err) => {
+        const error = errorHandler(err);
+        if (error.type === "error") {
+          swal.fire("Could not get", error.message, "error");
+        } else {
+          return (
+            <Redirect
+              to={{
+                pathname: error.path,
+                state: {
+                  message: error.message,
+                  path: "/admin/products/" + productId,
+                },
+              }}
+            />
+          );
+        }
+      });
+  };
+
+  useEffect(() => {
+    getProduct();
+  }, []);
+
   return (
     <Container className="mt-3" style={{ position: "relative" }}>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -74,6 +195,7 @@ export default function Product() {
                 <div style={{ position: "relative" }} className="edit-content">
                   <img
                     className="shadow-2"
+                    style={{ backgroundColor: colorInput }}
                     src={
                       product.image ||
                       "https://images.unsplash.com/photo-1556912743-54b370e8385b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
@@ -125,6 +247,7 @@ export default function Product() {
                       }));
                       setCategoryEdit(false);
                       setCategoryTooltip(false);
+                      editProduct();
                     }}
                   >
                     Confirm
@@ -188,6 +311,7 @@ export default function Product() {
                       }));
                       setTitleEdit(false);
                       setTitleTooltip(false);
+                      editProduct();
                     }}
                   >
                     Confirm
@@ -249,6 +373,7 @@ export default function Product() {
                       }));
                       setDescEdit(false);
                       setDescTooltip(false);
+                      editProduct();
                     }}
                   >
                     Confirm
@@ -319,6 +444,7 @@ export default function Product() {
                       }));
                       setSaleEdit(false);
                       setSaleTooltip(false);
+                      editProduct();
                     }}
                   >
                     Confirm
@@ -346,6 +472,70 @@ export default function Product() {
                     toggle={() => setSaleTooltip(!saleTooltip)}
                   >
                     Edit Product sale
+                  </Tooltip>
+                </div>
+              )
+            }
+            {
+              /** Product stock */
+              stockEdit ? (
+                <div>
+                  <input
+                    type="number"
+                    value={stockInput}
+                    onChange={(e) => setStockInput(e.target.value)}
+                    placeholder="Product stock"
+                    style={{ padding: "0 10px" }}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-info"
+                    onClick={() => {
+                      setStockInput(product.stock);
+                      setStockEdit(false);
+                      setStockTooltip(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-success ml-3"
+                    onClick={() => {
+                      setProduct((prevState) => ({
+                        ...prevState,
+                        stock: stockInput,
+                      }));
+                      setStockEdit(false);
+                      setStockTooltip(false);
+                      editProduct();
+                    }}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              ) : (
+                <div
+                  style={{ position: "relative" }}
+                  className="edit-content border-secondary"
+                >
+                  <h4 className="text-secondary" style={{ opacity: 0.9 }}>
+                    {"Stock: " + product.stock || "Stock: 0"}
+                  </h4>
+                  <button
+                    type="button"
+                    className="edit-btn btn btn-primary rounded-circle w-40px h-40px shadow-3"
+                    id="stockEdit"
+                    onClick={() => setStockEdit(true)}
+                  >
+                    <i className="fas fa-pencil-alt"></i>
+                  </button>
+                  <Tooltip
+                    target="stockEdit"
+                    isOpen={stockTooltip}
+                    toggle={() => setStockTooltip(!stockTooltip)}
+                  >
+                    Edit Product stock
                   </Tooltip>
                 </div>
               )
@@ -382,6 +572,7 @@ export default function Product() {
                       }));
                       setColorEdit(false);
                       setColorTooltip(false);
+                      editProduct();
                     }}
                   >
                     Confirm
@@ -449,6 +640,7 @@ export default function Product() {
                       }));
                       setPriceEdit(false);
                       setPriceTooltip(false);
+                      editProduct();
                     }}
                   >
                     Confirm
