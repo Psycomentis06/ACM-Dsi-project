@@ -110,11 +110,10 @@ export default function Product() {
       )}
       <Row>
         {products.map((product) => (
-          <Col md>
+          <Col md key={product.id}>
             <ProductCard
-              key={product.id}
               productBgColor={product.backgroundcolor}
-              path="/admin/products/p1"
+              path={"/admin/products/" + product.id}
               liked={true}
               category={product.category}
               description={
