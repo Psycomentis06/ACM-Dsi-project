@@ -114,7 +114,7 @@ export default function Product() {
             <ProductCard
               productBgColor={product.backgroundcolor}
               path={"/admin/products/" + product.id}
-              liked={true}
+              liked={false}
               category={product.category}
               description={
                 product.description?.length > 0
