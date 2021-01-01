@@ -48,7 +48,7 @@ export default () => {
         .push(
           {
             message: message,
-            sender: "user1",
+            sender: JSON.parse(localStorage.getItem("userData")).id,
             createdAt: firebase.database.ServerValue.TIMESTAMP,
           },
           (err) => {
@@ -152,7 +152,9 @@ export default () => {
               <div
                 className={
                   "line " +
-                  (el.sender === localStorage.getItem("userId") ? "mine" : "")
+                  (el.sender === JSON.parse(localStorage.getItem("userData")).id
+                    ? "mine"
+                    : "")
                 }
                 key={el.id}
               >
