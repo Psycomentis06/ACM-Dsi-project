@@ -66,3 +66,19 @@
     }
   }
 }
+
+@media only screen and (max-width: 970px) {
+  .user-preview {
+    .content {
+      width: 100%;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .user-preview {
+    .content {
+      flex-direction: column;
+    }
+  }
+}
