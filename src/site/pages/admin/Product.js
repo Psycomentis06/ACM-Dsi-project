@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Redirect } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { Container, Tooltip, Form } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { useCustomEventListener } from "react-custom-events";
@@ -11,6 +11,7 @@ import "./Product.scss";
 import UploadImage from "../../components/UploadImage";
 export default function Product() {
   let { productId } = useParams();
+  const history = useHistory();
   const swal = withReactContent(Swal);
   // form hooks
   const { /*control,*/ handleSubmit /*, errors*/ } = useForm();
@@ -102,17 +103,10 @@ export default function Product() {
         if (error.type === "error") {
           swal.fire("Could not get", error.message, "error");
         } else if (error.type === "redirect") {
-          return (
-            <Redirect
-              to={{
-                pathname: error.path,
-                state: {
-                  message: error.message,
-                  path: "/admin/products/" + productId,
-                },
-              }}
-            />
-          );
+          history.replace(error.path, {
+            path: "/admin/products" + productId,
+            message: error.message,
+          });
         }
       });
   };
@@ -129,7 +123,6 @@ export default function Product() {
         stock: stockInput,
         category: categoryInput,
         discount: saleInput,
-        backgroundcolor: colorInput,
       },
       {
         headers: {
@@ -153,23 +146,17 @@ export default function Product() {
         if (error.type === "error") {
           swal.fire("Could not get", error.message, "error");
         } else {
-          return (
-            <Redirect
-              to={{
-                pathname: error.path,
-                state: {
-                  message: error.message,
-                  path: "/admin/products/" + productId,
-                },
-              }}
-            />
-          );
+          history.replace(error.path, {
+            path: "/admin/products" + productId,
+            message: error.message,
+          });
         }
       });
   };
 
   useEffect(() => {
     getProduct();
+    // eslint-disable-next-line
   }, []);
 
   return (
