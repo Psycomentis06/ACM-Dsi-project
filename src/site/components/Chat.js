@@ -41,23 +41,28 @@ export default () => {
 
   const sendMessage = () => {
     if (message.length > 0) {
-      firebase
+      const fireRef = firebase
         .database()
         .ref("rooms")
-        .child(id + "/messages")
-        .push(
-          {
-            message: message,
-            sender: JSON.parse(localStorage.getItem("userData")).id,
-            createdAt: firebase.database.ServerValue.TIMESTAMP,
-          },
-          (err) => {
-            if (err) {
-              // error happend
-              setSendMsgError(err);
-            }
+        .child(id + "/messages");
+      fireRef.push(
+        {
+          message: message,
+          sender: JSON.parse(localStorage.getItem("userData")).id,
+          createdAt: firebase.database.ServerValue.TIMESTAMP,
+        },
+        (err) => {
+          if (err) {
+            // error happend
+            setSendMsgError(err);
+          } else {
+            fireRef.parent.update({
+              createdAt: firebase.database.ServerValue.TIMESTAMP,
+              adminMessages: firebaseMessages.adminMessages + 1,
+            });
           }
-        );
+        }
+      );
       setMessage("");
       scrollBottom();
     }
@@ -100,6 +105,11 @@ export default () => {
             }
           }
         );
+
+      firebase
+        .database()
+        .ref("rooms/" + id)
+        .update({ userMessages: 0 });
     }, 500);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { Badge } from "reactstrap";
 import UserLogo from "../../assets/images/avatar.svg";
 import "./UserChatRoom.scss";
 
@@ -12,7 +13,17 @@ export default function UserChatRoomLink(props) {
       <div
         className={"user-chat-room " + (props.bgColor ? props.bgColor : "")}
         onClick={handleOnClick}
+        style={{ position: "relative" }}
       >
+        {props.badge > 0 ? (
+          <Badge
+            color="primary"
+            pill
+            style={{ position: "absolute", top: 0, right: 0 }}
+          >
+            {props.badge}
+          </Badge>
+        ) : null}
         <div className="avatar">
           <img
             className="shadow-3"

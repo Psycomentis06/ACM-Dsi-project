@@ -40,7 +40,10 @@ function Chatbox() {
             setMessage("");
             scrollToViewItem.current.scrollIntoView({ behaviour: "smooth" });
             // add notification
-            fireRef.parent.update({ userMessages: messages.userMessages + 1 });
+            fireRef.parent.update({
+              userMessages: messages.userMessages + 1,
+              createdAt: firebase.database.ServerValue.TIMESTAMP,
+            });
           }
         }
       );

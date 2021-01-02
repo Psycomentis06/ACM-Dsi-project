@@ -95,7 +95,10 @@ export default function Inbox() {
                   roomId={user.chatRoom}
                   userLogo={user.photo}
                   username={user.username}
-                  lastMessage={"Last seen " + user.lastMessage}
+                  badge={user.userMessages}
+                  lastMessage={
+                    "Last seen " + new Date(user.createdAt).toLocaleString()
+                  }
                   status={user.status}
                 />
               </Col>
