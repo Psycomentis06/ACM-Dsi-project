@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import withReactContent from "sweetalert2-react-content";
 import errorHandler from "../../functions/errorHandler";
 import NoData from "../../components/NoData";
+import { updateLabel } from "typescript";
 export default function Order(props) {
   let { userId } = useParams();
   const swal = withReactContent(Swal);
@@ -74,11 +75,11 @@ export default function Order(props) {
       ) : orders.length <= 0 ? (
         <NoData status="Client has no orders" />
       ) : (
-        <div>
-          Order Component
-          <br />
-          orders for user id: {props.userId || userId || "not found"}
-        </div>
+        <ul>
+          {orders.map((order) => (
+            <li>{order.id}</li>
+          ))}
+        </ul>
       )}
     </div>
   );
