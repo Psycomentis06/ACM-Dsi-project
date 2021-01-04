@@ -12,6 +12,7 @@ import AdminProfileNotification from "./AdminProfileNotification";
 import AdminProfilePassword from "./AdminProfilePassword";
 import AdminProfileSettings from "./AdminProfileSettings";
 import AdminProfile from "./AdminProfile";
+import AdminProfileContact from "./AdminProfileContact";
 export default function Profile() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const { path, url } = useRouteMatch();
@@ -55,6 +56,9 @@ export default function Profile() {
                 </Route>
                 <Route exact path={path + "/settings"}>
                   <AdminProfileSettings />
+                </Route>
+                <Route exact path={path + "/contact"}>
+                  <AdminProfileContact />
                 </Route>
                 <Route exact path={path + "/"}>
                   <AdminProfile />

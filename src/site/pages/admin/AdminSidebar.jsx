@@ -23,12 +23,21 @@ export default function AdminSidebar(props) {
         >
           Password
         </NavLink>
-        <NavLink
+        {/*
+              <NavLink
           to={props.url + "/notification"}
           className="list-item text-shadow"
           activeClassName="active-nav"
         >
           Notifications
+        </NavLink>
+      */}
+        <NavLink
+          to={props.url + "/contact"}
+          className="list-item text-shadow"
+          activeClassName="active-nav"
+        >
+          Contact
         </NavLink>
         <NavLink
           to={props.url + "/settings"}
