@@ -153,6 +153,14 @@ export default function AdminNavbar() {
                       Products
                     </Link>
                   </DropdownItem>
+                  <DropdownItem>
+                    <Link
+                      to="/admin/uploads"
+                      style={{ textDecoration: "none" }}
+                    >
+                      Uploads
+                    </Link>
+                  </DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem onClick={logout}>Logout</DropdownItem>
                 </DropdownMenu>
