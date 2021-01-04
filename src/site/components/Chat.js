@@ -70,47 +70,52 @@ export default () => {
 
   // get messages
   useEffect(() => {
+    let mounted = true;
     setLoading(true);
 
     setTimeout(() => {
-      firebase
-        .database()
-        .ref("rooms/" + id)
-        .on(
-          "value",
-          (data) => {
-            if (data.exists()) {
-              // valid room
-              let exportedData = data.exportVal();
-              let messages = exportedData.messages;
-              let arrayMsgs = [];
-              for (const msg in messages) {
-                messages[msg].id = msg;
-                arrayMsgs.push(messages[msg]);
+      if (mounted) {
+        firebase
+          .database()
+          .ref("rooms/" + id)
+          .on(
+            "value",
+            (data) => {
+              if (data.exists()) {
+                // valid room
+                let exportedData = data.exportVal();
+                let messages = exportedData.messages;
+                let arrayMsgs = [];
+                for (const msg in messages) {
+                  messages[msg].id = msg;
+                  arrayMsgs.push(messages[msg]);
+                }
+                exportedData.messages = arrayMsgs;
+                setFirebaseMessages(exportedData);
+                firebase
+                  .database()
+                  .ref("rooms/" + id)
+                  .update({ userMessages: 0 });
+              } else {
+                setRedirect({
+                  valid: true,
+                  message: "Can't find room with id: " + id,
+                  path: "/404",
+                });
               }
-              exportedData.messages = arrayMsgs;
-              setFirebaseMessages(exportedData);
-            } else {
-              setRedirect({
-                valid: true,
-                message: "Can't find room with id: " + id,
-                path: "/404",
-              });
+              setLoading(false);
+            },
+            (err) => {
+              if (err) {
+                setError(err.message);
+              }
             }
-            setLoading(false);
-          },
-          (err) => {
-            if (err) {
-              setError(err.message);
-            }
-          }
-        );
-
-      firebase
-        .database()
-        .ref("rooms/" + id)
-        .update({ userMessages: 0 });
+          );
+      }
     }, 500);
+    return () => {
+      mounted = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (redirect.valid) {
@@ -196,7 +201,7 @@ export default () => {
                 }
               }}
             />
-            <Button color="primary" onClick={sendMessage}>
+            <Button color="primary" onClick={() => sendMessage}>
               <i className="fas fa-paper-plane"></i>
             </Button>
           </InputGroup>
