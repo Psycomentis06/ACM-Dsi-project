@@ -88,6 +88,9 @@ function Chatbox() {
               }
               exportedData.messages = arrayMsgs;
               setMessages(exportedData);
+              exportedData.adminMessages > 0
+                ? (document.title = "ACM(" + exportedData.adminMessages + ")")
+                : (document.title = "ACM");
             } else {
               setRedirect({
                 valid: true,
@@ -125,13 +128,15 @@ function Chatbox() {
       >
         <i className="fas fa-inbox fa-2x"></i>{" "}
         {messages?.adminMessages > 0 ? (
-          <Badge
-            color="danger"
-            style={{ position: "absolute", top: "0px", right: "0px" }}
-            pill
-          >
-            {messages.adminMessages}
-          </Badge>
+          <>
+            <Badge
+              color="danger"
+              style={{ position: "absolute", top: "0px", right: "0px" }}
+              pill
+            >
+              {messages.adminMessages}
+            </Badge>
+          </>
         ) : null}
       </button>
       <div
