@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Axios from "axios";
 import { Row, Col, Form, Input, FormGroup, FormFeedback } from "reactstrap";
 import { Controller, useForm } from "react-hook-form";
@@ -8,8 +8,10 @@ import "./Signup.scss";
 export default function Signup() {
   // form validation
   const { control, handleSubmit, errors } = useForm();
+  const [loading, setLoading] = useState(false);
   const onSubmit = (data) => register(data);
   const register = async (data) => {
+    setLoading(true);
     // sweet alert 2
     const swal = withReactContent(Swal);
     await Axios.post(process.env.REACT_APP_API_URL + "/user/add", {
@@ -25,7 +27,7 @@ export default function Signup() {
             text:
               "Your account has been created but not activated. We sent you an email for <u>" +
               data.email +
-              "<u> containg your verification key",
+              "</u> containg your verification key",
             input: "number",
             showCancelButton: true,
             showLoaderOnConfirm: true,
@@ -73,7 +75,8 @@ export default function Signup() {
         } else if (err.request) {
           swal.fire("Error", "Request error", "error");
         }
-      });
+      })
+      .finally(() => setLoading(false));
   };
   return (
     <>
@@ -215,9 +218,24 @@ export default function Signup() {
             </Col>
           </Row>
           <Row className="mt-3">
-            <button className="btn rounded-pill text-font-bold bg-gradient-purple w-25 shadow-2 mx-auto">
-              Register
-            </button>
+            {loading ? (
+              <button
+                className="btn bg-gradient-purple shadow-2 w-25 rounded-pill mx-auto font-weight-bolder"
+                type="button"
+                disabled
+              >
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                <span className="sr-only">Loading...</span>
+              </button>
+            ) : (
+              <button className="btn rounded-pill text-font-bold bg-gradient-purple w-25 shadow-2 mx-auto">
+                Register
+              </button>
+            )}
           </Row>
         </Form>
       </div>
