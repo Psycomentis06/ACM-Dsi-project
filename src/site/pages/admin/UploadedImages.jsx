@@ -74,7 +74,7 @@ export default function UploadedImages() {
   }, []);
   return (
     <div className="uploads-page">
-      <Row className="my-3 w-75 mx-auto">
+    {/*  <Row className="my-3 w-75 mx-auto">
         <Col>
           <Row>
             <Col className="text-center">
@@ -138,7 +138,7 @@ export default function UploadedImages() {
             </Col>
           </Row>
         </Col>
-      </Row>
+</Row> */}
       {error.length > 0 && <Alert color="danger"> {error} </Alert>}
       <Modal
         isOpen={imgPreviewModal}
