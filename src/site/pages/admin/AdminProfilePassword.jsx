@@ -15,10 +15,10 @@ export default function AdminProfilePassword() {
   const [loading, setLoading] = useState(false);
   const changePass = (e) => {
     e.preventDefault();
-    setLoading(true);
     if (newPass !== rePass) {
       setError("New Password and retyped password dosn't match");
     } else {
+      setLoading(true);
       Axios.put(
         process.env.REACT_APP_API_URL +
           "/user/" +
@@ -85,7 +85,7 @@ export default function AdminProfilePassword() {
       className="bg-materialgray mt-4"
     >
       <div style={{ width: "70%", padding: "10px" }}>
-        {error.length > 0 && <Alert> {error} </Alert>}
+        {error.length > 0 && <Alert color="danger"> {error} </Alert>}
         <h1 className="text-center"> Change password </h1>
         <fieldset
           className="mt-3 border-primary p-2"
