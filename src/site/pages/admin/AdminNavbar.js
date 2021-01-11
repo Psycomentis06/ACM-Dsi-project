@@ -68,8 +68,6 @@ export default function AdminNavbar() {
   let history = useHistory();
 
   const logout = () => {
-    localStorage.removeItem("token"); // lose token
-    localStorage.removeItem("userData"); // remove userdata
     Axios.put(
       process.env.REACT_APP_API_URL +
         "/user/" +
@@ -81,7 +79,9 @@ export default function AdminNavbar() {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       }
-    );
+    ); // set user offline
+    localStorage.removeItem("token"); // lose token
+    localStorage.removeItem("userData"); // remove userdata
     history.push("/");
   };
 
