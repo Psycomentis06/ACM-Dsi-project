@@ -42,7 +42,8 @@ export default function Signup() {
                   return res.data;
                 })
                 .catch((err) => {
-                  throw new Error(err.response.data.message);
+                  //throw new Error(err.response.data.message);
+				  swal.fire("Error", err.response.data.message, "error")
                 });
             },
             allowOutsideClick: () => swal.isLoading(),
@@ -63,6 +64,7 @@ export default function Signup() {
           if (err.response.data.error) {
             err.response.data.error.map((err) => {
               errorsToString += err + " <br /> ";
+			  return true
             });
             swal.fire(
               "Registration Error",
