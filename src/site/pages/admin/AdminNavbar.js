@@ -19,10 +19,10 @@ export default function AdminNavbar() {
     message: "",
     path: "",
   });
+  const parsedData = JSON.parse(userData);
   const getUser = (unmounted) => {
     const userData = localStorage.getItem("userData"); // if user logged before
     if (userData !== undefined && userData !== null) {
-      const parsedData = JSON.parse(userData);
       Axios.get(process.env.REACT_APP_API_URL + "/user/" + parsedData.id, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
