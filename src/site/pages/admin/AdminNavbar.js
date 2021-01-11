@@ -19,10 +19,10 @@ export default function AdminNavbar() {
     message: "",
     path: "",
   });
-  const parsedData = JSON.parse(userData);
   const getUser = (unmounted) => {
     const userData = localStorage.getItem("userData"); // if user logged before
     if (userData !== undefined && userData !== null) {
+      const parsedData = JSON.parse(userData);
       Axios.get(process.env.REACT_APP_API_URL + "/user/" + parsedData.id, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -71,7 +71,10 @@ export default function AdminNavbar() {
     localStorage.removeItem("token"); // lose token
     localStorage.removeItem("userData"); // remove userdata
     Axios.put(
-      process.env.REACT_APP_API_URL + "/user/" + parsedData.id + "/status",
+      process.env.REACT_APP_API_URL +
+        "/user/" +
+        JSON.parse(localStorage.getItem("userData")).id +
+        "/status",
       { status: "offline" },
       {
         headers: {
