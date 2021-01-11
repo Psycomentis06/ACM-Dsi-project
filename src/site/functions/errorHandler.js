@@ -1,7 +1,7 @@
 /**
  * Function that handels all XHR requests error
  */
-
+import userStatus from "./userStatus";
 export default function errorHandler(err) {
   const requestError = err.request;
   const responseError = err.response;
@@ -40,6 +40,7 @@ export default function errorHandler(err) {
       case 403:
         // Auth error
         if (responseError.data.message === "Auth error") {
+          userStatus("offline"); // Set User offline
           // redirect to login page
           return {
             valid: true,
