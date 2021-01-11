@@ -43,6 +43,7 @@ export default function AdminSidebar(props) {
           to={props.url + "/settings"}
           className="list-item text-shadow"
           activeClassName="active-nav"
+          style={{ pointerEvents: "none", opacity: 0.5 }}
         >
           Settings
         </NavLink>
