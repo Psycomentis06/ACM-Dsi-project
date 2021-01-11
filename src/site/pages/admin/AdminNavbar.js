@@ -70,6 +70,15 @@ export default function AdminNavbar() {
   const logout = () => {
     localStorage.removeItem("token"); // lose token
     localStorage.removeItem("userData"); // remove userdata
+    Axios.put(
+      process.env.REACT_APP_API_URL + "/user/" + parsedData.id + "/status",
+      { status: "offline" },
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    );
     history.push("/");
   };
 
