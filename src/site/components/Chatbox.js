@@ -122,7 +122,7 @@ function Chatbox() {
   return (
     <>
       <button
-        className="btn btn-fab gradient float-right-bottom"
+        className="btn btn-fab bg-gradient-primary float-right-bottom"
         onClick={closeBoxHandler}
         style={closeBox ? { display: "block" } : { display: "none" }}
       >
