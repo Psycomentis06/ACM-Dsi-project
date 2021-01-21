@@ -55,7 +55,7 @@ export default function UserNavbar() {
                     width: "150px",
                   }}
                 >
-                  <span class="material-icons fa-2x">dashboard</span>
+                  <span className="material-icons fa-2x">dashboard</span>
                   Dashboard
                 </Link>
               </NavItem>
