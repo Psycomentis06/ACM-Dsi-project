@@ -35,6 +35,7 @@ export default function AdminNavbar() {
                 err.response.data.message === "Wrong privileges" ||
                 err.response.data.message === "Auth error"
               ) {
+                require("../../functions/userStatus").default("offline");
                 setRedirect({
                   valid: true,
                   message: "Your session is expired, please login again",

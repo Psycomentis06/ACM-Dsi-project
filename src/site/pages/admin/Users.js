@@ -94,6 +94,7 @@ export default function Users() {
               break;
             case 401:
               if (err.response.data.message === "Auth error") {
+                require("../../functions/userStatus").default("offline");
                 setRedirect({
                   valid: true,
                   path: "/login",

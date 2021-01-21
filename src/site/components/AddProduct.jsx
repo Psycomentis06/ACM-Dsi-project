@@ -9,6 +9,7 @@ import ColorThief from "colorthief/dist/color-thief.umd";
 import Axios from "axios";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import userStatus from "../functions/userStatus";
 export default function AddProduct() {
   const swal = withReactContent(Swal);
   const [product, setProduct] = useState({
@@ -88,6 +89,7 @@ export default function AddProduct() {
                 } else {
                   // Auth error
                   if (err.response.data.message === "Auth error") {
+                    userStatus("offline");
                     // redirect to login page
                     setRedirect({
                       valid: true,
