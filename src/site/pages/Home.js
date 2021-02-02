@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import Chatbox from "../components/Chatbox";
+import FAQCasourel from "../components/FAQCasourel";
 function Home() {
   const currentUser = JSON.parse(localStorage.getItem("userData"));
   const learnMoreRef = useRef();
@@ -69,20 +70,7 @@ function Home() {
         </div>
         <div className="container">
           <div className="jumbotron shadow-3">
-            <div
-              className="bg-gradient-aqua-90"
-              style={{
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              <h1 className="text-center">What is ACM Panel ?!</h1>
-            </div>
-            <p className="w-50 mx-auto text-center m-3">
-              Well ACM Panel is a platform made to let admins to controll and
-              monitor the platform state and also help clients with their
-              problems.
-            </p>
+            <FAQCasourel />
           </div>
         </div>
       </section>
