@@ -77,6 +77,17 @@ export default function AddProduct() {
             });
             // emit event
             emitCustomEvent("add-product");
+            // Reset data
+            setProduct({
+              title: "",
+              category: "",
+              color: "",
+              description: "",
+              stock: 0,
+              sale: 0,
+              imageUrl: "",
+              price: 0,
+            });
           }
         })
         .catch((err) => {
