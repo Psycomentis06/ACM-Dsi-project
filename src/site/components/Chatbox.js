@@ -140,8 +140,13 @@ function Chatbox() {
         ) : null}
       </button>
       <div
-        className="chat-box"
-        style={closeBox ? { display: "none" } : { display: "block" }}
+        className="chat-box shadow-3"
+        style={{
+          display: closeBox ? "none" : "block",
+          position: "fixed",
+          bottom: 0,
+          right: 20,
+        }}
       >
         <div className="content">
           <div className="header">
