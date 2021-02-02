@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Collapse, Input, Tooltip, Alert } from "reactstrap";
+import { Collapse, Input, Tooltip, Alert, Row, Col } from "reactstrap";
 import { useCustomEventListener } from "react-custom-events";
 import { Redirect } from "react-router-dom";
 import { emitCustomEvent } from "react-custom-events";
@@ -300,7 +300,71 @@ export default function AddProduct() {
             ) : null}
             {error?.length > 0 && (
               <div>
-                <Alert color="danger">{error}</Alert>
+                <Alert color="danger">
+                  <h4 className="alert-heading">Error</h4>
+                  <p>{error}</p>
+                  <hr />
+                  <p className="mb-0 text-center">
+                    <button
+                      className="btn btn-link"
+                      onClick={() =>
+                        swal.fire({
+                          title: "Valid data must follow this rules",
+                          html: (
+                            <div>
+                              <Row className="mt-3">
+                                <Col className="text-secondary">Title:</Col>
+                                <Col className="text-secondary-1">
+                                  {"Length > 0"}
+                                </Col>
+                              </Row>
+                              <Row className="mt-3">
+                                <Col className="text-secondary">Price:</Col>
+                                <Col className="text-secondary-1">
+                                  {"Value >= 0"}
+                                </Col>
+                              </Row>
+                              <Row className="mt-3">
+                                <Col className="text-secondary">Sale:</Col>
+                                <Col className="text-secondary-1">
+                                  {"Value >= 0"}
+                                </Col>
+                              </Row>
+                              <Row className="mt-3">
+                                <Col className="text-secondary">
+                                  Description:
+                                </Col>
+                                <Col className="text-secondary-1">
+                                  {"Length > 0"}
+                                </Col>
+                              </Row>
+                              <Row className="mt-3">
+                                <Col className="text-secondary">Stock:</Col>
+                                <Col className="text-secondary-1">
+                                  {"Value > 0"}
+                                </Col>
+                              </Row>
+                              <Row className="mt-3">
+                                <Col className="text-secondary">Category:</Col>
+                                <Col className="text-secondary-1">
+                                  {"Length > 0"}
+                                </Col>
+                              </Row>
+                              <Row className="mt-3">
+                                <Col className="text-secondary">Image:</Col>
+                                <Col className="text-secondary-1">
+                                  {"Length > 0 = Uploaded Image"}
+                                </Col>
+                              </Row>
+                            </div>
+                          ),
+                        })
+                      }
+                    >
+                      Learn more ?
+                    </button>
+                  </p>
+                </Alert>
               </div>
             )}
             {loading ? (
