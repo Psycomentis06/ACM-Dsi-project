@@ -1,12 +1,9 @@
+## [Website][1]
 **Folder Structure**
 
 `src\`
 
   - Where all the project files exist
-  
- `src\api`
- 
-  - This folder is a fake API for testing the react components
   
  `src\assets`
  
@@ -23,3 +20,4 @@
     `pages`: This folder contains the views 'multi components'. it's the interface that will be shown to the user
     
     `routes`: Contains the routes for the application and main page where all components will be bundled as main component (before App.js)
+[1]: https://dsi3-project.web.app/
