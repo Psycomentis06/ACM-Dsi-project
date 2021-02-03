@@ -1,6 +1,6 @@
 ## Website
 
-You can access website from [here : dsi3-project.web.app][1]
+You can access website from [here : dsi3-project.web.app](https://dsi3-project.web.app/)
 
 **Folder Structure**
 
@@ -23,4 +23,3 @@ You can access website from [here : dsi3-project.web.app][1]
     `pages`: This folder contains the views 'multi components'. it's the interface that will be shown to the user
     
     `routes`: Contains the routes for the application and main page where all components will be bundled as main component (before App.js)
-[1]: https://dsi3-project.web.app/
